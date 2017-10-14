@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        ">
+
+	<context:component-scan base-package="org.jiaowei">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:dbconfig.properties" />
+	<!-- 配置数据源1 -->
+	<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="1" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="200" />
+		<!-- 连接池最大空闲 -->
+		<!--<property name="maxIdle" value="20"/> -->
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="5" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="100000" />
+		<!--<property name="poolPreparedStatements" value="true"/> -->
+		<!--<property name="maxPoolPreparedStatementPerConnectionSize" value="33"/> -->
+		<property name="validationQuery" value="${validationQuery.sqlserver}" />
+		<!--<property name="testOnBorrow" value="false"/> -->
+		<property name="testOnBorrow" value="true" />
+		<!--<property name="testOnReturn" value="false"/> -->
+		<property name="testOnReturn" value="true" />
+		<property name="testWhileIdle" value="true" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="600000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="252000000" />
+
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- 1800秒，也就是30分钟 -->
+		<property name="removeAbandonedTimeout" value="1800" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="false" />
+
+		<!-- 开启Druid的监控统计功能 -->
+		<!--<property name="filters" value="stat"/> -->
+		<!--&lt;!&ndash;<property name="filters" value="mergeStat" /> &ndash;&gt; -->
+		<!--&lt;!&ndash; Oracle连接是获取字段注释 &ndash;&gt; -->
+		<!--<property name="connectProperties"> -->
+		<!--<props> -->
+		<!--<prop key="remarksReporting">true</prop> -->
+		<!--</props> -->
+		<!--</property> -->
+	</bean>
+
+	<!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+		destroy-method="close"> -->
+	<!--<property name="username" value="${jdbc.username}"></property> -->
+	<!--<property name="password" value="${jdbc.password}"></property> -->
+	<!--<property name="url" value="${jdbc.url}"></property> -->
+	<!--<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+	<!--&lt;!&ndash; <property name="initialSize" value="${connection.initialSize}"></property> 
+		&ndash;&gt; -->
+	<!--&lt;!&ndash;<property name="maxActive" value="${connection.maxActive}"></property>&ndash;&gt; -->
+	<!--&lt;!&ndash;<property name="maxIdle" value="${connection.maxIdle}"></property>&ndash;&gt; -->
+	<!--&lt;!&ndash;<property name="minIdle" value="${connection.minIdle}"></property>&ndash;&gt; -->
+	<!--&lt;!&ndash;<property name="maxWait" value="${connection.maxWait}"></property>&ndash;&gt; -->
+	<!--&lt;!&ndash;<property name="removeAbandoned" value="${connection.removeAbandoned}"></property>&ndash;&gt; -->
+	<!--&lt;!&ndash;<property name="removeAbandonedTimeout" value="${connection.removeAbandonedTimeout}"></property>&ndash;&gt; -->
+	<!--&lt;!&ndash;<property name="logAbandoned" value="${connection.logAbandoned}"></property>&ndash;&gt; -->
+	<!--</bean> -->
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<!--<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> -->
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<!--<prop key="hibernate.show_sql">true</prop> -->
+				<!--<prop key="hibernate.format_sql">true</prop> -->
+				<prop key="hibernate.connection.url">${jdbc.url}</prop>
+				<prop key="hibernate.connection.driver_class">${jdbc.driverClass}</prop>
+			</props>
+		</property>
+		<!-- 注解方式配置 -->
+		<property name="packagesToScan">
+			<list>
+				<value>org.jiaowei.entity</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="springContextUtil " class="org.jiaowei.util.ApplicationContextUtil"
+		scope="singleton" />
+	<!--spring 定时任务 -->
+     <task:annotation-driven />
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/mapper/*.xml" />
+	</bean>
+
+
+	<!-- spring与mybatis整合配置，扫描所有dao -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:basePackage="org.jiaowei.mybatis.dao" p:sqlSessionFactoryBeanName="sqlSessionFactory" />
+
+
+	<!-- ***************事务配置************** -->
+	<bean id="transactionManagerMybtis" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+</beans>
