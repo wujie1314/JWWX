@@ -43,6 +43,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import test.java.junit.TestActiviti;
+import activiti.SeatW;
+import activiti.WaitQ;
+import activiti.helloword;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -100,6 +105,15 @@ public class AutoSchedule {
 				}
 			}
 		}
+//    	TestActiviti textActiviti=new TestActiviti();
+//    	textActiviti.createTable();
+//       helloword helloword=new helloword();
+//       helloword.deploymentProcessDefinition();
+//       WaitQ waitQ=new WaitQ();
+//       waitQ.deploymentProcessDefinition();
+//       SeatW seatW=new SeatW();
+//       seatW.deploymentProcessDefinition();
+    	
     	
 //    	logger.error("--------------->autoAllotTask end:"+(System.currentTimeMillis()-one));
     }
