@@ -32,6 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import activiti.WaitQ;
+
 @Service
 public class NavMenuServiceImpl implements NavMenuService {
 
@@ -181,6 +183,11 @@ public class NavMenuServiceImpl implements NavMenuService {
 			entity.setLastChatTime(times / 1000);
 			entity.setIntoWaitingMapTime(times / 1000);
 			entity.setIntoWaitingTime(times);
+			System.out.println("启动实例");
+			WaitQ waitQ=new WaitQ();
+	    	waitQ.startProcessInstance();
+	    	System.out.println("等待队列实例启动");
+			
 
 
 			if (deptId == null) { // 需要改的地方
@@ -235,6 +242,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 				&& ("9".equals(map.get("Content")) || "【9】".equals(map
 						.get("Content")))) {
 			returnStr = "您已退出！";
+			
 			NavMenuInitUtils.getInstance().removeWaitMap(openId);
 			NavMenuInitUtils.getInstance().removeServiceMap(openId);
 

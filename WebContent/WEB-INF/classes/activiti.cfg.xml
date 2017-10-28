@@ -14,16 +14,24 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
   <property name="defaultAutoCommit" value="false" />
 </bean> -->
 
-<bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+<!-- <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
 
    
-	<!-- <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration"> -->
+	<bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
 	<property name="jdbcDriver" value="com.mysql.jdbc.Driver"></property>
 	<property name="JdbcUrl" value="jdbc:mysql://localhost:3306/test"></property>
 	<property name="jdbcUsername" value="root"></property>
 	<property name="jdbcPassword" value="xywan1314"></property>
-	<!-- 创建表 -->
+	创建表
 	<property name="databaseSchemaUpdate" value="true"></property>
-	</bean>
+	</bean> -->
 
+ <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration">
+    <property name="jdbcDriver" value="oracle.jdbc.driver.OracleDriver"></property>
+    <property name="jdbcUrl" value="jdbc:oracle:thin:@superc102.vicp.cc:1522:jwwx"></property>
+    <property name="jdbcUsername" value="jwwx"></property>
+    <property name="jdbcPassword" value="All4Icode"></property>
+    <property name="databaseSchemaUpdate" value="true"></property>
+    
+</bean> 
 </beans>

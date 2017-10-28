@@ -11,10 +11,10 @@ public class TestActiviti {
         ProcessEngineConfiguration processEngineConfiguration =  
                 ProcessEngineConfiguration.createStandaloneInMemProcessEngineConfiguration();
         //连接数据库的配置  
-        processEngineConfiguration.setJdbcDriver("com.mysql.jdbc.Driver");  
-        processEngineConfiguration.setJdbcUrl("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8");  
-        processEngineConfiguration.setJdbcUsername("root");  
-        processEngineConfiguration.setJdbcPassword("xywan1314");  
+        processEngineConfiguration.setJdbcDriver("oracle.jdbc.driver.OracleDriver");  
+        processEngineConfiguration.setJdbcUrl("jdbc:oracle:thin:@superc102.vicp.cc:1522:jwwx");  
+        processEngineConfiguration.setJdbcUsername("jwwx");  
+        processEngineConfiguration.setJdbcPassword("All4Icode");  
         //三个配置  
         //1.先删除表，再创建表：processEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP="create-drop"  
         //2.不能自动创建表，需要表存在：processEngineConfiguration.DB_SCHEMA_UPDATE_FALSE="false"  
