@@ -278,6 +278,8 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = waitMap.get(deptId);
 		if(openMap != null){
 			openMap.remove(openId);
+			WaitQ waitQ=new WaitQ();
+			waitQ.completetask();
 		}
 	}
 	public  void removeWaitMap(String openId){
@@ -332,6 +334,8 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = serviceMap.get(userDeptMap.get(openId));
 		if(openMap != null){
 			openMap.remove(openId);
+			SeatW seatW=new SeatW();
+			seatW.completetask();
 		}
 	}
 	/**
