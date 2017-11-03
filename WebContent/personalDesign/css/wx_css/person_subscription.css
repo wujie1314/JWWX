@@ -1,11 +1,11 @@
 @CHARSET "UTF-8";
 body {
-	font-family: "微软雅黑";
 	width:100%;
 	margin:0;
 	padding:0;
 	background:#fff !important;
 	overflow:hidden;
+	position:fixed;
 }
 
 .container{
@@ -44,7 +44,7 @@ body {
 
 .row .col-xs-2 label{
 	margin:0;
-	font-size:40px;
+	font-size:36px;
 	color:#333;
 	position: relative;
 	top: 50%;
@@ -64,10 +64,12 @@ body {
 .container .row .col-xs-9 .btn-group, #license{
 	width:100%;
 	height:100%;
-	font-size:40px;	
+	font-size:36px;	
 	padding:0;
 	color:#333;
 	border:none;
+	background:#fff;
+	margin-left:2%;
 }
 
 select{  
@@ -128,7 +130,7 @@ hr{
 #container .row .col-xs-12 .nav li {
 	width:33.333%;
 	text-align:center;
-	font-size:40px;
+	font-size:36px;
 }
 
 #container .row .col-xs-12 .nav li a {	
@@ -136,7 +138,7 @@ hr{
 	width:100%;
 	height:100%;
 	margin:auto;
-	padding:25px 0;
+	padding:15px 0;
 	background:#2a70d2;
 	color:#fff;
 }
@@ -166,6 +168,7 @@ hr{
 	border-width:0;
 	width:100%;
 	height:100%;
+	margin-left:1%;
 }
 
 #container .row .col-xs-12 .tab-content .panel-group{
@@ -238,7 +241,7 @@ hr{
 
 #panel-highPeccancy .row .col-xs-3 label{
 	margin:0;
-	font-size:40px;
+	font-size:36px;
 	color:#333;
 	position: relative;
 	top: 50%;
@@ -257,7 +260,7 @@ hr{
 	width:60%;
 	height:100%;
 	border:none;
-	font-size:40px;
+	font-size:36px;
 }
 
 .col-xs-9 img{
@@ -276,7 +279,7 @@ hr{
 	width:90%;
 	height:50%;
 	background:#2a70d2;
-	font-size:40px;
+	font-size:36px;
 	color:#fff;
 	margin:auto;
 	border-radius:20px;
@@ -285,7 +288,38 @@ hr{
 	transform: translateY(-50%);
 }
 #DATE,#TIME{
-	font-size: 40px;
+	font-size: 36px;
+	margin-left:2%;
 	
-	
+}
+
+
+/*按钮*/
+.dwb:link{
+ color:#3B6EBD;
+ background: none;
+ text-shadow: none;
+ border: 1px solid;
+ -webkit-box-shadow:none;
+ font-size:50px;
+}
+
+/*数字上下的渐变颜色*/
+  .dwwo{
+ background: -webkit-gradient(linear,left bottom,left top,color-stop(0, rgb(255, 255, 255)),color-stop(0.5, rgba(255, 255, 255,0)),color-stop(1, rgb(255, 255, 255)));
+}
+.dwwl{
+ background: none;
+}
+/*数字的颜色*/
+.dww li{
+text-shadow: none;
+ color: #3B6EBD;
+/* font-weight: bold; */
+font-size:50px;
+}
+
+/*数值中间一横*/
+.dwwol{
+ border: none;
 }

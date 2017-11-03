@@ -13,8 +13,8 @@ jq1(function () {
 		lang: 'zh',
 		/* showNow: true,
 		nowText: "今天", */
-		width:200,
-		height:100,
+		width:150,
+		height:80,
 		startYear: currYear - 50, //开始年份
 		endYear: currYear + 10 //结束年份
 	};
@@ -25,7 +25,7 @@ jq1(function () {
 $(function() {
 	var HEIGHT = $('body').height();
 	$(window).resize(function() {
-		$('.container').height(HEIGHT);
+		$('body').height(HEIGHT);
 	});
 
 	var subsType = '${road.subsType}';

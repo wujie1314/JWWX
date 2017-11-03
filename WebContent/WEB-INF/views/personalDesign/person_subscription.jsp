@@ -101,7 +101,7 @@
 						<li class="active"><a href="#panel-bus" id="bus"
 							data-toggle="tab">公交信息</a></li>
 						<li><a href="#panel-condition" data-toggle="tab">路况信息</a></li>
-						<li><a href="#panel-highPeccancy" data-toggle="tab">高速违章信息</a></li>
+						<li><a href="#panel-highPeccancy" data-toggle="tab">高速违章</a></li>
 					</ul>
 
 					<div class="tab-content">
