@@ -1,13 +1,2 @@
 /activiti
-/activiti.cfg.xml
 /com
-/dbconfig.properties
-/diagrams
-/hibernate.cfg.xml
-/log4j.properties
-/mybatis
-/org
-/spring-context.xml
-/spring-mvc.xml
-/test
-/weixin.properties

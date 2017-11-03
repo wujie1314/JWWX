@@ -211,8 +211,11 @@ function offErrorDialog() {
 $("#randomCode").click(function() {
 	$(this).attr("src", "/psDesign/getRandcode?id=" + Math.random());
 });
-function getinformation(){
-	alert("eeeee");
+function getViolationInformation(){
+	var license = $("#license").val();
+	var color = $("#color").find("option:selected").text();
+	
+	alert(color+".."+license);
 	
 	
 }
