@@ -58,6 +58,10 @@ public class NavMenuServiceImpl implements NavMenuService {
 		NavigationMenuEntity menuEntity = WeiXinConst.navigationMenu
 				.get(openId);
 		String key = "0", beforeContent = null;
+		String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
+		if(null != dept ){
+			key = dept;
+		}
 		if (menuEntity == null) {
 			menuEntity = new NavigationMenuEntity();
 			menuEntity.setMenuKey(key);
@@ -97,6 +101,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 			HttpServletResponse response, String openId, String menuKey,
 			NavigationMenuEntity menuEntity, String beforeMenuKey) {
 
+	
+		String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
+		
 		NavMenuEntity navMenu = NavMenuInitUtils.getInstance().navMenuMap
 				.get(menuKey);
 		if (navMenu == null) {
@@ -107,11 +114,11 @@ public class NavMenuServiceImpl implements NavMenuService {
 						.get(beforeMenuKey);
 				if (beforeNavMenu == null) {
 					beforeNavMenu = NavMenuInitUtils.getInstance().navMenuMap
-							.get("0");
+							.get(dept + "-0");
 				}
 			} else {
 				beforeNavMenu = NavMenuInitUtils.getInstance().navMenuMap
-						.get("0");
+						.get(dept + "-0");
 			}
 			sendContent += "\n"
 					+ beforeNavMenu.getNavmMsgDesc().replaceAll(
@@ -185,16 +192,17 @@ public class NavMenuServiceImpl implements NavMenuService {
 
 			if (deptId == null) { // 需要改的地方
 				//获取公众号所对应的部门
-				Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(publicID);
-				deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
+//				Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(publicID);
+//				deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
+				deptId = NavMenuInitUtils.getInstance().userDeptMap.get(openId);
 			}
 			// WeiXinConst.waitingMap.put(openId, entity);
-			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
+//			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId); 改到接收信息接口去了
 			if(!NavMenuInitUtils.getInstance().userPublicIdMap.containsKey(openId)){
 				NavMenuInitUtils.getInstance().userPublicIdMap.put(openId,publicID);// 试试
 			}
-			else{
-				System.err.println("有重复openID \n " );
+			else if( !NavMenuInitUtils.getInstance().userPublicIdMap.get(openId).equals(publicID)){
+				System.err.println("不同公众号里 有重复的openID \n " );
 				System.err.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				System.err.println(openId + " :　" + publicID);
 				System.err.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
@@ -230,7 +238,16 @@ public class NavMenuServiceImpl implements NavMenuService {
 		} else if ("text".equals(map.get("MsgType"))
 				&& ("8".equals(map.get("Content")) || "【8】".equals(map
 						.get("Content")))) {
-			returnStr = "即将上线，敬请期待。";
+			// 从等待队列删除
+			NavMenuInitUtils.getInstance().removeWaitMap(openId);
+			NavMenuInitUtils.getInstance().removeServiceMap(openId);
+			// 加入导航队列
+			tmp.setMessage(true);
+			tmp.setBeginTimestamp(System.currentTimeMillis());
+			// 加入留言队列
+			NavMenuInitUtils.getInstance().messageMap.put(openId, tmp);
+//			returnStr = "即将上线，敬请期待。请留言";
+			returnStr = "请在两分钟内留言！\n 我们将通知客服人员及时为你解答";
 		} else if ("text".equals(map.get("MsgType"))
 				&& ("9".equals(map.get("Content")) || "【9】".equals(map
 						.get("Content")))) {
@@ -267,6 +284,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 				+ wxOpenId
 				+ "\",\"MsgType\":\"autotext\",\"MsgId\":\"12345678900\"}";
 		if (!StringUtil.isEmpty(sessionId)) {
+			
 			WebSocketSession session = WeiXinConst.webSocketSessionMap
 					.get(sessionId);
 			try {
@@ -299,10 +317,15 @@ public class NavMenuServiceImpl implements NavMenuService {
 				openId);
 		// 微信用户发来信息保存数据库
 		saveMsgFromWeixin(map, request, tmp);
+		
 		if (tmp == null) {
 			// 第一次发来信息
 			sendMsgOneWxHint(map, response, openId);
 		} else {
+			System.out.println("dhklsjfafhx cccccccccccccccccccccasdaaaaaaaaaa"+tmp.isMessage());
+			if(tmp.isMessage()){
+				return;
+			}
 			int status = tmp.getServiceStatus();
 			if (0 == status) { // 0:  表示微信用户 将到达，没有拉入座席
 				sendMsgWxHint(map, openId, "座席忙，请稍等...", false, tmp);
@@ -377,8 +400,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 		} catch (Exception e) {
 			logger.info("map->bean发生了异常：" + e.getMessage());
 		}
-		msgFromWxEntity
-				.setCreateTime(new Timestamp(System.currentTimeMillis()));
+		msgFromWxEntity.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		if (tmp != null) {
 			msgFromWxEntity.setWorkServiceId(tmp.getMsgServiceId());
 		}

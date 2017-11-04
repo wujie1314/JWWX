@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1852,8 +1853,9 @@ public class CustomerServiceController {
     @RequestMapping("/getUserInfo")
     @ResponseBody
     public String getUserInfo(String openId) {
-    	Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); // 加入的
-        return WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(deptID), openId);// 需要修改的地方，需要获取对应的AccessToken
+    	String  publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
+//    	Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); // 加入的
+        return WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), openId);// 需要修改的地方，需要获取对应的AccessToken
     }
     /**
      * 选择分配微信用户给座席
@@ -1869,10 +1871,12 @@ public class CustomerServiceController {
         List<String> returnList = new ArrayList<String>();
 //        WxStatusTmpTEntity entity =  WeiXinConst.servicingMap.get(openId);
         WxStatusTmpTEntity entity =  NavMenuInitUtils.getInstance().getServiceEntity(openId);
-        Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); // 加入的
+
+        String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
+//        Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); // 加入的
         if(entity ==null||"Transfer".equals(typeName)||"Invite".equals(typeName)){
         	//在服务队列中，返回空
-        	String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(deptID), openId);// 需要修改的地方，需要获取对应的AccessToken
+        	String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), openId);// 需要获取对应的AccessToken　已改
         	if(StringUtil.isNotEmpty(userInfo) && !userInfo.contains("errcode")){
         		entity = new WxStatusTmpTEntity();
             	entity.setWxOpenid(openId);
@@ -1933,9 +1937,18 @@ public class CustomerServiceController {
         for (String openId : serviceMap.keySet()) {
         	WxStatusTmpTEntity temp = serviceMap.get(openId);
 			if(temp != null && (""+csId).equals(temp.getCsId()) && temp.getServiceStatus() == 1){
-				Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); //加入的
-				String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(deptID), temp.getWxOpenid());// 需要修改的地方，需要获取对应的AccessToken
+				String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
+//				Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); //加入的
+				String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), temp.getWxOpenid());// 需要获取对应的AccessToken 已改
+				if(temp.getBeginTimestamp() == null ){
+					userInfo = userInfo.replace("}", ",\"begin\":"+0+"}");
+				}
+				else{
+					System.out.println(" =================   "+temp.getBeginTimestamp());
+					userInfo = userInfo.replace("}", ",\"begin\":"+temp.getBeginTimestamp()+"}");
+				}
 				returnList.add(userInfo);
+//				returnList.add("beginTime :")
 			}
 		}
 //		returnList.add("{\"city\":null,\"country\":\"中国\",\"groupId\":\"0\",\"headImgUrl\":\"\",\"id\":3,\"name\":null,\"nickname\":\"reborn\",\"province\":\"重庆\",\"remark\":null,\"sex\":\"1\",\"subscribeTime\":\"2015-12-21 17:12:29\",\"subscribleTimes\":2,\"tel\":null,\"unsubscribeTime\":\"2015-12-21 17:12:16\",\"userStatus\":1,\"openid\":\"oPxXujmpaI1Q-c1OFIDl-nIvpUCA\"}");

@@ -32,6 +32,7 @@ import org.jiaowei.service.MsgFromWxService;
 import org.jiaowei.service.VideoImgService;
 import org.jiaowei.service.WxStatusTmpService;
 import org.jiaowei.util.CommonConstantUtils;
+import org.jiaowei.util.DateUtils;
 import org.jiaowei.util.StringUtil;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinConst;
@@ -76,6 +77,7 @@ public class AutoSchedule {
 //    	System.out.println("--->"+waitMap.size());
     	for (Integer deptId : waitMap.keySet()) {
 			if(deptId != null){
+				System.out.println("进入等待队列");
 				List<WxStatusTmpTEntity> waitList = NavMenuInitUtils.getInstance().getWaitTempEntityOrder(deptId);
 				System.out.println("----waitList--->"+waitList.size());
 				List<SysUserEntity> userList = NavMenuInitUtils.getInstance().getSysUserOrder(deptId);
@@ -84,13 +86,13 @@ public class AutoSchedule {
 					boolean isAllotSuccess = NavMenuInitUtils.getInstance().weixinAllotCs(temp, userList);
 					System.out.println("----isAllotSuccess----->"+isAllotSuccess);
 					if(isAllotSuccess){
-				        //发送用户提示消息
-				        String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-				        		temp.getWxOpenid(), String.format(CommonConstantUtils.allotSysHint()));
+						   //发送用户提示消息
+					    String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+					        		temp.getWxOpenid(), String.format(CommonConstantUtils.allotSysHint()));
 						System.err.println(deptId);
 						System.out.println("----userJsonContent----->"+userJsonContent);
-
-
+	
+	
 						String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(temp.getWxOpenid()); //通过微信openid获取对应的公众号
 						//发送給用户
 						// 这里有点问题 获取不到对应的公众号accessToken
@@ -375,6 +377,63 @@ public class AutoSchedule {
 //    	logger.error("autoTimelyRoadSubscribe----------====================>end");
     }*/
 
+    @Scheduled(cron = "0/30 * *  * * ? ")   //每30秒执行一次
+    public void autoMessageTask() {
+    	long messageTime = 1 * 60 * 1000;
+    	long one = System.currentTimeMillis()  ;
+    	ConcurrentMap<String, WxStatusTmpTEntity> messageMap = NavMenuInitUtils.getInstance().messageMap;
+    	
+    	if(messageMap.size() > 0){
+    		System.out.println("进入留言队列定时任务");
+    		for (String openId : messageMap.keySet()) {
+    			
+    			WxStatusTmpTEntity tmp =  (WxStatusTmpTEntity) messageMap.get(openId);
+    			System.out.println((one - tmp.getBeginTimestamp()) > messageTime );
+    			
+    			if( tmp.isMessage() && (one - tmp.getBeginTimestamp()) > messageTime){
+    				System.out.println("已结束留言，接下来转接到话务前台");
+    				tmp.setMessageEndTime(one);
+    				tmp.setMessage(false);
+    				
+    				Integer deptId = NavMenuInitUtils.getInstance().userDeptMap.get(openId);
+    			    //发送用户提示消息
+			        String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",tmp.getWxOpenid(), String.format("留言已结束，我们会尽快为你解答"));
+					String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(tmp.getWxOpenid()); //通过微信openid获取对应的公众号
+					
+					//发送給用户
+					WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+					wxStatusTmpService.saveMsgDatebase(tmp, "留言已结束，我们会尽快为你解答",  tmp.getWxOpenid());
+				
+    			}
+    			// 当等待队列为空时，才分配留言队列
+			
+					System.out.println("当等待队列为空时，才分配留言，当前留言队列数量："+messageMap.size());
+	    			System.out.println("当前等待队列为空 ："+NavMenuInitUtils.getInstance().isWaitEmpty());
+    			if(tmp.getMessageEndTime() != null && tmp.getMessageEndTime() != 0 && NavMenuInitUtils.getInstance().isWaitEmpty()){ // 标记
+    				
+    				Integer deptId = NavMenuInitUtils.getInstance().userDeptMap.get(openId);
+    				List<SysUserEntity> userList = NavMenuInitUtils.getInstance().getSysUserOrder(deptId);
+					boolean isAllotSuccess = NavMenuInitUtils.getInstance().weixinAllotCs(tmp, userList);
+					System.out.println("分配留言队列给话务人员----isAllotSuccess----->"+isAllotSuccess);
+					if(isAllotSuccess){
+						   //发送用户提示消息
+						    String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+						        		tmp.getWxOpenid(), String.format("正在分配坐席人员为你解答留言问题"));
+							System.err.println(deptId);
+							System.out.println("----userJsonContent----->"+userJsonContent);
+		
+		
+							String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(tmp.getWxOpenid()); //通过微信openid获取对应的公众号
+							//发送給用户
+							// 这里有点问题 获取不到对应的公众号accessToken
+							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+							wxStatusTmpService.saveMsgDatebase(tmp, CommonConstantUtils.allotSysHint(),  tmp.getWxOpenid());
+							NavMenuInitUtils.getInstance().messageMap.remove(openId);
+    					}
+    				}
+    			}
+		 	}
+    	}
     private String getTextRoad(){
     	String url = "http://10.224.5.164/cqjt/getRoadNews?type=6&location=500000&limit=100";
     	StringBuilder json = new StringBuilder();
@@ -663,7 +722,8 @@ public class AutoSchedule {
         Set<Integer> totalServiceKeys = NavMenuInitUtils.getInstance().serviceMap.keySet();
         for (Integer deptId : totalServiceKeys) {
 	       	 ConcurrentMap<String, WxStatusTmpTEntity> serviceMap = NavMenuInitUtils.getInstance().serviceMap.get(deptId);
-	       	 if(serviceMap == null){
+			System.out.println("----"+serviceMap.size()+"-----");
+			if(serviceMap == null){
 	       		 break;
 	       	 }
 //	       	 Set<String> servicingKeys = WeiXinConst.servicingMap.keySet();
@@ -828,7 +888,8 @@ public class AutoSchedule {
         if (!StringUtil.isEmpty(sessionId)) {
             WebSocketSession session = WeiXinConst.webSocketSessionMap.get(sessionId);
             if(null == session){
-            	
+				WeiXinConst.webSocketSessionMap.remove(sessionId);
+				return;
             }
             try {
                 session.sendMessage(new TextMessage(msg));

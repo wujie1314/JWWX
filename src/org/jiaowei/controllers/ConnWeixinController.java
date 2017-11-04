@@ -28,6 +28,7 @@ import org.jiaowei.service.WxStatusTmpService;
 import org.jiaowei.util.DateUtils;
 import org.jiaowei.util.MyBeanUtils;
 import org.jiaowei.wxutil.MsgTypeEnum;
+import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinConst;
 import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.jiaowei.wxutil.WeixinUtils;
@@ -98,8 +99,6 @@ public class ConnWeixinController {
     public void getMsg(HttpServletRequest request,
                        HttpServletResponse response, @RequestParam(value = "url",required = false)String url) {
 
-
-
     	try {
     		Map<String, String> map = null;
             map = WeiXinOperUtil.receiveMsgFromWX(request);
@@ -107,7 +106,7 @@ public class ConnWeixinController {
                 WeiXinOperUtil.sendMsgToWX(response, "");
             }
             if (null != url){
-                if(!map.get("MsgType").equals("text") && !map.get("MsgType").equals("voice") &&!map.get("MsgType").equals("image") ){
+                if(!url.isEmpty() && !map.get("MsgType").equals("text") && !map.get("MsgType").equals("voice") &&!map.get("MsgType").equals("image") ){
                     WeiXinOperUtil.wxpost(url,request,response);
                     return ;
                 }
@@ -117,6 +116,11 @@ public class ConnWeixinController {
             String toUserName = map.get("ToUserName");
             String msgTypeString = map.get("MsgType").toLowerCase().trim();
             String openId = map.get("FromUserName");
+            
+            // 一个微信用户对应一个部门
+            Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(toUserName);
+			Integer deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
+			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
             //检查当前用户是否在用户表中
             checkUser(toUserName,openId);
             //处理消息
@@ -463,7 +467,8 @@ public class ConnWeixinController {
             logger.info(String.format("用户：在%s再次订阅公众号.", weixinUserInfoEntity.getNickname(), DateUtils.date2Str(DateUtils.datetimeFormat)));
         }
         NavigationMenuEntity entity = new NavigationMenuEntity();
-        navMenuService.sendMenuWxHint(map, response, openId, "-1", entity, "感谢您关注重庆交通微信公众号，这里有全面的出行服务信息，权威的交通资讯发布。\n ");
+        String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
+        navMenuService.sendMenuWxHint(map, response, openId, dept+"-订阅subscription", entity, "感谢您关注重庆交通微信公众号，这里有全面的出行服务信息，权威的交通资讯发布。\n ");
     }
 
     /**

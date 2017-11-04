@@ -827,7 +827,7 @@ function getUser(){
 						userData[xth]["serviceId"]=id;
 						//userData[xth].openid+=xth;
 						//添加用户
-						addUser(xth);
+						addUser(xth,temp.begin);
 					    //找出可交换的位置
 					    var dth=sysNum;
 					    var dindex=sysNum;
@@ -851,6 +851,10 @@ function getUser(){
 						//分配用户后提示信息
 						var _temp=$("input[name='userState']");
 						$(_temp[userData[xth].seat]).next().css("background","#ffa500");
+						if(temp.begin != 0){
+							$(_temp[userData[xth].seat]).next().css("background","#ed5565");
+						}
+						// 标记
 						playVoice();
 				    }
 				}
@@ -904,7 +908,7 @@ function transferUserResult(typeName){
 	});
 }
 /*安排微信用户入座*/
-function addUser(i){
+function addUser(i,mesStartTime){
 	var _html='';
 	_html+='<input type="hidden" name="userState" value="1"/>';
 	_html+='<li class="user-item-online" onmousedown="reConnUserInit(this,'+i+');" onclick="connUser(this,'+i+');">';
@@ -926,7 +930,7 @@ function addUser(i){
     h20+='<img src="/image/clock.jpg" style="vertical-align:middle;"><a href="#" onclick=showHisMsgOneDay("'+userData[i].openid+'");>查看更多消息</a>';
     h20+='</div>';
     $("#console"+userData[i].openid).prepend(h20);
-    showHisMsgToday(userData[i].openid);
+    showHisMsgToday(userData[i].openid,mesStartTime);
 	$("#msg").append('<textarea name="msgtext" id="msg'+userData[i].openid+'" rows="" cols="" style="height:115px;width:100%;display:none;"></textarea>');
 	$('#msg'+userData[i].openid).bind('keypress',function(event){
     	if(event.ctrlKey){
@@ -1266,13 +1270,14 @@ function transferFlag2(index){
  *等待聊天色cde9f5
  *用户离开色f5f5f5
  */
+ // 标记
 function connUser(obj,index){
 	csToCs="";
 	nowOpenid=userData[index].openid;
 	var tempColor=$(".user-item-online");
 	$.each(tempColor,function(){
 		var n2=rgb2hex($(this).css("background-color"));
-		if(n2!="#ffa500"&&n2!="#ffa501"&&n2!="#ffa502"&&n2!="#f5f5f5")$(this).css("background","#cde9f5");
+		if(n2!="#ffa500"&&n2!="#ffa501"&&n2!="#ffa502"&&n2!="#f5f5f5"&&n2!="#ed5565")$(this).css("background","#cde9f5");
 	});
 	//alert(obj.style.backgroundColor);
 	
@@ -1321,10 +1326,31 @@ function connUser(obj,index){
         });
 	}else if(bgc=="#ffa502"){//第一次点击，自动发送消息
     	openRoad(index,"FROMCSYQ");//邀请
+	}else if(bgc=="#ed5565"){	// 标记
+		$.ajax({
+    		type : "post",
+    		url : "/csc/getUserStatus",
+    		dataType : "json",
+			async: false,
+    		data : {
+    			openId:nowOpenid,
+    			csId:admin.id
+    		},
+    		success : function(data) {
+    			if(data.status=="OK"){//在服务队列中
+    				openRoad(index,"FROMMESSAGE");
+    			}else if(data.status=="END"){//用户已断开
+    				$.messager.alert("提示消息","此微信用户已断开连接！","warning");
+    				leaveFlag(index);
+    			}
+    		}
+        });
 	}
+
     if(bgc!="#f5f5f5"){
     	$(obj).css("background","#b8d45d");
     }
+    
 	userAdmin[index]["id"+admin.id]=1;
 	//聊天界面上方显示聊天者信息
 	$("#userinfo").css("display","block");
@@ -1342,7 +1368,7 @@ function connUser(obj,index){
 		}else{
 			_temp.tab.hide();
 		}
-    });
+    });-
 	$('#tabs').tabs('select', "历史工单");
 	$("#connContent>div").each(function(){
 		$(this).css("display","none");
@@ -1352,9 +1378,10 @@ function connUser(obj,index){
 	$("#history>div").each(function(){
 		$(this).css("display","none");
 	});
-	if(!$("#history"+nowOpenid).length){
+	// 标记 这里可以先注释，这里有关工单的东西， 因为没有连不到内网 所以这里比较慢
+	/* if(!$("#history"+nowOpenid).length){
 		historyTab(nowOpenid);
-	}
+	} */
 	$("#history"+nowOpenid).css("display","block");
 	//显示指定文本框
 	$("textarea[name=msgtext]").each(function(){
@@ -1957,7 +1984,9 @@ var basePath = '<%=basePath%>';
 		};
 		ws.onmessage = function(event) {
 			var data = $.parseJSON(event.data);
+			alert("????");
 			if(data.Flag=="CsToCs"&&data.data.fromUser!=admin.id){
+				console.log(data);
 				connInit(data.data.toUser);
 				var html="";
 				var msgType=data.data.msgType;
@@ -2030,6 +2059,7 @@ var basePath = '<%=basePath%>';
 				html += '</table>';
 				html += '</div>';
 				$("#console" + data.FromUserName).append(html);
+				alert("真难找你妹的00");
 				$("#msgbox").scrollTop(9999999);
 				if ("shortvideo" == data.MsgType || "video" == data.MsgType) {
 					playMedia("ck" + data.MsgId, data.MediaUrl);

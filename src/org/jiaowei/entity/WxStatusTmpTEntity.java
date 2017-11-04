@@ -50,7 +50,31 @@ public class WxStatusTmpTEntity {
     private Integer isInitiative = 0; //是否座席主动拉入，1是，则不计微信客户时间
     private String msgServiceId;//聊天记录中的serviceId，附件用
     
-    @Transient
+    // 新增进入留言状态
+    private boolean message = false;
+    // 进入消息留言计时
+    private Long beginTimestamp;
+    
+    // 留言结束时间
+    private Long messageEndTime;
+   
+	public Long getMessageEndTime() {
+		return messageEndTime;
+	}
+
+	public void setMessageEndTime(Long messageEndTime) {
+		this.messageEndTime = messageEndTime;
+	}
+
+	public Long getBeginTimestamp() {
+		return beginTimestamp;
+	}
+
+	public void setBeginTimestamp(Long beginTimestamp) {
+		this.beginTimestamp = beginTimestamp;
+	}
+
+	@Transient
     public Long getIntoWaitingTime() {
 		return intoWaitingTime;
 	}
@@ -270,4 +294,12 @@ public class WxStatusTmpTEntity {
     public void setTwoSecFlag(Boolean twoSecFlag) {
         this.twoSecFlag = twoSecFlag;
     }
+    
+    public boolean isMessage() {
+		return message;
+	}
+
+	public void setMessage(boolean message) {
+		this.message = message;
+	}
 }

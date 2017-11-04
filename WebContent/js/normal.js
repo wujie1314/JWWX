@@ -19,10 +19,15 @@ Date.prototype.Format = function (fmt) { //author: meizz
     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
-function showHisMsgToday(openid){
+function showHisMsgToday(openid,time){
+	
 	var userData=getUserData(openid);
 	var index=userData.index;
 	var bTime=date.Format("yyyy-MM-dd hh:mm:ss");
+	if(time != 0){
+		bTime = timetrans(time);
+	}
+	console.log(timetrans(time));
 	var date2=new Date();
 	var eTime=date2.Format("yyyy-MM-dd hh:mm:ss");
     $.ajax({
@@ -52,6 +57,7 @@ function showHisMsgToday(openid){
 								adminname=data1.userName;
 							}
 						});
+						alert(data[i]);
 						rightMessage(data[i]);
 					}else{
 						leftMessage(data[i],index);
@@ -1070,4 +1076,15 @@ function showWordsTitle(obj,type){
 	});
 	$("#words"+type).show();
 	$(obj).css("background-color","#AAAAAA");
+}
+
+function timetrans(date){
+    var date = new Date(date);//如果date为10位不需要乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+    var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+    var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+    var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+    return Y+M+D+h+m+s;
 }
