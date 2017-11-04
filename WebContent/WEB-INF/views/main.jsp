@@ -1984,7 +1984,6 @@ var basePath = '<%=basePath%>';
 		};
 		ws.onmessage = function(event) {
 			var data = $.parseJSON(event.data);
-			alert("????");
 			if(data.Flag=="CsToCs"&&data.data.fromUser!=admin.id){
 				console.log(data);
 				connInit(data.data.toUser);
@@ -2059,7 +2058,6 @@ var basePath = '<%=basePath%>';
 				html += '</table>';
 				html += '</div>';
 				$("#console" + data.FromUserName).append(html);
-				alert("真难找你妹的00");
 				$("#msgbox").scrollTop(9999999);
 				if ("shortvideo" == data.MsgType || "video" == data.MsgType) {
 					playMedia("ck" + data.MsgId, data.MediaUrl);

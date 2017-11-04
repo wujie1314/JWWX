@@ -20,7 +20,6 @@ Date.prototype.Format = function (fmt) { //author: meizz
     return fmt;
 }
 function showHisMsgToday(openid,time){
-	
 	var userData=getUserData(openid);
 	var index=userData.index;
 	var bTime=date.Format("yyyy-MM-dd hh:mm:ss");
