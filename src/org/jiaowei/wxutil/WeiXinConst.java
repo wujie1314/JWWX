@@ -37,8 +37,8 @@ public class WeiXinConst {
 //    public static String appId = "wxe66364391f890f05";
 //    public static String appSecret = "d4624c36b6795d1d99dcf0547af5443d";
 
-    public static String appId = "wx7d5aa19a3e8d1c91";
-    public static String appSecret = "c067e367dd428ae45aac7dc81768c892";
+    public static String appId = "wx91478e90ff8f594c";
+    public static String appSecret = "675702defa12940c0463be408a10fcbe";
     
     
 //    微信APPID正式号

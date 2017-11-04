@@ -15,6 +15,9 @@ import org.jiaowei.entity.NavMenuEntity;
 import org.jiaowei.entity.SysUserEntity;
 import org.jiaowei.entity.WxStatusTmpTEntity;
 
+import activiti.SeatW;
+import activiti.WaitQ;
+
 public class NavMenuInitUtils {
 	
 	private NavMenuInitUtils(){
@@ -277,12 +280,16 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = waitMap.get(deptId);
 		if(openMap != null){
 			openMap.remove(openId);
+			WaitQ waitQ=new WaitQ();
+			waitQ.completetask();
 		}
 	}
 	public  void removeWaitMap(String openId){
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = waitMap.get(userDeptMap.get(openId));
 		if(openMap != null){
 			openMap.remove(openId);
+			WaitQ waitQ=new WaitQ();
+			waitQ.completetask();
 		}
 	}
 	
@@ -317,6 +324,8 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = serviceMap.get(deptId);
 		if(openMap != null){
 			openMap.remove(openId);
+			SeatW seatW=new SeatW();
+			seatW.completetask();
 		}
 	}
 	/**
@@ -327,6 +336,8 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = serviceMap.get(userDeptMap.get(openId));
 		if(openMap != null){
 			openMap.remove(openId);
+			SeatW seatW=new SeatW();
+			seatW.completetask();
 		}
 	}
 	/**

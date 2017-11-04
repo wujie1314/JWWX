@@ -1791,7 +1791,7 @@ public class CustomerServiceController {
     }
     /**
      * sendBeat
-     *
+     *转交用户
      * @return
      */
     @RequestMapping("/sendBeat")
