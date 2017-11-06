@@ -23,6 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-   <a href="www.baidu.com">百度</a>
+  	<input type="text" value=<%=request.getAttribute("othersOpenId")%> />
+  	 <a href="www.baidu.com">百度</a>
   </body>
 </html>

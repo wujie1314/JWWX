@@ -1,11 +1,13 @@
 package org.jiaowei.wxutil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jiaowei.entity.AccessTokenEntity;
 import org.jiaowei.entity.JsapiTicketEntity;
 import org.jiaowei.entity.NavigationMenuEntity;
+import org.jiaowei.entity.WeixinAutoRespondEntity;
 import org.springframework.web.socket.WebSocketSession;
 
 /**
@@ -14,6 +16,9 @@ import org.springframework.web.socket.WebSocketSession;
 public class WeiXinConst {
 	
 	public static Map<String, NavigationMenuEntity> navigationMenu = new HashMap<String, NavigationMenuEntity>();//微信用户进入菜单队列
+	
+	public static Map<String, List<WeixinAutoRespondEntity>> navAutoMenu = new HashMap<String, List<WeixinAutoRespondEntity>>();//微信用户进入菜单队列
+
 	
 	public static synchronized void putMenuMap(String openId, NavigationMenuEntity menuEntity){
 		navigationMenu.put(openId, menuEntity);

@@ -103,7 +103,7 @@ public class ConnWeixinController {
     		Map<String, String> map = null;
             map = WeiXinOperUtil.receiveMsgFromWX(request);
             if (null != map) {
-                WeiXinOperUtil.sendMsgToWX(response, "");
+//                WeiXinOperUtil.sendMsgToWX(response, "");
             }
             if (null != url){
                 if(!url.isEmpty() && !map.get("MsgType").equals("text") && !map.get("MsgType").equals("voice") &&!map.get("MsgType").equals("image") ){
@@ -135,12 +135,14 @@ public class ConnWeixinController {
                 } else if ("CLICK".equals(map.get("Event"))) {
                     //3)点击人工服务
                 	if ("MAN_SERVICE".equals(map.get("EventKey"))){
-                		NavigationMenuEntity menuEntity = new NavigationMenuEntity();
+                			// 直接进入当前公众号的人工服务？？？
+            			navMenuService.manualService(response, map, openId,null);
+                	/*	NavigationMenuEntity menuEntity = new NavigationMenuEntity();
             			menuEntity.setMenuKey("0-0");
             			menuEntity.setOpenId(openId);
             			menuEntity.setDate(WeixinUtils.getNowDateTime());
             			WeiXinConst.navigationMenu.put(openId, menuEntity);
-                		navMenuService.sendMenuWxHint(map, response, openId, "0-0", menuEntity,"");
+                		navMenuService.sendMenuWxHint(map, response, openId, "0-0", menuEntity,"");*/
                 		
                 	} else if("USER_COLLECT".equals(map.get("EventKey"))){
                 		try {
@@ -151,6 +153,8 @@ public class ConnWeixinController {
     						e.printStackTrace();
     						logger.error("================>getRequestDispatcher error:",e);
     					}//这是内部跳转
+                	} else if("OTHERS_VIEW".equals(map.get("EventKey"))){
+                		System.out.println("其他页面调用");
                 	}
                 }
             } else {
@@ -171,7 +175,7 @@ public class ConnWeixinController {
     /**
      * 创建菜单
      */
-    public void createMenu(String openId) {
+    public void createMenu(String publicId) {
     	String menuString = " {\n" +
                 "     \"button\":[\n" +
                 "      {\n" +
@@ -258,14 +262,14 @@ public class ConnWeixinController {
                 "               \"key\":\"MAN_SERVICE\"\n" +
                 "            },\n" +
                 "            {\n" +
-                "               \"type\":\"view\",\n" +
+                "               \"type\":\"click\",\n" +
                 "               \"name\":\"其他\",\n" +
-                "               \"url\":\"http://localhost:8080/others/home\"\n" +
+                "               \"key\":\"OTHERS_VIEW\"\n" +
                 "            }]\n" +
                 "       }]\n" +
                 " }";
     	System.err.println(menuString);
-        WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken()); // 菜单 这里不需要更改
+        WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken(publicId)); // 菜单 这里不需要更改
     }
 //    /**
 //     * 创建菜单
@@ -447,7 +451,8 @@ public class ConnWeixinController {
         if (null == map || map.size() < 1)
             return;
         String openId = map.get("FromUserName");
-        createMenu(openId);
+        String publicId = map.get("ToUserName");
+        createMenu(publicId);
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
         if (null == list || 0 == list.size()) {
             String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(map.get("ToUserName")), openId);
