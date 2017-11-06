@@ -74,6 +74,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     	try {
+    		// 标记
     		System.out.println("-----------11111111.....");
             //获取用户名
             String currentTime = System.currentTimeMillis()+"";
@@ -85,7 +86,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                 session.sendMessage(new TextMessage("传递的参数不正确."));
                 session.close();
                 return;
-            }
+            }  
             System.out.println("==========12345.....");
             Map<String, String> pamars = parseQueryString(queryString);
             System.out.println("==========123456....."+pamars.size());
@@ -151,7 +152,19 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                     		map=WeiXinConst.servicingYqMap.get(wxOpenId);
                     		map.put(csId+"",session.getId());
                     	}
+                    }else if("FROMMESSAGE".equals(pamars.get("type"))){// 留言
+                    	System.out.println("---------------------------------------------话务前台接入，开始回答留言");
+                         //发送座席
+                         try {
+                         	String msg = "{\"Content\":\"" + "您好，我是"+userId+"号座席，帮你解答留言？" + "\",\"CreateTime\":\"" + System.currentTimeMillis() / 1000 + "\",\"ToUserName\":\"gh_45216f693385\",\"FromUserName\":\"" + wxOpenId+ "\",\"MsgType\":\"autotext\",\"MsgId\":\"12345678900\"}";
+                             session.sendMessage(new TextMessage(msg));
+                         } catch (IOException e) {
+                         	e.printStackTrace();
+                             logger.info("发送系统消息超时异常.", e);
+                         }
+                         entity.setSendType(0);//计算微信用户时间
                     }
+                    // 标记
                     System.out.println("444444==========12345.....");
                     if(1 ==entity.getServiceStatus()){
                         entity.setServiceStatus(2);
@@ -258,16 +271,20 @@ public class SystemWebSocketHandler implements WebSocketHandler {
         	WebSocketSession session = WeiXinConst.webSocketSessionMap.get(sessionId);
             if (null != session) {
                 WeiXinConst.webSocketSessionMap.remove(sessionId);
-            }
-            //获取用户名
-            String queryString = session.getUri().getQuery();
-            if (!queryString.contains("user") || !queryString.contains("openId")
-                    || !queryString.contains("=") || !queryString.contains("&")) {
-                logger.info(String.format("参数有误,方法：%s-%s", "afterConnectionEstablished", queryString));
+                String queryString = session.getUri().getQuery();
+                if (!queryString.contains("user") || !queryString.contains("openId")
+                        || !queryString.contains("=") || !queryString.contains("&")) {
+                    logger.info(String.format("参数有误,方法：%s-%s", "afterConnectionEstablished", queryString));
 //                session.sendMessage(new TextMessage("传递的参数不正确."));
-                session.close();
-                return;
+                    session.close();
+                    return;
+                }
             }
+
+            String queryString = wss.getUri().getQuery();
+            //获取用户名
+
+
             Map<String, String> pamars = parseQueryString(queryString);
             this.wxOpenId = pamars.get("openId");
             //通知微信用户

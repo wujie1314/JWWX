@@ -28,6 +28,7 @@ import org.jiaowei.service.WxStatusTmpService;
 import org.jiaowei.util.DateUtils;
 import org.jiaowei.util.MyBeanUtils;
 import org.jiaowei.wxutil.MsgTypeEnum;
+import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinConst;
 import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.jiaowei.wxutil.WeixinUtils;
@@ -98,16 +99,14 @@ public class ConnWeixinController {
     public void getMsg(HttpServletRequest request,
                        HttpServletResponse response, @RequestParam(value = "url",required = false)String url) {
 
-
-
     	try {
     		Map<String, String> map = null;
             map = WeiXinOperUtil.receiveMsgFromWX(request);
             if (null != map) {
-                WeiXinOperUtil.sendMsgToWX(response, "");
+//                WeiXinOperUtil.sendMsgToWX(response, "");
             }
             if (null != url){
-                if(!map.get("MsgType").equals("text") && !map.get("MsgType").equals("voice") &&!map.get("MsgType").equals("image") ){
+                if(!url.isEmpty() && !map.get("MsgType").equals("text") && !map.get("MsgType").equals("voice") &&!map.get("MsgType").equals("image") ){
                     WeiXinOperUtil.wxpost(url,request,response);
                     return ;
                 }
@@ -117,6 +116,11 @@ public class ConnWeixinController {
             String toUserName = map.get("ToUserName");
             String msgTypeString = map.get("MsgType").toLowerCase().trim();
             String openId = map.get("FromUserName");
+            
+            // 一个微信用户对应一个部门
+            Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(toUserName);
+			Integer deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
+			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
             //检查当前用户是否在用户表中
             checkUser(toUserName,openId);
             //处理消息
@@ -131,12 +135,14 @@ public class ConnWeixinController {
                 } else if ("CLICK".equals(map.get("Event"))) {
                     //3)点击人工服务
                 	if ("MAN_SERVICE".equals(map.get("EventKey"))){
-                		NavigationMenuEntity menuEntity = new NavigationMenuEntity();
+                			// 直接进入当前公众号的人工服务？？？
+            			navMenuService.manualService(response, map, openId,null);
+                	/*	NavigationMenuEntity menuEntity = new NavigationMenuEntity();
             			menuEntity.setMenuKey("0-0");
             			menuEntity.setOpenId(openId);
             			menuEntity.setDate(WeixinUtils.getNowDateTime());
             			WeiXinConst.navigationMenu.put(openId, menuEntity);
-                		navMenuService.sendMenuWxHint(map, response, openId, "0-0", menuEntity,"");
+                		navMenuService.sendMenuWxHint(map, response, openId, "0-0", menuEntity,"");*/
                 		
                 	} else if("USER_COLLECT".equals(map.get("EventKey"))){
                 		try {
@@ -147,6 +153,14 @@ public class ConnWeixinController {
     						e.printStackTrace();
     						logger.error("================>getRequestDispatcher error:",e);
     					}//这是内部跳转
+                	} else if("OTHERS_VIEW".equals(map.get("EventKey"))){
+                		System.out.println("其他页面调用");
+                		// 返回一个链接到other/home 页面
+                		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
+                		String returnStr = XmlUtil.gen1ArticlesResponseMsg(map, "其他页面标题",
+        						"这里是描述信息", basePath +"/others/home?openId="+openId);
+        				WeiXinOperUtil.sendMsgToWX(response, returnStr);
+        				wxStatusTmpService.saveMsgDatebase(null, returnStr, openId);
                 	}
                 }
             } else {
@@ -167,7 +181,8 @@ public class ConnWeixinController {
     /**
      * 创建菜单
      */
-    public void createMenu(String publicID) {
+    public void createMenu(String publicId) {
+
     	String menuString = " {\n" +
                 "     \"button\":[\n" +
                 "      {\n" +
@@ -254,14 +269,16 @@ public class ConnWeixinController {
                 "               \"key\":\"MAN_SERVICE\"\n" +
                 "            },\n" +
                 "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"论坛\",\n" +
-                "               \"url\":\"http://lls2015.free.ngrok.cc/bbs/jsp/trafficInformation.jsp\"\n" +
+                "               \"type\":\"click\",\n" +
+                "               \"name\":\"其他\",\n" +
+                "               \"key\":\"OTHERS_VIEW\"\n" +
                 "            }]\n" +
                 "       }]\n" +
                 " }";
     	System.err.println(menuString);
-        WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken(publicID)); // 菜单 这里不需要更改
+
+        WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken(publicId)); // 菜单 这里不需要更改
+
     }
 //    /**
 //     * 创建菜单
@@ -443,8 +460,9 @@ public class ConnWeixinController {
         if (null == map || map.size() < 1)
             return;
         String openId = map.get("FromUserName");
-        String publicID = map.get("ToUserName");
-        createMenu(publicID);
+
+        String publicId = map.get("ToUserName");
+        createMenu(publicId);
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
         if (null == list || 0 == list.size()) {
             String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(map.get("ToUserName")), openId);
@@ -464,7 +482,8 @@ public class ConnWeixinController {
             logger.info(String.format("用户：在%s再次订阅公众号.", weixinUserInfoEntity.getNickname(), DateUtils.date2Str(DateUtils.datetimeFormat)));
         }
         NavigationMenuEntity entity = new NavigationMenuEntity();
-        navMenuService.sendMenuWxHint(map, response, openId, "-1", entity, "感谢您关注重庆交通微信公众号，这里有全面的出行服务信息，权威的交通资讯发布。\n ");
+        String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
+        navMenuService.sendMenuWxHint(map, response, openId, dept+"-订阅subscription", entity, "感谢您关注重庆交通微信公众号，这里有全面的出行服务信息，权威的交通资讯发布。\n ");
     }
 
     /**

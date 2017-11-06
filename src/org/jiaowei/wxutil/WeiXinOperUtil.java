@@ -746,9 +746,15 @@ public class WeiXinOperUtil {
 
                 //转换文件格式
 //                String cmd =String.format("ffmpeg -i %s %s",path +File.separator + imagePath, path+File.separator+mediaId+".mp3");
-                String cmd =String.format("ffmpeg -i %s %s",path + imagePath, path+mediaId+".mp3");
-                
-                Process process = Runtime.getRuntime().exec("cmd /c start"+cmd+" exit");
+                System.out.println(path+ File.separator+ mediaId+".mp3");
+                String cmd =String.format("E:\\Program Files\\ffmpeg\\bin\\ffmpeg -i %s %s",path + imagePath, path+ File.separator+ mediaId+".mp3");
+                System.out.println(cmd);
+                try {
+                	Process process = Runtime.getRuntime().exec(cmd);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+//                Process process = Runtime.getRuntime().exec("cmd /c start"+cmd+" exit");
 
                 return "/upload/" + mediaId + ".mp3";
             } else if ("video/mpeg4".equals(contentType)) {

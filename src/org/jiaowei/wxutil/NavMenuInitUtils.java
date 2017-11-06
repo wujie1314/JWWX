@@ -86,6 +86,8 @@ public class NavMenuInitUtils {
 	public  ConcurrentMap<Integer, ConcurrentMap<String, WxStatusTmpTEntity>> serviceMap = new ConcurrentHashMap<Integer, ConcurrentMap<String, WxStatusTmpTEntity>>();
 	public  ConcurrentMap<Integer, ConcurrentMap<String, WxStatusTmpTEntity>> removeMap = new ConcurrentHashMap<Integer, ConcurrentMap<String, WxStatusTmpTEntity>>();
 	
+	public  ConcurrentMap<String,WxStatusTmpTEntity> messageMap = new ConcurrentHashMap<String, WxStatusTmpTEntity>();
+
 	
 	/**
 	 */
@@ -403,7 +405,13 @@ public class NavMenuInitUtils {
         ConcurrentMap<String, WxStatusTmpTEntity> waitDeptMap = waitMap.get(deptId);
         ConcurrentMap<String, WxStatusTmpTEntity> serviceDeptMap = serviceMap.get(deptId);
         ConcurrentMap<String, WxStatusTmpTEntity> removeDeptMap = removeMap.get(deptId);
+        // 留言队列加入
+        WxStatusTmpTEntity message=  messageMap.get(openId);
+        if(message != null){
+        	return message;
+        }
         
+        //
         if(waitDeptMap != null){
         	WxStatusTmpTEntity waitTemp = waitDeptMap.get(openId);
         	if(waitTemp != null){
@@ -446,6 +454,9 @@ public class NavMenuInitUtils {
 		String navmMsgDesc = null;//发送消息描述，如果是普通消息，则为发送内容
 		String navmMsgUrl = null;//发送消息url
 		
+
+		
+		
 		//高速路况查询
 		navmId = "0-交流会";
 		navmKeyValue = "交流会";
@@ -472,8 +483,8 @@ public class NavMenuInitUtils {
 		setNavMenuEntity(navmId, navmKeyValue, navmKeyName, navmLevel,
 				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
 		
-		//第一次发送消息
-		navmId = "-1";
+		//第一次发送消息 
+		navmId = "5-订阅subscription"; // 交委
 		navmKeyValue = "-1";
 		navmKeyName = "订阅";
 		navmLevel = -1;
@@ -485,9 +496,56 @@ public class NavMenuInitUtils {
 		setNavMenuEntity(navmId, navmKeyValue, navmKeyName, navmLevel,
 				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
 		
+		
+		//第一次发送消息 
+		navmId = "6-订阅subscription"; // ETC
+		navmKeyValue = "-1";
+		navmKeyName = "订阅";
+		navmLevel = -1;
+		navmDeptId = null;
+		navmType  = 1;
+		navmMsgTitle = null;
+		navmMsgDesc = "重庆ETC旨在为您提供便捷出行信息服务。全面的路况信息、公交到站信息、失物招领、旅游巴士及游轮购票、航班到离港信息、火车票信息";
+		navmMsgUrl = null;
+		setNavMenuEntity(navmId, navmKeyValue, navmKeyName, navmLevel,
+				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
+				
+		
+		
+		// ETC菜单
+		navmId = "6-0";
+		navmKeyValue = "6"; //ETC
+		navmKeyName = "ETC首次加载";
+		navmLevel = -1;
+		navmDeptId = null;
+		navmType  = 1;
+		navmMsgTitle = "asd ad ";
+		navmMsgDesc = "请选择服务项：\n<a href=\"http://cq96096.cn/videoImg/list?type=2&openId=openIdReplaceAll\">【1】事故报警</a>"
+						+ "\n<a href=\"http://wxm.pmpsys.cn/wx-073f946c-0273/index.jspx\">【2】车辆故障</a>"
+						+ "\n<a href=\"http://wxm.pmpsys.cn/wx-073f946c-0273/index.jspx\">【3】ETC业务</a>"
+						+ "\n<a href=\"http://cq96096.cn/videoImg/list?type=2&openId=openIdReplaceAll\">【4】路况播报</a>"
+						+ "\n【0】人工服务";
+		navmMsgUrl = null;
+		setNavMenuEntity(navmId, navmKeyValue, navmKeyName, navmLevel,
+				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
+		
+		
+		// ETC菜单人工服务
+		navmId = "6-0-0";
+		navmKeyValue = "1";
+		navmKeyName = "【0】其它服务";
+		navmLevel = 2;
+		navmDeptId = 6; // 这里认为ETC为6号部门
+		navmType  = 0;
+		navmMsgTitle = null;
+		navmMsgDesc = null;
+		navmMsgUrl = null;
+		setNavMenuEntity(navmId, navmKeyValue, navmKeyName, navmLevel,
+				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
+		
 		//第一次发送消息
-		navmId = "0";
-		navmKeyValue = "0";
+		navmId = "5-0";
+		navmKeyValue = "0"; //交委
 		navmKeyName = "首次加载";
 		navmLevel = -1;
 		navmDeptId = null;
@@ -561,7 +619,7 @@ public class NavMenuInitUtils {
 		setNavMenuEntity(navmId, navmKeyValue, navmKeyName, navmLevel,
 				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
 		
-		navmId = "0-0-1";
+		navmId = "5-0-1";
 		navmKeyValue = "1";
 		navmKeyName = "【2】公交咨询与投诉";
 		navmLevel = 2;
@@ -574,7 +632,7 @@ public class NavMenuInitUtils {
 				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
 		
 		//人工服务：出租车咨询、寻物及投诉
-		navmId = "0-0-2";
+		navmId = "5-0-2";
 		navmKeyValue = "2";
 		navmKeyName = "【1】出租车咨询、寻物及投诉";
 		navmLevel = 2;
@@ -586,7 +644,7 @@ public class NavMenuInitUtils {
 		setNavMenuEntity(navmId, navmKeyValue, navmKeyName, navmLevel,
 				navmDeptId, navmType, navmMsgTitle, navmMsgDesc, navmMsgUrl);
 		
-		navmId = "0-0-0";
+		navmId = "5-0-0";
 		navmKeyValue = "1";
 		navmKeyName = "【0】其它服务";
 		navmLevel = 2;
@@ -822,9 +880,28 @@ public class NavMenuInitUtils {
 		        putServiceMap(openId, entity);
 		        result = true;
 			}
-
 		}
 		return result;
+	}
+	
+	/**
+	 * 判断当前等待队列是否为空
+	 * @author zkl
+	 * @data 2017年11月3日 上午10:56:22
+	 * @return
+	 */
+	public boolean isWaitEmpty(){
+		boolean flag = true;
+		ConcurrentMap<Integer, ConcurrentMap<String, WxStatusTmpTEntity>> waitMap = this.waitMap;
+    	for (Integer deptId : waitMap.keySet()) {
+			if(deptId != null){
+				List<WxStatusTmpTEntity> waitList = NavMenuInitUtils.getInstance().getWaitTempEntityOrder(deptId);
+				if(waitList.size() != 0){
+					flag = false;
+				}
+			}
+    	}
+		return flag;
 	}
 	
 	/**

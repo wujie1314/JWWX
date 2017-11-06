@@ -2,6 +2,7 @@ package org.jiaowei.service.impl;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.jiaowei.entity.CustomerServiceHisEntity;
 import org.jiaowei.entity.MsgFromWxEntity;
 import org.jiaowei.entity.NavMenuEntity;
 import org.jiaowei.entity.NavigationMenuEntity;
+import org.jiaowei.entity.WeixinAutoRespondEntity;
 import org.jiaowei.entity.WxStatusTmpTEntity;
 import org.jiaowei.service.*;
 import org.jiaowei.util.CommonConstantUtils;
@@ -47,6 +49,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 	@Autowired
 	private WeixinPublicInfoService weixinPublicInfoService;
 
+	@Autowired
+	private WeixinAutoRespondService autoRespondService;
 	/**
 	 * 微信用户第一次发送消息，进入导航菜单
 	 */
@@ -57,9 +61,12 @@ public class NavMenuServiceImpl implements NavMenuService {
 		if (StringUtils.isNoneBlank(content)) {
 			content = content.toLowerCase();
 		}
-		NavigationMenuEntity menuEntity = WeiXinConst.navigationMenu
-				.get(openId);
+		NavigationMenuEntity menuEntity = WeiXinConst.navigationMenu.get(openId);
 		String key = "0", beforeContent = null;
+		String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
+		if(null != dept ){
+			key = dept;
+		}
 		if (menuEntity == null) {
 			menuEntity = new NavigationMenuEntity();
 			menuEntity.setMenuKey(key);
@@ -99,6 +106,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 			HttpServletResponse response, String openId, String menuKey,
 			NavigationMenuEntity menuEntity, String beforeMenuKey) {
 
+	
+		String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
+		
 		NavMenuEntity navMenu = NavMenuInitUtils.getInstance().navMenuMap
 				.get(menuKey);
 		if (navMenu == null) {
@@ -109,11 +119,11 @@ public class NavMenuServiceImpl implements NavMenuService {
 						.get(beforeMenuKey);
 				if (beforeNavMenu == null) {
 					beforeNavMenu = NavMenuInitUtils.getInstance().navMenuMap
-							.get("0");
+							.get(dept + "-0");
 				}
 			} else {
 				beforeNavMenu = NavMenuInitUtils.getInstance().navMenuMap
-						.get("0");
+						.get(dept + "-0");
 			}
 			sendContent += "\n"
 					+ beforeNavMenu.getNavmMsgDesc().replaceAll(
@@ -183,6 +193,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 			entity.setLastChatTime(times / 1000);
 			entity.setIntoWaitingMapTime(times / 1000);
 			entity.setIntoWaitingTime(times);
+			// 工作流
 			System.out.println("启动实例");
 			WaitQ waitQ=new WaitQ();
 	    	waitQ.startProcessInstance();
@@ -192,16 +203,17 @@ public class NavMenuServiceImpl implements NavMenuService {
 
 			if (deptId == null) { // 需要改的地方
 				//获取公众号所对应的部门
-				Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(publicID);
-				deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
+//				Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(publicID);
+//				deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
+				deptId = NavMenuInitUtils.getInstance().userDeptMap.get(openId);
 			}
 			// WeiXinConst.waitingMap.put(openId, entity);
-			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
+//			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId); 改到接收信息接口去了
 			if(!NavMenuInitUtils.getInstance().userPublicIdMap.containsKey(openId)){
 				NavMenuInitUtils.getInstance().userPublicIdMap.put(openId,publicID);// 试试
 			}
-			else{
-				System.err.println("有重复openID \n " );
+			else if( !NavMenuInitUtils.getInstance().userPublicIdMap.get(openId).equals(publicID)){
+				System.err.println("不同公众号里 有重复的openID \n " );
 				System.err.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				System.err.println(openId + " :　" + publicID);
 				System.err.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
@@ -237,7 +249,16 @@ public class NavMenuServiceImpl implements NavMenuService {
 		} else if ("text".equals(map.get("MsgType"))
 				&& ("8".equals(map.get("Content")) || "【8】".equals(map
 						.get("Content")))) {
-			returnStr = "即将上线，敬请期待。";
+			// 从等待队列删除
+			NavMenuInitUtils.getInstance().removeWaitMap(openId);
+			NavMenuInitUtils.getInstance().removeServiceMap(openId);
+			// 加入导航队列
+			tmp.setMessage(true);
+			tmp.setBeginTimestamp(System.currentTimeMillis());
+			// 加入留言队列
+			NavMenuInitUtils.getInstance().messageMap.put(openId, tmp);
+//			returnStr = "即将上线，敬请期待。请留言";
+			returnStr = "请在两分钟内留言！\n 我们将通知客服人员及时为你解答";
 		} else if ("text".equals(map.get("MsgType"))
 				&& ("9".equals(map.get("Content")) || "【9】".equals(map
 						.get("Content")))) {
@@ -275,6 +296,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 				+ wxOpenId
 				+ "\",\"MsgType\":\"autotext\",\"MsgId\":\"12345678900\"}";
 		if (!StringUtil.isEmpty(sessionId)) {
+			
 			WebSocketSession session = WeiXinConst.webSocketSessionMap
 					.get(sessionId);
 			try {
@@ -307,10 +329,16 @@ public class NavMenuServiceImpl implements NavMenuService {
 				openId);
 		// 微信用户发来信息保存数据库
 		saveMsgFromWeixin(map, request, tmp);
+		
 		if (tmp == null) {
 			// 第一次发来信息
-			sendMsgOneWxHint(map, response, openId);
+//			sendMsgOneWxHint(map, response, openId);
+			sendMsgOneWxHintOverride(map, response, openId);
 		} else {
+			if(tmp.isMessage()){
+				System.out.println("现在处于留言状态 ："+tmp.isMessage());
+				return;
+			}
 			int status = tmp.getServiceStatus();
 			if (0 == status) { // 0:  表示微信用户 将到达，没有拉入座席
 				sendMsgWxHint(map, openId, "座席忙，请稍等...", false, tmp);
@@ -385,8 +413,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 		} catch (Exception e) {
 			logger.info("map->bean发生了异常：" + e.getMessage());
 		}
-		msgFromWxEntity
-				.setCreateTime(new Timestamp(System.currentTimeMillis()));
+		msgFromWxEntity.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		if (tmp != null) {
 			msgFromWxEntity.setWorkServiceId(tmp.getMsgServiceId());
 		}
@@ -458,4 +485,94 @@ public class NavMenuServiceImpl implements NavMenuService {
 		}
 	}
 
+	
+	/**
+	 * 自动回复消息
+	 * @author zkl
+	 * @data 2017年11月4日 下午3:14:31
+	 */
+	@Override
+	public void sendMsgOneWxHintOverride(Map<String, String> map,
+			HttpServletResponse response, String openId) {
+		
+		List<WeixinAutoRespondEntity> menu = WeiXinConst.navAutoMenu.get(openId);
+		
+		String msgType = map.get("MsgType"), content = map.get("Content");
+		if (StringUtils.isNoneBlank(content)) {
+			content = content.toLowerCase();
+		}
+		String returnString = "";
+		List<WeixinAutoRespondEntity> result = null;
+		if("text".equals(msgType)){ //正常的文本信息
+			//			判断是否第一次自动返回菜单信息
+			if(menu == null ){
+				returnString+="请选择以下服务项： \n";
+				if("#".equals(content)){//是否返回上一级 返回顶级初始状态
+					// 清空该用户自动回复状态信息
+					WeiXinConst.navAutoMenu.remove(openId);
+					return;
+				}
+				result = autoRespondService.getRespondMes(content);
+			}
+			else if(Character.isDigit(content.charAt(0))){// 已有菜单信息
+				int n = Integer.parseInt(content);//判断内容是否按菜单里来
+				if( n == 0){
+					//进入人工服务
+					System.out.println("从自动回复进入人工服务-----------------");
+					if(menu.size() == 1 && menu.get(0).getDeptID() != null){// 最低级菜单进入人工服务 根据该菜单的部门id来
+						manualService(response, map, openId, menu.get(0).getDeptID());
+					}
+					else{ //否则根据该公众号的部门id来进行分配部门
+						manualService(response, map, openId, null);
+					}
+					// 删掉导航菜单
+					WeiXinConst.navAutoMenu.remove(openId);
+				}
+				if( n >= 1 &&  n<= menu.size()){
+					// 在菜单内
+					WeixinAutoRespondEntity autoMenu = menu.get(n-1);
+					// 获取下级菜单信息,如果有的话
+					if(autoMenu.getJuniorID() != null && !autoMenu.getJuniorID().isEmpty()){
+						result = autoRespondService.getJuniorMenu(autoMenu.getJuniorID());
+					}
+					else{ // 已是最下层信息，返回信息，或者返回链接，目前只考虑url 链接
+						result = new ArrayList<WeixinAutoRespondEntity>();
+						result.add(autoMenu);
+					}
+				}
+				else{
+					// 不在菜单内
+					// 继续返回这级菜单,
+					result = menu;
+					// 加句提示信息
+					returnString += "请确认输入序号，重新输入: \n";
+				}
+			}
+		}
+		if(result == null || result.size() == 0){
+			content="";
+			result = autoRespondService.getRespondMes(content);
+			returnString += "输入错误,请重新输入: \n";
+		}
+		// 存入对应的自动回复信息状态
+		WeiXinConst.navAutoMenu.put(openId, result);
+		
+		for (int i = 0; i < result.size(); i++) {
+			returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
+		}
+		returnString += "【0】人工服务 \n";
+		returnString += "【#】退出自动回复";
+		
+		// 判断是否是最后一级菜单 
+		if(result.size() == 1 && result.get(0).getUrl() != null){
+			//是的直接覆盖前面写的String;
+			returnString = "<a href='"+result.get(0).getUrl()+"'>"+result.get(0).getContent()+"</a>";
+			WeiXinConst.navAutoMenu.remove(openId); // 清空该次自动回复信息
+		}
+		String returnStr = XmlUtil.genTextResponseMsg(map, returnString);
+		WeiXinOperUtil.sendMsgToWX(response, returnStr);
+		wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
+   }
+	
+	
 }
