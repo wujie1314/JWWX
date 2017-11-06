@@ -50,6 +50,8 @@
 	<mvc:resources mapping="/upload/**" location="/upload/" />
 	<mvc:resources mapping="/BlueNileAdmin/**" location="/BlueNileAdmin/" />
 	<mvc:resources mapping="/baoguangtai/**" location="/baoguangtai/" />
+	<mvc:resources mapping="/bbs/**" location="/bbs/" />
+	<mvc:resources mapping="/bootstrap-3.3.5-dist/**" location="/bootstrap-3.3.5-dist/" />
 	<!--<mvc:interceptors> -->
 	<!--<bean class="com.lovalley.common.interceptor.WeiXinInterceptor"></bean> -->
 	<!--&lt;!&ndash;<bean class="com.lovalley.common.interceptor.GlobalIC"></bean>&ndash;&gt; -->

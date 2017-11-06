@@ -88,4 +88,12 @@ public interface NavMenuService {
 	 * @param menuEntity
 	 */
 	public void sendMenuWxHint(Map<String, String> map, HttpServletResponse response, String openId, String menuKey, NavigationMenuEntity menuEntity, String beforeContent);
+	
+	
+	/**
+	 * 自动回复消息
+	 * @author zkl
+	 * @data 2017年11月4日 下午3:14:31
+	 */
+	public void sendMsgOneWxHintOverride(Map<String, String> map,HttpServletResponse response, String openId);
 }

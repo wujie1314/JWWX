@@ -42,8 +42,10 @@ public class HandleException {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(msg);
             response.getWriter().flush();
+            response.getWriter().close();
         } catch (IOException e) {
-        	e.printStackTrace();
+        	// 隐藏了一个bug hehe
+//        	e.printStackTrace();
             logger.error("向客户端写错误信息发生了异常:" +e.getMessage());
         }
     }
