@@ -35,9 +35,10 @@ public class OthersController {
     private WeixinAutoRespondService autoRespondService;
 	
 	@RequestMapping("/others/home")
-	public String othersList(HttpServletRequest request,  HttpServletResponse response){
+	public String othersList(String openId,HttpServletRequest request,  HttpServletResponse response){
+		System.out.println(openId);
+		request.getSession().setAttribute("othersOpenId", openId);
 		
-
 		return "others/home";
 	}
 	
