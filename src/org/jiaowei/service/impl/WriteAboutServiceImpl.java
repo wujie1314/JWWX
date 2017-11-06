@@ -1,0 +1,96 @@
+package org.jiaowei.service.impl;
+
+
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
+import org.jiaowei.common.service.impl.CommonServiceImpl;
+import org.jiaowei.entity.BbsPictureEntity;
+import org.jiaowei.entity.BbsTellEntity;
+import org.jiaowei.service.WriteAboutService;
+import org.springframework.stereotype.Service;
+
+import Decoder.BASE64Decoder;
+
+@Service
+public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAboutService{
+	
+	@Override
+	public String announce(List<String> imgFile,String oppennID,String content){
+		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
+		System.out.println(BbsTellEntityID);
+		if (saveWriteAbout(BbsTellEntityID,oppennID,content)) {
+			for (int i = 0; i < imgFile.size(); i++) {
+				String fileName = savePicture(imgFile.get(i));
+				savePictrueEntity(BbsTellEntityID,fileName,oppennID);
+			}
+		}
+		return "0";
+	}
+	
+	//保存说说
+	public boolean saveWriteAbout(String BbsTellEntityID,String oppennID,String content){
+		BbsTellEntity b = new BbsTellEntity();
+		b.setUserID(oppennID);
+		b.setPublishedTime(new Timestamp(System.currentTimeMillis()));
+		b.setContent(content);
+		b.setCommentsNumber(0);
+		b.setId(BbsTellEntityID);
+		save(b);
+		return true;
+	}
+	
+	//保存图片
+	public boolean savePictrueEntity(String BbsTellEntityID,String fileName,String userID){
+		BbsPictureEntity bp = new BbsPictureEntity();
+		String BbsPictureEntityID= Calendar.getInstance().getTimeInMillis()+ ""; //图片的主键
+		String imgPath = "D:/uploads/" + fileName;
+		bp.setId(BbsPictureEntityID);
+		bp.setFileName(fileName);
+		bp.setPath(imgPath);
+		bp.setTellId(BbsTellEntityID);
+		save(bp);
+		return true;
+	}
+	public String savePicture(String imgFile) {
+		   //在自己的项目中构造出一个用于存放用户照片的文件夹  
+	       //String imgPath = this.getServletContext().getRealPath("/uploads/");
+	      String imgPath = "D:/uploads/";
+	      String fileName = "IMAGE_" + String.valueOf(Calendar.getInstance().getTime().getTime()) + ".jpg";
+	      //String fileName = "a.jpg";
+	       //如果此文件夹不存在则创建一个  
+	       File f = new File(imgPath);  
+	       if(!f.exists()){  
+	           f.mkdir();  
+	       }  
+	      //拼接文件名称，不存在就创建  
+	       imgPath =  imgPath + fileName;
+	         
+	       //使用BASE64对图片文件数据进行解码操作 
+	       int index = imgFile.indexOf(";base64,");  
+	        String base64Str = imgFile.substring(index + ";base64,".length());  
+	       BASE64Decoder decoder = new BASE64Decoder();  
+	       try {  
+	            byte[] b = decoder.decodeBuffer(base64Str);  
+	            for(int i=0;i<b.length;++i)  
+	            {  
+	                if(b[i]<0)  
+	                {//调整异常数据  
+	                    b[i]+=256;  
+	                }  
+	            }  
+	            OutputStream out = new FileOutputStream(imgPath);      
+	            out.write(b);  
+	            out.flush();  
+	            out.close();  
+	       } catch (IOException e) {
+	    	   System.out.println(e);
+	       }  
+	       return fileName;  
+	}
+}

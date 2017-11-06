@@ -167,7 +167,7 @@ public class ConnWeixinController {
     /**
      * 创建菜单
      */
-    public void createMenu(String openId) {
+    public void createMenu(String publicID) {
     	String menuString = " {\n" +
                 "     \"button\":[\n" +
                 "      {\n" +
@@ -255,13 +255,13 @@ public class ConnWeixinController {
                 "            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
-                "               \"name\":\"其他\",\n" +
-                "               \"url\":\"http://localhost:8080/others/home\"\n" +
+                "               \"name\":\"论坛\",\n" +
+                "               \"url\":\"http://lls2015.free.ngrok.cc/bbs/jsp/trafficInformation.jsp\"\n" +
                 "            }]\n" +
                 "       }]\n" +
                 " }";
     	System.err.println(menuString);
-        WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken()); // 菜单 这里不需要更改
+        WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken(publicID)); // 菜单 这里不需要更改
     }
 //    /**
 //     * 创建菜单
@@ -443,7 +443,8 @@ public class ConnWeixinController {
         if (null == map || map.size() < 1)
             return;
         String openId = map.get("FromUserName");
-        createMenu(openId);
+        String publicID = map.get("ToUserName");
+        createMenu(publicID);
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
         if (null == list || 0 == list.size()) {
             String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(map.get("ToUserName")), openId);
@@ -586,7 +587,7 @@ public class ConnWeixinController {
 //    }
 
     /**
-     * 微信用户評分
+     * 微信用户評分 
      *
      * @param map
      * @param entity
