@@ -274,14 +274,14 @@ function getTraffic() {
 		success : function(data) {
 			var a = document.getElementById("lxfd");
 			a.options[0].selected = true;
-			var a = document.getElementById("lookType");
-			a.options[0].selected = true;
-			var a = document.getElementById("htlj_begin");
-			a.options[0].selected = true;
-			var a = document.getElementById("htlj_end");
-			a.options[0].selected = true;
-			var a = document.getElementById("dlfx");
-			a.options[0].selected = true;
+			var b = document.getElementById("lookType");
+			b.options[0].selected = true;
+			var c = document.getElementById("htlj_begin");
+			c.options[0].selected = true;
+			var d = document.getElementById("htlj_end");
+			d.options[0].selected = true;
+			var e = document.getElementById("dlfx");
+			e.options[0].selected = true;
 			$("#DATE").val("");
 			$("#TIME").val("");
 			errorMsg("请求成功");
@@ -291,3 +291,24 @@ function getTraffic() {
 	}else errorMsg("请把道路信息填写完整");
 
 }
+function getTrafficByPicture(){
+	var parame = {};
+	parame.openId = "${openId}";
+	parame.lookType = $("#lookType").find("option:selected").text();
+	parame.DATE = $("#DATE").val();
+	parame.TIME = $("#TIME").val();
+	parame.ph = $("#ph").find("option:selected").text();
+	parame.section = $("#section").find("option:selected").text();
+	$.ajax({
+		type : "post",
+		url : "/psDesign/getTrafficByPicture",
+		dataType : "json",
+		data : parame,
+		success : function(data) {
+
+
+		}
+	});
+	
+}
+

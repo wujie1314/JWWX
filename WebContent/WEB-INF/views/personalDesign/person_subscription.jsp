@@ -214,8 +214,11 @@
 													<label>截图来源</label>
 												</div>
 												<div class="col-xs-9 col-md-9 col-lg-9 column">
-													<select class="btn-group">
+													<select class="btn-group" id="ph">
 														<option value="" style="display:none;">请选择截图来源</option>
+														<option value="0" >重庆交委公路局</option>
+														<option value="1" >重庆交委摄像头</option>
+														
 
 													</select>
 												</div>
@@ -229,8 +232,11 @@
 													<label>路段</label>
 												</div>
 												<div class="col-xs-9 col-md-9 col-lg-9 column">
-													<select class="btn-group">
+													<select class="btn-group" id="section">
 														<option value="" style="display:none;">请选择路段</option>
+														<option value="0" >G50沙坪坝段</option>
+														<option value="1" >G60九龙破段</option>
+														<option value="3" >G70巴南段</option>
 
 													</select>
 												</div>
