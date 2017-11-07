@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
   </head>
   
-  <body>
+  <body style="background-color: #605b5b33;">
   	<div class="menu">
 		<div class="container">
 			<div class="row">

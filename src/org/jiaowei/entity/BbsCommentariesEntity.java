@@ -18,7 +18,7 @@ import com.mysql.fabric.xmlrpc.base.Data;
 public class BbsCommentariesEntity {
 	private String id;
 	private Timestamp commentsTime;
-	private String userID; //关联User表（说说发布人）
+	private String tellID; //关联User表（说说发布人）
 	private String content;
 	private String commentsID; //关联user表（评论发布人）
 	
@@ -38,13 +38,13 @@ public class BbsCommentariesEntity {
 	public void setCommentsTime(Timestamp commentsTime) {
 		this.commentsTime = commentsTime;
 	}
-	@Basic
-	@Column(name = "USERID")
-	public String getUserID() {
-		return userID;
+    @Basic
+    @Column(name = "TELLID")
+	public String getTellID() {
+		return tellID;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setTellID(String tellID) {
+		this.tellID = tellID;
 	}
 	@Basic
 	@Column(name = "CONTENT")

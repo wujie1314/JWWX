@@ -56,11 +56,18 @@ function addInvitationDiv(data,dataPic){
 				  +	 "</div>";
 	InvitationDiv += "<div class='contentText'>"+ data[2] +"</div>";
 	InvitationDiv += "<div class='contentPicture'>"+ getPictrue(data[0],dataPic)  +"</div>";
-	InvitationDiv += "<div class='foot'>"+"<span>当前评论："+data[4] +"| </span>"+ "<span>回复</span>" +"</div>";
+	InvitationDiv += "<div class='foot'>"+"<span>当前评论："+data[4] +"| </span>"+ "<span onclick='reply("+ data[0] +")'>回复 | </span>" + "<span onclick='particulars("+ data[0] +")'> 详情</span>" + "</div>";
 	InvitationDiv += "</div>";
 	$("#allInvitation").append(InvitationDiv);
 }
 
+function reply(id){
+	window.location.href = "bbs/jsp/particulars.jsp?tellID=" + id;
+}
+
+function particulars(id){
+	alert("reply" + id);
+}
 //加图片
 function getPictrue(id,dataPic){
 	var picDiv = "";
