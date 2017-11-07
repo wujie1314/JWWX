@@ -17,17 +17,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<meta name="viewport" content="width=device-width" />
-	 
+	<link rel="stylesheet" type="text/css" href="bbs/css/writeAbout.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
   </head>
   
   <body>
   <div id="qq">
 	<p>有什么新鲜事想告诉大家?</p>
-	<div class="message" id="message" contentEditable='true'></div>
+	<div class="message" id="message" onkeydown="justifyWord(this.id)" contentEditable='true' >
+	</div>
 
 	<div class="But">
-		<img src="bbs/images/bba_thumb.gif" class='bq'/>
-		<img src="bbs/images/camera_thumb.gif" title="[图片上传]" onclick="addPicture()">
+		<img src="/bbs/images/bba_thumb.gif" class='bq'/>
+		<img src="/bbs/images/camera_thumb.gif" title="[图片上传]" onclick="addPicture()">
 		<!--face begin-->
 		<div class="face">
 			<ul>
@@ -117,7 +119,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</ul>
 		</div>
 		<div class="picture" id="picture">
-			
+	
 		</div>
 		<!--face end-->
 	</div>
@@ -126,8 +128,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <input type="file" id="file"/ style="display: none;">  
   <div id="result" align="center"></div>  
   </body>
-    <link rel="stylesheet" type="text/css" href="bbs/css/writeAbout.css">
-	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
+  	  <script type="text/javascript">
+		  function getURLName(name) {
+			    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+			    var r = window.location.search.substr(1).match(reg);
+			    if (r != null) {
+			        return unescape(r[2]);
+			    }
+			    return null;
+			}
+      </script>
+
 
 	<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="bbs/js/forum.js"></script>

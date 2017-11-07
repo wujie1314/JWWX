@@ -88,7 +88,7 @@ public class ConnWeixinController {
             WeiXinOperUtil.sendMsgToWX(response, echostr);
         }
     }
-
+    
     /**
      * 接收来自微信服务器的消息
      *
@@ -116,7 +116,16 @@ public class ConnWeixinController {
             String toUserName = map.get("ToUserName");
             String msgTypeString = map.get("MsgType").toLowerCase().trim();
             String openId = map.get("FromUserName");
-            
+            if(!NavMenuInitUtils.getInstance().userPublicIdMap.containsKey(openId)){
+				NavMenuInitUtils.getInstance().userPublicIdMap.put(openId,toUserName);// 试试
+			}
+			else if( !NavMenuInitUtils.getInstance().userPublicIdMap.get(openId).equals(toUserName)){
+				System.err.println("不同公众号里 有重复的openID \n " );
+				System.err.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				System.err.println(openId + " :　" + toUserName);
+				System.err.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+				System.err.println(openId + " :  " + NavMenuInitUtils.getInstance().userPublicIdMap.get(openId));
+			}
             // 一个微信用户对应一个部门
             Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(toUserName);
 			Integer deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
