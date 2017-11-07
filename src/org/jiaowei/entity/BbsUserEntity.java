@@ -16,7 +16,9 @@ public class BbsUserEntity {
 	private String oppenid;
 	private String state;
 	private String wechatName; //微信的用户名
+	private String headImage; //用户头像，base64编码
 	
+
 	@Id
     @Column(name = "ID")
 	public String getId() {
@@ -51,5 +53,14 @@ public class BbsUserEntity {
 	}
 	public void setWechatName(String wechatName) {
 		this.wechatName = wechatName;
+	}
+	
+	@Basic
+    @Column(name = "HEADIMAGE")
+	public String getHeadImage() {
+		return headImage;
+	}
+	public void setHeadImage(String headImage) {
+		this.headImage = headImage;
 	}
 }

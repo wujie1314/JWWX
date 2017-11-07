@@ -23,11 +23,11 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	@Override
 	public String announce(List<String> imgFile,String oppennID,String content){
 		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
-		System.out.println(BbsTellEntityID);
+		//System.out.println(BbsTellEntityID);
 		if (saveWriteAbout(BbsTellEntityID,oppennID,content)) {
 			for (int i = 0; i < imgFile.size(); i++) {
 				String fileName = savePicture(imgFile.get(i));
-				savePictrueEntity(BbsTellEntityID,fileName,oppennID);
+				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));
 			}
 		}
 		return "0";
@@ -45,8 +45,8 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 		return true;
 	}
 	
-	//保存图片
-	public boolean savePictrueEntity(String BbsTellEntityID,String fileName,String userID){
+	//保存图片信息
+	public boolean savePictrueEntity(String BbsTellEntityID,String fileName,String userID,String imgData){
 		BbsPictureEntity bp = new BbsPictureEntity();
 		String BbsPictureEntityID= Calendar.getInstance().getTimeInMillis()+ ""; //图片的主键
 		String imgPath = "D:/uploads/" + fileName;
@@ -54,9 +54,17 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 		bp.setFileName(fileName);
 		bp.setPath(imgPath);
 		bp.setTellId(BbsTellEntityID);
+		
+	    //使用BASE64对图片文件数据进行解码操作 
+	    int index = imgData.indexOf(";base64,");  
+		String imgDataState = imgData.substring("data:image/".length(), index); //图片的类型
+		bp.setImgData(imgData);
+		bp.setImgDataState(imgDataState);
 		save(bp);
 		return true;
 	}
+	/*
+	 *保存图片在本地*/
 	public String savePicture(String imgFile) {
 		   //在自己的项目中构造出一个用于存放用户照片的文件夹  
 	       //String imgPath = this.getServletContext().getRealPath("/uploads/");
@@ -73,7 +81,7 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	         
 	       //使用BASE64对图片文件数据进行解码操作 
 	       int index = imgFile.indexOf(";base64,");  
-	        String base64Str = imgFile.substring(index + ";base64,".length());  
+	       String base64Str = imgFile.substring(index + ";base64,".length());  
 	       BASE64Decoder decoder = new BASE64Decoder();  
 	       try {  
 	            byte[] b = decoder.decodeBuffer(base64Str);  

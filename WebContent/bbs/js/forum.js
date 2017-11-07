@@ -1,4 +1,5 @@
 var imgFile = new Array();
+var openID = getURLName("openID");
 
 //点击小图片，显示表情
 $(".bq").click(function(e){
@@ -72,7 +73,7 @@ function announce(){
         contentType : 'application/x-www-form-urlencoded; charset=utf-8',  
         url: "/WriteAboutController/announce",  
         success: function(result){  
-        	alert("ok");
+        	window.location.href = "/bbs/jsp/mine.jsp?openID=" + openID;
         },  
         error: function(result){  
         	console.log(result)       
