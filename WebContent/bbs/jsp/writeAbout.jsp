@@ -24,11 +24,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   <div id="qq">
 	<p>有什么新鲜事想告诉大家?</p>
-	<div class="message" id="message" contentEditable='true'></div>
+	<div class="message" id="message" onkeydown="justifyWord(this.id)" contentEditable='true' >
+	</div>
 
 	<div class="But">
-		<img src="bbs/images/bba_thumb.gif" class='bq'/>
-		<img src="bbs/images/camera_thumb.gif" title="[图片上传]" onclick="addPicture()">
+		<img src="/bbs/images/bba_thumb.gif" class='bq'/>
+		<img src="/bbs/images/camera_thumb.gif" title="[图片上传]" onclick="addPicture()">
 		<!--face begin-->
 		<div class="face">
 			<ul>
@@ -118,7 +119,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</ul>
 		</div>
 		<div class="picture" id="picture">
-			
+	
 		</div>
 		<!--face end-->
 	</div>

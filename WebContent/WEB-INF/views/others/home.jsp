@@ -16,17 +16,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-
+	
+	<script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
   </head>
   
   <body>
   	<label>openId</label>
-  	<input type="text" value=<%=request.getSession().getAttribute("othersOpenId")%> />
+  	<input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> />
   	<a>私人定制</a>
   	<a>失物招领</a>
-  	<a>论坛</a>
+  	<a id="BBS" onclick="BBS()">论坛</a>
   </body>
+  
+  <script type="text/javascript">
+  		function BBS(){
+  			var openID = $("#openID").val();
+  			window.location.href = "bbs/jsp/mine.jsp?openID=" + openID;  
+  		}
+  </script>
 </html>
