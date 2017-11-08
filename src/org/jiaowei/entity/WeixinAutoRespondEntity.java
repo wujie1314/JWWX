@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "AUTO_RESPOND", schema = "JWWX", catalog = "")
 public class WeixinAutoRespondEntity {
-	private String id ;
+	private Integer id ;
 	private String contentCode;
 	private String content;
 	private String juniorID;
@@ -13,11 +13,13 @@ public class WeixinAutoRespondEntity {
 	private String url;
 	
 	@Id
+	@SequenceGenerator(name="AUTO_RESPOND_S",sequenceName="AUTO_RESPOND_S",initialValue=10,allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="AUTO_RESPOND_S")
     @Column(name = "ID")
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

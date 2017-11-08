@@ -10,9 +10,10 @@ public class WeixinPublicInfoEntity {
 	private String appSecret;
 	private String token;
 	private String name;
+	private Integer deptId;
 	
 	@Id
-    @Column(name = "id")
+    @Column(name = "ID")
 	public String getId() {
 		return id;
 	}
@@ -21,7 +22,7 @@ public class WeixinPublicInfoEntity {
 	}
 	
 	@Basic
-    @Column(name = "addId")
+    @Column(name = "APP_ID")
 	public String getAppId() {
 		return appId;
 	}
@@ -30,7 +31,7 @@ public class WeixinPublicInfoEntity {
 	}
 	
 	@Basic
-    @Column(name = "appSecret")
+    @Column(name = "APP_SECRET")
 	public String getAppSecret() {
 		return appSecret;
 	}
@@ -39,7 +40,7 @@ public class WeixinPublicInfoEntity {
 	}
 	
 	@Basic
-    @Column(name = "token")
+    @Column(name = "TOKEN")
 	public String getToken() {
 		return token;
 	}
@@ -48,12 +49,21 @@ public class WeixinPublicInfoEntity {
 	}
 	
 	@Basic
-    @Column(name = "name")
+    @Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Basic
+    @Column(name = "DEPT_ID")
+	public Integer getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Integer deptId) {
+		this.deptId = deptId;
 	}
 	
 }
