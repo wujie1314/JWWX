@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>我的</title>
+    <title>路况信息</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -37,13 +37,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<div id="allInvitation"></div>
 	  <div class="postPlus">
 			<img src="bbs/images/plus.png" onclick="goAddTell()">
-	 </div>
+		</div>
   </body>
-
-	<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="bbs/js/commonality.js"></script>
-	<script type="text/javascript" src="bbs/js/mine.js"></script>
+	<script type="text/javascript" src="bbs/js/transportation.js"></script>
 	<script type="text/javascript" src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
-	
-	</div>
 </html>

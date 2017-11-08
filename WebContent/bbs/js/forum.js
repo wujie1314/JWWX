@@ -114,7 +114,7 @@ function announce(){
         data:{
         	imgFile:imgFileString,
         	content:content,
-        	oppenID:"11"
+        	oppenID:openID
         	},  
         dataType: "json",  
         timeout: 1000,  

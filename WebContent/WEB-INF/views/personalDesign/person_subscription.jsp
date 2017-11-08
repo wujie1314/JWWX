@@ -25,7 +25,7 @@
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 <meta content="telephone=no" name="format-detection" />
-<!-- <meta content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=no, width=device-width" name="viewport"> -->
+
 
 <link rel="stylesheet" type="text/css" href="personalDesign/css/wx_css/person_subscription.css"></link>
 

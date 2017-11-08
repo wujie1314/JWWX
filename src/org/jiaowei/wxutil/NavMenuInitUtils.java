@@ -876,6 +876,8 @@ public class NavMenuInitUtils {
 		        //添加服务队列
 		        putServiceMap(openId, entity);
 		        result = true;
+		        SeatW seatW=new SeatW();
+		        seatW.startProcessInstance();
 			}
 		}
 		return result;

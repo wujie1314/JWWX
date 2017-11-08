@@ -32,6 +32,7 @@ jq1(function() {
 		type = $(this).children("a").html();
 
 	})
+	
 
 });
 $(function() {
@@ -117,43 +118,7 @@ function showOtherChange(value) {
 	});
 }
 
-/*
- * function addRoad() { var subsId = "${road.subsId}"; var subsOpenId =
- * "${openId}"; var subsImg = ""; var subsRemindDate =
- * $("#subsRemindDate").val(); var subsRemindTimeHour =
- * $("#subsRemindTimeHour").val(); var subsRemindHour =
- * $("#subsRemindHour").val(); var subsRemindMinute =
- * $("#subsRemindMinute").val(); var subsType =
- * $('input[name="subsType"]:checked ').val(); var subsRemindType = 0; var
- * subsIsStart = 0; var subsTitleName = '文字'; if (subsRemindDate == '') {
- * errorMsg("请选择提醒日期!"); return; } if (subsRemindTimeHour == '') {
- * errorMsg("请选择提醒时间!"); return; } var lxfd = $("#lxfd").val(); if (lxfd == '') {
- * errorMsg("请选择路段名称!"); return; } var htlj_begin = $("#htlj_begin").val(); if
- * (htlj_begin == '') { errorMsg("请选择开始路段!"); return; } var htlj_end =
- * $("#htlj_end").val(); if (htlj_end == '') { errorMsg("请选择结束路段!"); return; }
- * var dlfx = $("#dlfx").val(); if (dlfx == '') { errorMsg("请选择道路方向!"); return; }
- * var subsCharacter = lxfd + "," + htlj_begin + "," + htlj_end + "," + dlfx;
- * 
- * if (subsRemindWeek != "") { subsRemindType = 1; }
- * 
- * if (subsId == "") { $.post("${ctx}/subscribe/add", { "subsOpenId" :
- * subsOpenId, "subsCharacter" : subsCharacter, "subsImg" : subsImg,
- * "subsRemindDate" : subsRemindDate, "subsRemindTimeHour" : subsRemindTimeHour,
- * "subsRemindHour" : subsRemindHour, "subsRemindMinute" : subsRemindMinute,
- * "subsRemindWeek" : subsRemindWeek, "subsRemindType" : subsRemindType,
- * "subsIsStart" : subsIsStart, "subsTitleName" : subsTitleName, "subsType" :
- * subsType }, function(data) { if ("0" == data.code) { document.location.href =
- * "${ctx}/videoImg/list?type=0&openId=" + subsOpenId; } else {
- * errorMsg(data.msg); } }); } else { $.post("${ctx}/subscribe/edit", { "subsId" :
- * subsId, "subsOpenId" : subsOpenId, "subsCharacter" : subsCharacter, "subsImg" :
- * subsImg, "subsRemindDate" : subsRemindDate, "subsRemindTimeHour" :
- * subsRemindTimeHour, "subsRemindHour" : subsRemindHour, "subsRemindMinute" :
- * subsRemindMinute, "subsRemindWeek" : subsRemindWeek, "subsRemindType" :
- * subsRemindType, "subsIsStart" : subsIsStart, "subsTitleName" : subsTitleName,
- * "subsType" : subsType }, function(data) { if ("0" == data.code) {
- * document.location.href = "${ctx}/videoImg/list?type=0&openId=" + subsOpenId; }
- * else { errorMsg(data.msg); } }); } }
- */
+
 
 function errorMsg(msg) {
 	$("#errorMsg").html(msg);
@@ -186,11 +151,11 @@ function judgetype() {
 						a.options[0].selected = true;
 						$("#DATE").val("");
 						$("#TIME").val("");
-						errorMsg("请求成功");
+						alert("请求成功");
 					} else
-						errorMsg("填写车辆信息");
+						alert("填写车辆信息");
 				} else
-					errorMsg("请填写日期");
+					alert("请填写日期");
 			} else {
 				getViolationInformation();
 			}
@@ -213,16 +178,20 @@ function judgetype() {
 					a.options[0].selected = true;
 					$("#DATE").val("");
 					$("#TIME").val("");
-					errorMsg("请求成功");
+					alert("请求成功");
 				} else
-					errorMsg("请填写日期");
+					alert("请填写日期");
 
 			} else
 				getTraffic();
-		} else
-			errorMsg("请填写数据!");
+		} else if($("#ph").find("option:selected").text()!="请选择截图来源"&& $("#section").find("option:selected").text()!="请选择路段"){
+			getTrafficByPicture();
+			
+			
+		}else
+			alert("请填写数据!");
 	} else
-		errorMsg("请选择订阅类型");
+		alert("请选择订阅类型");
 
 }
 function getViolationInformation() {
@@ -248,11 +217,11 @@ function getViolationInformation() {
 				a.options[0].selected = true;
 				$("#DATE").val("");
 				$("#TIME").val("");
-				errorMsg("请求成功");
+				alert("请求成功");
 			}
 		});
 	} else
-		errorMsg("填写车辆信息");
+		alert("填写车辆信息");
 }
 function getTraffic() {
 	var parame = {};
@@ -284,11 +253,13 @@ function getTraffic() {
 			e.options[0].selected = true;
 			$("#DATE").val("");
 			$("#TIME").val("");
-			errorMsg("请求成功");
+			alert("请求成功");
 
 		}
 	});
-	}else errorMsg("请把道路信息填写完整");
+	}else if($("#ph").find("option:selected").text()!="请选择截图来源"&& $("#section").find("option:selected").text()!="请选择路段"){
+		getTrafficByPicture();
+	}else alert("请把道路信息填写完整");
 
 }
 function getTrafficByPicture(){
@@ -305,6 +276,16 @@ function getTrafficByPicture(){
 		dataType : "json",
 		data : parame,
 		success : function(data) {
+			var a = document.getElementById("lxfd");
+			a.options[0].selected = true;
+			var c = document.getElementById("ph");
+			c.options[0].selected = true;
+			var d = document.getElementById("section");
+			d.options[0].selected = true;
+			$("#DATE").val("");
+			$("#TIME").val("");
+			alert("请求成功");
+			
 
 
 		}

@@ -43,7 +43,7 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 		String sql = "";
 		if(openID != null)
 			sql = "SELECT BBS_TELL. ID,BBS_USER.HEADIMAGE, BBS_TELL. CONTENT AS CONTENT,to_char(BBS_TELL.PUBLISHEDTIME,'YYYY-MM-DD HH24:MI:SS') AS PUBLISHEDTIME, "
-				 +" BBS_TELL. COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME FROM BBS_TELL,BBS_USER WHERE USERID = (SELECT ID FROM BBS_USER WHERE OPPENID = '"+ openID +"') ORDER BY PUBLISHEDTIME desc";
+				 +" BBS_TELL. COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME FROM BBS_TELL,BBS_USER WHERE USERID = (SELECT ID FROM BBS_USER WHERE OPPENID = '"+ openID +"') AND BBS_USER.ID = BBS_TELL.USERID ORDER BY PUBLISHEDTIME desc";
 		else
 			return null;
 		String picSql = "SELECT BBS_TELL.ID,BBS_PICTURE.IMGDATA FROM BBS_PICTURE,BBS_TELL,BBS_USER WHERE BBS_TELL.USERID = BBS_USER.ID AND"
@@ -75,6 +75,34 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 		return "error";
 	}
 	
+	//初始化交通狀況的信息
+	@Override
+	public Map<String, Object> initTransportation(int begin, int end){
+		String sql = "";
+		sql = "SELECT * FROM (SELECT BBS_TELL. ID,BBS_USER.HEADIMAGE, BBS_TELL. CONTENT AS CONTENT,to_char(BBS_TELL.PUBLISHEDTIME,'YYYY-MM-DD HH24:MI:SS') AS PUBLISHEDTIME, "
+				 +" BBS_TELL.COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME,ROWNUM as rn FROM BBS_TELL,BBS_USER WHERE BBS_USER.ID = BBS_TELL.USERID ORDER BY BBS_TELL.ID desc)"
+				 +" WHERE rn > "+ begin +" and rn < " + end;
+		
+		String picSql = " SELECT BBS_PICTURE.TELLID,BBS_PICTURE.IMGDATA,ROWNUM AS RN FROM BBS_PICTURE,BBS_USER,BBS_TELL WHERE "
+						+" BBS_PICTURE.TELLID in (SELECT ID FROM(SELECT *FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
+						+"  BBS_USER.ID = BBS_TELL.USERID ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) AND BBS_PICTURE.TELLID = BBS_TELL.ID AND BBS_TELL.USERID = BBS_USER.ID";
+		
+		String commentSql = " SELECT BBS_COMMENTARIES.TELLID,BBS_COMMENTARIES.CONTENT,BBS_USER.WECHATNAME,BBS_USER.HEADIMAGE,BBS_COMMENTARIES.COMMENTSTIME, ROWNUM AS RN FROM BBS_COMMENTARIES,BBS_USER WHERE "
+						   +" BBS_COMMENTARIES.TELLID in (SELECT ID FROM(SELECT * FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
+						   +" BBS_USER.ID = BBS_TELL.USERID ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) and BBS_USER.ID = BBS_COMMENTARIES.COMMENTSID";
+		System.out.println(sql);
+		System.out.println(picSql);
+		System.out.println(commentSql);
+		List<Object> list = findBySQL(sql);
+		List<Object> listPic = findBySQL(picSql);
+		List<Object> listComment = findBySQL(commentSql);
+		System.out.println(sql);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", list);
+		map.put("resultPic", listPic);
+		map.put("resultComment", listComment);
+		return map;
+	}
 	//判断用户是否存在
 	public String isExistUser(String openID){
 		String sql = "SELECT * FROM BBS_USER WHERE OPPENID = '" + openID + "'";
@@ -91,6 +119,7 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	public String SaveUser(JSONObject jsonObject){
 		BbsUserEntity bus = new BbsUserEntity();
 		bus.setId(Calendar.getInstance().getTimeInMillis() +"");
+		bus.setState("0");
 		bus.setOppenid(jsonObject.getString("openid"));
 		bus.setWechatName(jsonObject.getString("nickname"));
 		String headImageData =getImgStr(getImageByUrl(jsonObject.getString("headimgurl"),"D:/uploads",jsonObject.getString("openid")));
@@ -218,7 +247,7 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	    // 完毕，关闭所有链接
 	    os.close();
 	    is.close();
-	    return savepath + name;
+	    return savepath + "/" + name + ".jpg" ;
     } catch (Exception e) {
     	return "error";
     }

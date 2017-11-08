@@ -6,14 +6,16 @@ function getURLName(name) {
 		    }
 		    return null;
 }
-//var tellID = "1510025799529";
-var openID = getURLName("tellID");
+//var tellID = "1510140742222";
+//var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
+
+var openID = getURLName("openID");
 var tellID = getURLName("tellID");
 $(function(){
-	alert(tellID + "  " + "1510025799529")
 	init();
 })
 function init(){
+	//alert(tellID);
 	 $.ajax({
 			type :"post",
 			url : "/particularsController/init",
@@ -23,8 +25,8 @@ function init(){
 				tellID:tellID
 			},
 			success : function(data){
-				 console.log(data);
-				addContent(data)
+				//console.log(data);
+				addContent(data);
 				 
 	        },
 	        error:function(e){
@@ -58,7 +60,6 @@ function addTellMessage(message){
 //加载图片
 function addPic(pic){
 	var picDiv = "";
-	//console.log(pic);
 	for(var i=0; i<pic.length; i++)
 		picDiv += "<img src='"+ pic[i] +"' style='width: 30%;height: 90%;margin-top: 5%;margin-left: 5%;'>";
 	$("#tellPicture").append(picDiv);
@@ -85,6 +86,7 @@ function addACommentDiv(comment){
 //发表评论
 function review(){
 	 var reviewData = $("#message").html();
+	 //alert(reviewData);
 	 $.ajax({
 			type :"post",
 			url : "/particularsController/review",
@@ -93,15 +95,16 @@ function review(){
 			data : {
 				tellID:tellID,
 				reviewData:reviewData,
-				openID : openID;
+				openID : openID
 			},
 			success : function(data){
-				 console.log(data);
-				addContent(data)
+				window.location.href = "bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID;
+				// alert(data.result);
+				//addContent(data)
 				 
 	        },
 	        error:function(e){
-	        	alert("error");
+	        	//alert("error");
 	        	//console.log(e);
 	        }
 		});
