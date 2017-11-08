@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   	<label>openId</label>
   	<input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> />
-  	<a>私人定制</a>
+  	<a onclick="Personal()">私人定制</a>
   	<a>失物招领</a>
   	<a id="BBS" onclick="BBS()">论坛</a>
   </body>
@@ -32,6 +32,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		function BBS(){
   			var openID = $("#openID").val();
   			window.location.href = "bbs/jsp/mine.jsp?openID=" + openID;  
+  		}
+  		function Personal(){
+  			var openID = $("#openID").val();
+  			window.location.href = "/psDesign/getRoadName?openID=" + openID;  
   		}
   </script>
 </html>

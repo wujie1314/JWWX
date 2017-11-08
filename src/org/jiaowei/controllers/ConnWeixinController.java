@@ -103,7 +103,7 @@ public class ConnWeixinController {
     		Map<String, String> map = null;
             map = WeiXinOperUtil.receiveMsgFromWX(request);
             if (null != map) {
-//                WeiXinOperUtil.sendMsgToWX(response, "");
+                WeiXinOperUtil.sendMsgToWX(response, "");
             }
             if (null != url){
                 if(!url.isEmpty() && !map.get("MsgType").equals("text") && !map.get("MsgType").equals("voice") &&!map.get("MsgType").equals("image") ){

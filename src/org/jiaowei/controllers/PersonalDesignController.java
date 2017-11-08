@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.jiaowei.entity.RoadDlfxEntity;
 import org.jiaowei.entity.RoadHtljEntity;
@@ -34,9 +35,10 @@ public class PersonalDesignController {
      * @return
      */
     @RequestMapping(value = "/getRoadName")
-    public String getRoadLxfd(HttpServletRequest request,Map<String,Object> map)
-    {
-    	String openId = request.getParameter("openId");
+    public String getRoadLxfd(HttpServletRequest request,Map<String,Object> map,HttpServletResponse response)
+    { 
+    	String openId = request.getParameter("openID");
+    	System.out.println(openId+".....");
     	StringBuffer sql=new StringBuffer();
     	sql.append(" SELECT ROAD_CODE,ROAD_NAME,LD_NAME,ROAD_DIR,START_NAME,END_NAME,DESCRIPT,ROAD_CODE1");
     	sql.append(" FROM ROAD_LXFD");
@@ -66,7 +68,9 @@ public class PersonalDesignController {
 		//查询文字列表
 		map.put("openId", openId);
 		map.put("road", road);
+		request.getSession().setAttribute("openId", openId);
         request.setAttribute("list", list);
+        System.out.println("*********"+request.getSession().getAttribute("openId"));
 		return "personalDesign/person_subscription";
     }
     
@@ -155,7 +159,7 @@ public class PersonalDesignController {
     	}else{
     		message="你的表现很好，无违章";
     	}
-    	System.out.println("小朋友你违章");
+    	System.out.println("小朋友你违章"+openId);
     	   String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
     			   openId, String.format(message));
     	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
