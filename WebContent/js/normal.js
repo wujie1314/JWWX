@@ -56,7 +56,6 @@ function showHisMsgToday(openid,time){
 								adminname=data1.userName;
 							}
 						});
-						alert(data[i]);
 						rightMessage(data[i]);
 					}else{
 						leftMessage(data[i],index);

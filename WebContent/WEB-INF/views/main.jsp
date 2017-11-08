@@ -223,7 +223,10 @@ body {
 						title="发送图片" plain="true">图片</a><a href="#"
 						onclick="recordInit();" class="easyui-linkbutton"
 						iconCls="icon-record" title="开始录音" plain="true">录音</a>
-					</span><span style="float: right;"> <a href="#"
+						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
+						iconCls="icon-help" title="专家服务" plain="true">论坛</a>
+					</span>
+					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
 						iconCls="icon-clock" title="查询消息记录" plain="true">消息记录</a>
 					</span>
@@ -554,6 +557,21 @@ body {
 			</form>
 		</div>
 		<!--页面录音  结束-->
+	</div>
+	<!-- 论坛window -->
+	<div id="bbs-window" class="easyui-window" title="新增论坛帖子"
+		closed="true" iconCls="icon-save">
+		<!--页面录音  开始-->
+		<div class="container">
+			<div class="bbs_left_list"></div>
+			<div class="bbs_right_content"></div>
+			<form id="uploadForm" name="uploadForm"
+				action="/fileUpload/saveVoice">
+				<input name="authenticity_token" value="xxxxx" type="hidden">
+				<input name="upload_file[filename]" value="1" type="hidden">
+				<input name="format" value="json" type="hidden">
+			</form>
+		</div>
 	</div>
 	<div id="media-html" style="display: none">
 		<div id="jp_container_1" class="jp-video jp-video-180p"
@@ -2259,6 +2277,14 @@ var basePath = '<%=basePath%>';
 		}
 		openWindow("record-window", 360, 250);
 	}
+	function newbbs(){
+	/* 	if (nowOpenid == "") {
+			$.messager.alert("论坛提示", "请选择微信用户后录音！", "warning");
+			return false;
+		} */
+		openWindow("bbs-window", 360, 250);
+	}
+	
 	/*提交配置信息*/
 	function toSubmit() {
 		var customerNum = $("input[name=customerNum]").val();

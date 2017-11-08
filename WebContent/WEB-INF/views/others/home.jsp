@@ -20,10 +20,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   	<label>openId</label>
   		<input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> />
-  		<button  class = "btn btn_primary" onclick="Personal()" >私人定制</button>
+  		<button class = "btn btn_primary" onclick="Personal()" >私人定制</button>
   		<button class = "btn btn_primary" >失物招领</button>
 		<button class = "btn btn_primary"  id="BBS" onclick="BBS()" >论坛</button>
-  		<button  class = "btn btn_primary" id="ddd" onclick="getLocationdd()">SDK获取微信当前位置</button>
+  		<button class = "btn btn_primary" id="ddd" onclick="getLocationdd()">SDK获取微信当前位置</button>
   </body>
   <script type="text/javascript">
   		function BBS(){

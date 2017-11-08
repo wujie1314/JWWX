@@ -694,7 +694,6 @@ public class WeiXinOperUtil {
 
     
     public static String downloadFromUrl(String url,HttpServletRequest request){
-    	 String path = request.getRealPath("/") + File.separator + "upload";
     	try {
     		CloseableHttpClient httpclient = HttpClients.createDefault();
         	HttpGet httpGet = new HttpGet(url);
@@ -703,6 +702,19 @@ public class WeiXinOperUtil {
         	String contentType = response.getEntity().getContentType().toString().trim();
         	 if (!StringUtil.isEmpty(contentType)) {
         		 System.out.println(contentType);
+        		 HttpEntity entity = response.getEntity();
+                 String path = request.getRealPath("/") + File.separator + "upload";
+//                 String path = "/workspace/idea/weixin/src/main/webapp"+File.separator + "upload";
+                 File file = new File(path);
+                 if (!file.exists()) {
+                     file.mkdir();
+                 }
+                 String imagePath = File.separator + System.currentTimeMillis() + ".jpg";
+                 file = new File(path + imagePath);
+                 FileOutputStream fileout = new FileOutputStream(file);
+                 entity.writeTo(fileout);
+                 fileout.close();
+                 return "/upload" + imagePath;
              }
 		} catch (Exception e) {
 			e.printStackTrace();
