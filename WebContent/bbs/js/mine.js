@@ -1,5 +1,5 @@
-//var openID = getURLName("openID");
-var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
+var openID = getURLName("openID");
+//var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
 $(function(){
 	if(openID != null){
 		initUser();

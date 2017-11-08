@@ -9,9 +9,11 @@ import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
+
 import org.jiaowei.common.service.impl.CommonServiceImpl;
 import org.jiaowei.entity.BbsPictureEntity;
 import org.jiaowei.entity.BbsTellEntity;
+import org.jiaowei.entity.BbsUserEntity;
 import org.jiaowei.service.WriteAboutService;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +36,9 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	}
 	
 	//保存说说
-	public boolean saveWriteAbout(String BbsTellEntityID,String oppennID,String content){
+	public boolean saveWriteAbout(String BbsTellEntityID,String oppenID,String content){
 		BbsTellEntity b = new BbsTellEntity();
-		b.setUserID(oppennID);
+		b.setUserID(getUserID(oppenID));
 		b.setPublishedTime(new Timestamp(System.currentTimeMillis()));
 		b.setContent(content);
 		b.setCommentsNumber(0);
@@ -44,7 +46,17 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 		save(b);
 		return true;
 	}
-	
+	//得到uerID
+	public String getUserID(String openID){
+		String sql = "";
+		sql += "SELECT * FROM BBS_USER WHERE BBS_USER.OPPENID = '"+ openID + "'";
+		List<BbsUserEntity> list = findBySQL(sql, BbsUserEntity.class);
+		
+		if(list != null && list.size() > 0){
+			return list.get(0).getId();
+		}
+ 		return null;
+	}
 	//保存图片信息
 	public boolean savePictrueEntity(String BbsTellEntityID,String fileName,String userID,String imgData){
 		BbsPictureEntity bp = new BbsPictureEntity();

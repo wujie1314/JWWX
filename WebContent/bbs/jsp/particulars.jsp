@@ -20,6 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<link rel="stylesheet" type="text/css" href="bbs/css/particulars.css">
     <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
    
   </head>
   
@@ -162,7 +163,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	  $(".msgCon").prepend("<div class='msgBox'><dl><dt><img src='images/tx.jpg' width='50' height='50'/></dt><dd>神马都是浮云</dd></dl><div class='msgTxt'>"+txt+"</div></div>");
   </script>
-    <script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="bbs/js/particulars.js"></script>
 	<script type="text/javascript" src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 </html>
