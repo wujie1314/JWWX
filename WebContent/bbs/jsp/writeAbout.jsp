@@ -119,7 +119,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</ul>
 		</div>
 		<div class="picture" id="picture">
-	
 		</div>
 		<!--face end-->
 	</div>
