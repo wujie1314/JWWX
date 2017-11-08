@@ -16,15 +16,29 @@ public class mineController {
 	 @Autowired
 	 private mineService mineService;
 	 
+	 /*
+	  * 初始化我的界面的信息
+	  */
 	 @RequestMapping(value = "/init")
 	 @ResponseBody
 	 public Map<String, Object> init(String openID){
 		return mineService.init(openID);
 	}
 	 
+	 /*
+	  * 用戶
+	  */
 	 @RequestMapping(value = "/initUser")
 	 @ResponseBody
 	 public String initUser(String openID){
 		return mineService.initUser(openID);
 	}
+	 
+	 @RequestMapping(value = "/initTransportation")
+	 @ResponseBody
+	 public Map<String, Object> initTransportation(int begin, int end){
+		return mineService.initTransportation(begin,end);
+	}
+	 
+	 
 }

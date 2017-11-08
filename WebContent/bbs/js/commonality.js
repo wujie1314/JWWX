@@ -21,7 +21,7 @@ function goExpert(){
 }
 
 function goHighwayCondition(){
-	window.location.href = "/bbs/jsp/mine.jsp?openID=" + openID;
+	window.location.href = "/bbs/jsp/transportation.jsp?openID=" + openID;
 }
 
 function reply(id){
