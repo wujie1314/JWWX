@@ -21,7 +21,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
   </head>
   
-  <body>
+  <body style="background-color: #605b5b33;">
+  	<div class="all">
   	<div class="menu">
 		<div class="container">
 			<div class="row">
@@ -43,4 +44,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="bbs/js/commonality.js"></script>
 	<script type="text/javascript" src="bbs/js/mine.js"></script>
 	<script type="text/javascript" src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+	
+	</div>
 </html>

@@ -1,12 +1,8 @@
-//Author:Vico_Ho & lls
 var imgFile = new Array();
-<<<<<<< HEAD
 var openID = getURLName("openID");
 
-=======
 var pictureNum = 0;//图片数量
 var wordNum = 0;//输入框中的字数
->>>>>>> f6f63e61780db9919d39dfc1b05434bd2b5817f1
 //点击小图片，显示表情
 $(".bq").click(function(e){
 	$(".face").slideDown();//慢慢向下展开
