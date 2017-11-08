@@ -1,5 +1,14 @@
 body{
-	background-color:#7b767633;
+     margin:0;  
+     padding:0;  
+     background-color:pink;  
+}
+
+.all{
+	margin:0;  
+     padding:0;  
+     background-color:pink;  
+     font-family:"Î¢ÈíÑÅºÚ";
 }
 .menu{
 	width: 100%;
@@ -58,7 +67,11 @@ body{
 	height: 60px;
 	width: 60px;
 }
-
+.contentPicture img{
+	width: 33%;
+    height: 100%;
+    margin-right:10px;
+}
 .postPlus{
 	height: 6%;
 	width: 6%;
@@ -72,7 +85,6 @@ body{
 	height: 20%;
 }
 .contentText{
-	height: 50%;
 	word-wrap:break-word;	
 	word-break:break-all;
 	overflow: hidden;
@@ -80,7 +92,7 @@ body{
 	margin: 0 auto;
 }
 .contentPicture{
-	height: 20%;
+	height: 35%;
 }
 .foot{
 	height: 10%;

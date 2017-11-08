@@ -227,7 +227,7 @@ function judgetype() {
 }
 function getViolationInformation() {
 	var parame = {};
-	parame.openId = "${openId}";
+	parame.openId =$("#Id").val();
 	parame.lookType = $("#lookType").find("option:selected").text();
 	parame.DATE = $("#DATE").val();
 	parame.TIME = $("#TIME").val();
@@ -256,7 +256,7 @@ function getViolationInformation() {
 }
 function getTraffic() {
 	var parame = {};
-	parame.openId = "${openId}";
+	parame.openId = $("#Id").val();
 	parame.lookType = $("#lookType").find("option:selected").text();
 	parame.DATE = $("#DATE").val();
 	parame.TIME = $("#TIME").val();
@@ -293,7 +293,7 @@ function getTraffic() {
 }
 function getTrafficByPicture(){
 	var parame = {};
-	parame.openId = "${openId}";
+	parame.openId = $("#Id").val();
 	parame.lookType = $("#lookType").find("option:selected").text();
 	parame.DATE = $("#DATE").val();
 	parame.TIME = $("#TIME").val();

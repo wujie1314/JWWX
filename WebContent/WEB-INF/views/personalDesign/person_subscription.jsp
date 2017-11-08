@@ -6,6 +6,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -42,7 +43,7 @@
 <script src="personalDesign/js/jquery-2.1.1.min.js"></script>
 <script src="personalDesign/js/bootstrap.js"></script>
 <script src="personalDesign/js/bootstrap.min.js"></script>
-<script src="personalDesign/js/wx_js/person_subscription.js"></script>
+
 
 
 
@@ -50,6 +51,7 @@
 </head>
 
 <body>
+<input id="Id"type="hidden" value=<%= request.getSession().getAttribute("openId")%> />
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-xs-1 col-md-1 col-lg-1 column">
@@ -321,4 +323,15 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+		  function getURLName(name) {
+			    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+			    var r = window.location.search.substr(1).match(reg);
+			    if (r != null) {
+			        return unescape(r[2]);
+			    }
+			    return null;
+			}
+      </script>
+      <script src="personalDesign/js/wx_js/person_subscription.js"></script>
 </html>

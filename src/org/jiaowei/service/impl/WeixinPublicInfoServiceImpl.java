@@ -16,17 +16,20 @@ public class WeixinPublicInfoServiceImpl extends CommonServiceImpl implements We
 
 
     @Override
-    public Map<String, Object> getPublicInfoById(String public_Id) {
-      /*  StringBuffer sql = new StringBuffer();
-        sql.append("SELECT * FROM \"PUBLIC_INFO\" where PUBLIC_INFO.\"id\" ='"+public_Id+"' ");
-        System.out.println(sql);
-        List<Map<String,Object>> result = findBySQL(sql.toString());
-        if(null == result || result.size() != 1){
+    public WeixinPublicInfoEntity getPublicInfoById(String public_Id) {
+        List<WeixinPublicInfoEntity> result = findByHql("FROM WeixinPublicInfoEntity  p WHERE p.id = '"+public_Id+"'");
+        if(result == null ){
+            System.out.println("没有找到对应的公众号ID");
             return null;
         }
-        System.err.println(result.get(0) + "=               ================" + result);;*/
-        Map<String,Object> result =  WeiXinOperUtil.getPublicInfoById(public_Id);
-        return result;
+        else if (result.size() != 1){
+            System.out.println("公众号不唯一");
+            return null;
+        }
+        else{
+            return result.get(0);
+        }
+
     }
 
     @Override

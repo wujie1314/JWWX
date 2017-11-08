@@ -177,7 +177,7 @@ public class WeiXinOperUtil {
 	            String jdbcPassword = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.password");
 	            conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
 	            
-	            String sql = "SELECT * FROM \"PUBLIC_INFO\" where PUBLIC_INFO.\"id\" ='"+public_Id+"' ";
+	            String sql = "SELECT * FROM \"PUBLIC_INFO\" where PUBLIC_INFO.\"ID\" ='"+public_Id+"' ";
 	            pre = conn.prepareStatement(sql);
         		rs = pre.executeQuery();
         		
@@ -309,7 +309,7 @@ public class WeiXinOperUtil {
 
         Map<String,Object> publicInfo = getPublicInfoByDeptID(deptID);
 
-        AccessTokenEntity accessTokenEntity = WeiXinConst.accessTokenMap.get(publicInfo.get("id").toString());
+        AccessTokenEntity accessTokenEntity = WeiXinConst.accessTokenMap.get(publicInfo.get("ID").toString());
 
         return  accessToken(accessTokenEntity,publicInfo);
 
@@ -330,7 +330,7 @@ public class WeiXinOperUtil {
         Long currentTime = System.currentTimeMillis() / 1000;
         AccessTokenEntity accessTokenEntity = accessTokenEn;
 
-        WeiXinConst.publicInfos.put(Integer.valueOf(publicInfo.get("dept_ID").toString()),publicInfo);
+        WeiXinConst.publicInfos.put(Integer.valueOf(publicInfo.get("DEPT_ID").toString()),publicInfo);
 
         if ((null != accessTokenEntity)
                 && (null != accessTokenEntity.getExpireIn())
@@ -340,7 +340,7 @@ public class WeiXinOperUtil {
         } else {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             String host = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
-                    + publicInfo.get("appId") + "&secret=" + publicInfo.get("appSecret");
+                    + publicInfo.get("APP_ID") + "&secret=" + publicInfo.get("APP_SECRET");
             System.out.println(host);
             HttpGet httpGet = new HttpGet(host);
             CloseableHttpResponse response = null;
@@ -356,7 +356,7 @@ public class WeiXinOperUtil {
                 accessTokenEntity.setAccessToken(accessToken);
                 accessTokenEntity.setObtainTime(System.currentTimeMillis() / 1000);
                 accessTokenEntity.setExpireIn(Long.valueOf(expiresIn));
-                WeiXinConst.accessTokenMap.put(publicInfo.get("id").toString(),accessTokenEntity);
+                WeiXinConst.accessTokenMap.put(publicInfo.get("ID").toString(),accessTokenEntity);
             } catch (IOException e) {
                 e.printStackTrace();
                 logger.info("获取accessToken发生了异常:" + e.getMessage());
@@ -377,7 +377,7 @@ public class WeiXinOperUtil {
 
     public static String getJsApiTicket(String publicID){
         Map<String,Object> publicInfo =getPublicInfoById(publicID);
-        JsapiTicketEntity jsapiTicketEntity = WeiXinConst.jsapiTicketMap.get(publicInfo.get("id").toString());
+        JsapiTicketEntity jsapiTicketEntity = WeiXinConst.jsapiTicketMap.get(publicInfo.get("ID").toString());
 
         return  jsApiTicket(jsapiTicketEntity,publicInfo);
     }
@@ -395,7 +395,7 @@ public class WeiXinOperUtil {
 
 
         Map<String,Object> publicInfo = getPublicInfoByDeptID(deptID);
-        JsapiTicketEntity jsapiTicketEntity = WeiXinConst.jsapiTicketMap.get(publicInfo.get("id").toString());
+        JsapiTicketEntity jsapiTicketEntity = WeiXinConst.jsapiTicketMap.get(publicInfo.get("ID").toString());
 
         return jsApiTicket(jsapiTicketEntity,publicInfo);
     }
@@ -419,7 +419,7 @@ public class WeiXinOperUtil {
 
             return jsapiTicketEntity.getJsapiTicket();
         } else {
-            String accessToken=WeiXinOperUtil.getAccessToken(publicInfo.get("id").toString());
+            String accessToken=WeiXinOperUtil.getAccessToken(publicInfo.get("ID").toString());
             CloseableHttpClient httpclient = HttpClients.createDefault();
             String host = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+accessToken+"&type=jsapi";
             HttpGet httpGet = new HttpGet(host);
@@ -439,7 +439,7 @@ public class WeiXinOperUtil {
                 jsapiTicketEntity.setJsapiTicket(ticket);
                 jsapiTicketEntity.setObtainTime(System.currentTimeMillis() / 1000);
                 jsapiTicketEntity.setExpireIn(Long.valueOf(expiresIn));
-                WeiXinConst.jsapiTicketMap.put(publicInfo.get("id").toString(),jsapiTicketEntity);
+                WeiXinConst.jsapiTicketMap.put(publicInfo.get("ID").toString(),jsapiTicketEntity);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -695,6 +695,24 @@ public class WeiXinOperUtil {
         }
     }
 
+    
+    public static String downloadFromUrl(String url,HttpServletRequest request){
+    	 String path = request.getRealPath("/") + File.separator + "upload";
+    	try {
+    		CloseableHttpClient httpclient = HttpClients.createDefault();
+        	HttpGet httpGet = new HttpGet(url);
+        	CloseableHttpResponse response = null;
+        	response = httpclient.execute(httpGet);
+        	String contentType = response.getEntity().getContentType().toString().trim();
+        	 if (!StringUtil.isEmpty(contentType)) {
+        		 System.out.println(contentType);
+             }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return url;
+    }
+    
     /**
      * @description
      * 从腾讯服务器上下载图片到本地
@@ -747,6 +765,7 @@ public class WeiXinOperUtil {
                 //转换文件格式
 //                String cmd =String.format("ffmpeg -i %s %s",path +File.separator + imagePath, path+File.separator+mediaId+".mp3");
                 System.out.println(path+ File.separator+ mediaId+".mp3");
+                //这个地方需要ffmpeg的可运行exe来转化语音格式
                 String cmd =String.format("E:\\Program Files\\ffmpeg\\bin\\ffmpeg -i %s %s",path + imagePath, path+ File.separator+ mediaId+".mp3");
                 System.out.println(cmd);
                 try {

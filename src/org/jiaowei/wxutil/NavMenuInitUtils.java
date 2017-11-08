@@ -848,9 +848,6 @@ public class NavMenuInitUtils {
 				if(isAllot == 0 && user.getServiceFreeNum() > 0 && !"关闭服务".equals(user.getStatus())){
 					result = csId;
 					onlineCsAllotMap.put(csId, 1);
-					
-					
-					
 					break;
 				}
 			}

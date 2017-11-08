@@ -103,7 +103,7 @@ public class ConnWeixinController {
     		Map<String, String> map = null;
             map = WeiXinOperUtil.receiveMsgFromWX(request);
             if (null != map) {
-//                WeiXinOperUtil.sendMsgToWX(response, "");
+                WeiXinOperUtil.sendMsgToWX(response, "");
             }
             if (null != url){
                 if(!url.isEmpty() && !map.get("MsgType").equals("text") && !map.get("MsgType").equals("voice") &&!map.get("MsgType").equals("image") ){
@@ -113,25 +113,27 @@ public class ConnWeixinController {
             }
 
             // 判断来自那个微信公平号
-            String toUserName = map.get("ToUserName");
+            String publicId = map.get("ToUserName");
             String msgTypeString = map.get("MsgType").toLowerCase().trim();
             String openId = map.get("FromUserName");
+            
             if(!NavMenuInitUtils.getInstance().userPublicIdMap.containsKey(openId)){
-				NavMenuInitUtils.getInstance().userPublicIdMap.put(openId,toUserName);// 试试
+				NavMenuInitUtils.getInstance().userPublicIdMap.put(openId,publicId);// 试试
 			}
-			else if( !NavMenuInitUtils.getInstance().userPublicIdMap.get(openId).equals(toUserName)){
+			else if( !NavMenuInitUtils.getInstance().userPublicIdMap.get(openId).equals(publicId)){
 				System.err.println("不同公众号里 有重复的openID \n " );
 				System.err.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-				System.err.println(openId + " :　" + toUserName);
+				System.err.println(openId + " :　" + publicId);
 				System.err.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 				System.err.println(openId + " :  " + NavMenuInitUtils.getInstance().userPublicIdMap.get(openId));
 			}
+            
             // 一个微信用户对应一个部门
-            Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(toUserName);
-			Integer deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
+            WeixinPublicInfoEntity publicInfo =  weixinPublicInfoService.getPublicInfoById(publicId);;
+			Integer deptId = Integer.parseInt(publicInfo.getDeptId().toString());
 			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
             //检查当前用户是否在用户表中
-            checkUser(toUserName,openId);
+            checkUser(publicId,openId);
             //处理消息
             if (msgTypeString.equals(MsgTypeEnum.EVENT.getValue().toLowerCase().trim())) {
                 //返回的消息是事件

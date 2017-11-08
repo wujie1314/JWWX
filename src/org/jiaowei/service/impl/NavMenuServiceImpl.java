@@ -324,9 +324,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 			HttpServletResponse response, HttpServletRequest request) {
 		String openId = map.get("FromUserName");
 		
-		//检查用户是否已经在服务状态 
-		WxStatusTmpTEntity tmp = NavMenuInitUtils.getInstance().getTmpTEntity(
-				openId);
+		//检查用户是否已经在服务状态 ,用来判断是否用自动回复功能
+		WxStatusTmpTEntity tmp = NavMenuInitUtils.getInstance().getTmpTEntity(openId);
 		// 微信用户发来信息保存数据库
 		saveMsgFromWeixin(map, request, tmp);
 		
@@ -563,11 +562,15 @@ public class NavMenuServiceImpl implements NavMenuService {
 		returnString += "【0】人工服务 \n";
 		returnString += "【#】退出自动回复";
 		
-		// 判断是否是最后一级菜单 
+		// 判断是否是最后一级，是返回一个链接图文信息
 		if(result.size() == 1 && result.get(0).getUrl() != null){
 			//是的直接覆盖前面写的String;
-			returnString = "<a href='"+result.get(0).getUrl()+"'>"+result.get(0).getContent()+"</a>";
+			returnString = XmlUtil.gen1ArticlesResponseMsg(map, "标题",
+    				result.get(0).getContent(), result.get(0).getUrl().replaceAll("openIdReplaceAll", openId));
+			WeiXinOperUtil.sendMsgToWX(response, returnString);
+			wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
 			WeiXinConst.navAutoMenu.remove(openId); // 清空该次自动回复信息
+			return;
 		}
 		String returnStr = XmlUtil.genTextResponseMsg(map, returnString);
 		WeiXinOperUtil.sendMsgToWX(response, returnStr);
