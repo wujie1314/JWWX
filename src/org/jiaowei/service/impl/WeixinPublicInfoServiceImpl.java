@@ -17,6 +17,10 @@ public class WeixinPublicInfoServiceImpl extends CommonServiceImpl implements We
 
     @Override
     public WeixinPublicInfoEntity getPublicInfoById(String public_Id) {
+    	if(public_Id == null){
+    		System.out.println("参入的公众号为null");
+    		return null;
+    	}
         List<WeixinPublicInfoEntity> result = findByHql("FROM WeixinPublicInfoEntity  p WHERE p.id = '"+public_Id+"'");
         if(result == null ){
             System.out.println("没有找到对应的公众号ID");

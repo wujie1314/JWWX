@@ -97,10 +97,7 @@ public class WeiXinOperUtil {
         Map<String, String> map = null;
         try {
             map = XmlUtil.parseXml(request);
-            String publicId = map.get("ToUserName");
-            Map<String,Object> publicMap = WeiXinOperUtil.getPublicInfoById(publicId);
-
-            logger.info("收到来自微信("+publicMap.get("id")+")-----"+publicMap.get("name")+" 发来的消息:" + FastJsonUtil.toJson(map));
+          
         } catch (Exception e) {
             logger.info("解析用户发过来的XML异常：" + e.getMessage());
         }

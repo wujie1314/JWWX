@@ -26,6 +26,7 @@ import org.jiaowei.service.WeixinUserInfoService;
 import org.jiaowei.service.WxNavigationMenuService;
 import org.jiaowei.service.WxStatusTmpService;
 import org.jiaowei.util.DateUtils;
+import org.jiaowei.util.FastJsonUtil;
 import org.jiaowei.util.MyBeanUtils;
 import org.jiaowei.wxutil.MsgTypeEnum;
 import org.jiaowei.wxutil.NavMenuInitUtils;
@@ -116,7 +117,22 @@ public class ConnWeixinController {
             String publicId = map.get("ToUserName");
             String msgTypeString = map.get("MsgType").toLowerCase().trim();
             String openId = map.get("FromUserName");
+
+            WeixinPublicInfoEntity publicInfo =  weixinPublicInfoService.getPublicInfoById(publicId);;
             
+            logger.info("收到来自微信("+publicInfo.getId()+")-----"+publicInfo.getName()+" 发来的消息:" + FastJsonUtil.toJson(map));
+            
+            // 一个微信用户对应一个部门
+			Integer deptId = Integer.parseInt(publicInfo.getDeptId().toString());
+			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
+			
+			
+			
+			
+            //检查当前用户是否在用户表中
+            checkUser(publicId,openId);
+            
+            // 一个openId 只能对应一个公众号
             if(!NavMenuInitUtils.getInstance().userPublicIdMap.containsKey(openId)){
 				NavMenuInitUtils.getInstance().userPublicIdMap.put(openId,publicId);// 试试
 			}
@@ -128,12 +144,6 @@ public class ConnWeixinController {
 				System.err.println(openId + " :  " + NavMenuInitUtils.getInstance().userPublicIdMap.get(openId));
 			}
             
-            // 一个微信用户对应一个部门
-            WeixinPublicInfoEntity publicInfo =  weixinPublicInfoService.getPublicInfoById(publicId);;
-			Integer deptId = Integer.parseInt(publicInfo.getDeptId().toString());
-			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
-            //检查当前用户是否在用户表中
-            checkUser(publicId,openId);
             //处理消息
             if (msgTypeString.equals(MsgTypeEnum.EVENT.getValue().toLowerCase().trim())) {
                 //返回的消息是事件
