@@ -18,7 +18,7 @@ import com.mysql.fabric.xmlrpc.base.Data;
 public class BbsCommentariesEntity {
 	private String id;
 	private Timestamp commentsTime;
-	private String tellID; //关联User表（说说发布人）
+	private String tellID; //关联tell表（说说发布人）
 	private String content;
 	private String commentsID; //关联user表（评论发布人）
 	

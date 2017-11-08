@@ -61,13 +61,6 @@ function addInvitationDiv(data,dataPic){
 	$("#allInvitation").append(InvitationDiv);
 }
 
-function reply(id){
-	window.location.href = "bbs/jsp/particulars.jsp?tellID=" + id;
-}
-
-function particulars(id){
-	alert("reply" + id);
-}
 //加图片
 function getPictrue(id,dataPic){
 	var picDiv = "";

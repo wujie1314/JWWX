@@ -23,3 +23,11 @@ function goExpert(){
 function goHighwayCondition(){
 	window.location.href = "/bbs/jsp/mine.jsp?openID=" + openID;
 }
+
+function reply(id){
+	window.location.href = "bbs/jsp/particulars.jsp?tellID=" + id + "&openID=" + openID;
+}
+
+function particulars(id){
+	window.location.href = "bbs/jsp/particulars.jsp?tellID=" + id + "&openID=" + openID;
+}
