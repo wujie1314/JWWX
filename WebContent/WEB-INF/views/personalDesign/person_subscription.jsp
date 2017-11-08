@@ -6,6 +6,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -42,7 +43,7 @@
 <script src="personalDesign/js/jquery-2.1.1.min.js"></script>
 <script src="personalDesign/js/bootstrap.js"></script>
 <script src="personalDesign/js/bootstrap.min.js"></script>
-<script src="personalDesign/js/wx_js/person_subscription.js"></script>
+
 
 
 
@@ -50,6 +51,7 @@
 </head>
 
 <body>
+<input id="Id"type="hidden" value=<%= request.getSession().getAttribute("openId")%> />
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-xs-1 col-md-1 col-lg-1 column">
@@ -59,7 +61,7 @@
 				<label>订阅类型</label>
 			</div>
 			<div class="col-xs-9 col-md-9 col-lg-9 column">
-				<select class="btn-group">
+				<select class="btn-group" id="lookType" >
 					<option value="" style="display:none;">请选择订阅类型</option>
 					<option onclick="checkSubsType(0);" name=subsType value="0">定时推送</option>
 					<option onclick="checkSubsType(1);" name=subsType value="1">立即推送</option>
@@ -214,8 +216,11 @@
 													<label>截图来源</label>
 												</div>
 												<div class="col-xs-9 col-md-9 col-lg-9 column">
-													<select class="btn-group">
+													<select class="btn-group" id="ph">
 														<option value="" style="display:none;">请选择截图来源</option>
+														<option value="0" >重庆交委公路局</option>
+														<option value="1" >重庆交委摄像头</option>
+														
 
 													</select>
 												</div>
@@ -229,8 +234,11 @@
 													<label>路段</label>
 												</div>
 												<div class="col-xs-9 col-md-9 col-lg-9 column">
-													<select class="btn-group">
+													<select class="btn-group" id="section">
 														<option value="" style="display:none;">请选择路段</option>
+														<option value="0" >G50沙坪坝段</option>
+														<option value="1" >G60九龙破段</option>
+														<option value="3" >G70巴南段</option>
 
 													</select>
 												</div>
@@ -264,7 +272,7 @@
 									</div>
 									<div class="col-xs-9 col-md-9 col-lg-9 column">
 										<select class="btn-group" id="color">
-											<option value="" style="display:none;">请选择线路名称</option>
+											<option value="" style="display:none;">请选择牌照颜色</option>
 											<option value="0">蓝色</option>
 											<option value="1">黑色</option>
 											<option value="2">白色</option>
@@ -298,7 +306,7 @@
 	<hr />
 
 	<div id="footer">
-		<input type="button" value="确定" onclick="addRoad();" id="confirm">
+		<input type="button" value="确定" onclick="judgetype();" id="confirm">
 	</div>
 
 	<div class="weui_dialog_alert" id="errorDialog" style="display: none;">
@@ -315,4 +323,15 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+		  function getURLName(name) {
+			    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+			    var r = window.location.search.substr(1).match(reg);
+			    if (r != null) {
+			        return unescape(r[2]);
+			    }
+			    return null;
+			}
+      </script>
+      <script src="personalDesign/js/wx_js/person_subscription.js"></script>
 </html>

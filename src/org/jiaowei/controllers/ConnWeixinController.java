@@ -88,7 +88,7 @@ public class ConnWeixinController {
             WeiXinOperUtil.sendMsgToWX(response, echostr);
         }
     }
-
+    
     /**
      * 接收来自微信服务器的消息
      *
@@ -193,6 +193,7 @@ public class ConnWeixinController {
      * 创建菜单
      */
     public void createMenu(String publicId) {
+
     	String menuString = " {\n" +
                 "     \"button\":[\n" +
                 "      {\n" +
@@ -286,7 +287,9 @@ public class ConnWeixinController {
                 "       }]\n" +
                 " }";
     	System.err.println(menuString);
+
         WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken(publicId)); // 菜单 这里不需要更改
+
     }
 //    /**
 //     * 创建菜单
@@ -468,6 +471,7 @@ public class ConnWeixinController {
         if (null == map || map.size() < 1)
             return;
         String openId = map.get("FromUserName");
+
         String publicId = map.get("ToUserName");
         createMenu(publicId);
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
@@ -613,7 +617,7 @@ public class ConnWeixinController {
 //    }
 
     /**
-     * 微信用户評分
+     * 微信用户評分 
      *
      * @param map
      * @param entity

@@ -6,13 +6,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.jiaowei.entity.RoadDlfxEntity;
 import org.jiaowei.entity.RoadHtljEntity;
 import org.jiaowei.entity.RoadLxfdEntity;
 import org.jiaowei.entity.RoadSubscribeEntity;
 import org.jiaowei.service.SysUserService;
+import org.jiaowei.util.CommonConstantUtils;
 import org.jiaowei.util.StringUtil;
+import org.jiaowei.wxutil.NavMenuInitUtils;
+import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.jiaowei.wxutil.WeixinUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,9 +35,10 @@ public class PersonalDesignController {
      * @return
      */
     @RequestMapping(value = "/getRoadName")
-    public String getRoadLxfd(HttpServletRequest request,Map<String,Object> map)
-    {
-    	String openId = request.getParameter("openId");
+    public String getRoadLxfd(HttpServletRequest request,Map<String,Object> map,HttpServletResponse response)
+    { 
+    	String openId = request.getParameter("openID");
+    	System.out.println(openId+".....");
     	StringBuffer sql=new StringBuffer();
     	sql.append(" SELECT ROAD_CODE,ROAD_NAME,LD_NAME,ROAD_DIR,START_NAME,END_NAME,DESCRIPT,ROAD_CODE1");
     	sql.append(" FROM ROAD_LXFD");
@@ -63,7 +68,9 @@ public class PersonalDesignController {
 		//查询文字列表
 		map.put("openId", openId);
 		map.put("road", road);
+		request.getSession().setAttribute("openId", openId);
         request.setAttribute("list", list);
+        System.out.println("*********"+request.getSession().getAttribute("openId"));
 		return "personalDesign/person_subscription";
     }
     
@@ -142,6 +149,68 @@ public class PersonalDesignController {
     	}
         return list;
     }
+    @RequestMapping(value = "/getViolationInformation")
+    @ResponseBody
+    public void getViolationInformation(String openId,String lookType,String DATE,String TIME,String license,String color){
+    	String message = null;
+    	
+    	if(license.equals("123")){
+    		message="你闯了红灯，罚款500";
+    	}else{
+    		message="你的表现很好，无违章";
+    	}
+    	System.out.println("小朋友你违章"+openId);
+    	   String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+    			   openId, String.format(message));
+    	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
+		//发送給用户
+		// 这里有点问题 获取不到对应的公众号accessToken
+		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+    	
+    }
+    @RequestMapping(value = "/getTraffic")
+    @ResponseBody
+    public void getTraffic(String openId,String lookType,String DATE,
+    		String TIME,String lxfd,String htlj_begin,String htlj_end,String dlfx){
+    	String message = null;
+    	if(lxfd.equals("G42沪蓉高速")){
+    		message="10月26日9时21分，G42沪蓉高速垫忠段上行方向明月山隧道因施工养护，上行方向正线封闭，下行方向单道双通。"
+    				+ "长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计11月25日结束。";
+    	}if(lxfd.equals("G50沪渝高手")){
+    		message="  6月12日17时24分，G50沪渝高速垫忠段下行方向谭家寨隧道封闭施工，"
+    				+ "上行方向单洞双通，双向长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计12月31日施工结束。";
+    	}else{
+    		message="道路通畅可以放心通行";
+    	}
+    	System.out.println("道路信息");
+    	String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+ 			   openId, String.format(message));
+ 	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
+		//发送給用户
+		// 这里有点问题 获取不到对应的公众号accessToken
+		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+    	
+    	
+    }
+    @RequestMapping(value = "/getTrafficByPicture")
+    @ResponseBody
+    public void getTrafficByPicture(String openId,String lookType,String DATE,
+    		String TIME,String ph,String section){
+    	String message = "图片一张";
+    	
+    	System.out.println("道路信息");
+    	String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+ 			   openId, String.format(message));
+ 	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
+		//发送給用户
+		// 这里有点问题 获取不到对应的公众号accessToken
+		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+    	
+    	
+    }
+    
+    
+    
     
     
   //生成图片验证码

@@ -20,6 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>	
+
   </head>
   <style>
 <!--
@@ -291,4 +292,20 @@ h3:before {
     }
 
 </script>
+  	<input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> />
+  	<a onclick="Personal()">私人定制</a>
+  	<a>失物招领</a>
+  	<a id="BBS" onclick="BBS()">论坛</a>
+  </body>
+  
+  <script type="text/javascript">
+  		function BBS(){
+  			var openID = $("#openID").val();
+  			window.location.href = "bbs/jsp/mine.jsp?openID=" + openID;  
+  		}
+  		function Personal(){
+  			var openID = $("#openID").val();
+  			window.location.href = "/psDesign/getRoadName?openID=" + openID;  
+  		}
+  </script>
 </html>
