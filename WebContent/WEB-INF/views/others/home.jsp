@@ -10,244 +10,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <base href="<%=basePath%>">
     
     <title>其他页面</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-<!-- 	<link rel="stylesheet" type="text/css" href="styles.css"> -->
-
-<script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
+	
+<link rel="stylesheet" type="text/css" href="/css/others/style.css"> 
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>	
 <script type="text/javascript" src="/js/others/wx_sdk.js"></script>
+<script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
 
-  </head>
-  <style>
-<!--
-html {
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -webkit-user-select: none;
-  user-select: none;
-}
-body {
-  line-height: 1.6;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #f1f0f6;
-}
-* {
-  margin: 0;
-  padding: 0;
-}
-button {
-  font-family: inherit;
-  font-size: 100%;
-  margin: 0;
-  *font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-ul,
-ol {
-  padding-left: 0;
-  list-style-type: none;
-}
-a {
-  text-decoration: none;
-}
-.label_box {
-  background-color: #ffffff;
-}
-.label_item {
-  padding-left: 15px;
-}
-.label_inner {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  min-height: 24px;
-  position: relative;
-}
-.label_inner:before {
-  content: " ";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 200%;
-  height: 1px;
-  border-top: 1px solid #ededed;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scale(0.5);
-  transform: scale(0.5);
-  top: auto;
-  bottom: -2px;
-}
-.lbox_close {
-  position: relative;
-}
-.lbox_close:before {
-  content: " ";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 200%;
-  height: 1px;
-  border-top: 1px solid #ededed;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scale(0.5);
-  transform: scale(0.5);
-}
-.lbox_close:after {
-  content: " ";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 200%;
-  height: 1px;
-  border-top: 1px solid #ededed;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scale(0.5);
-  transform: scale(0.5);
-  top: auto;
-  bottom: -2px;
-}
-.lbox_close .label_item:last-child .label_inner:before {
-  display: none;
-}
-.btn {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 14px;
-  padding-right: 14px;
-  font-size: 18px;
-  text-align: center;
-  text-decoration: none;
-  overflow: visible;
-  /*.btn_h(@btnHeight);*/
-  height: 42px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  color: #ffffff;
-  line-height: 42px;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-}
-.btn.btn_inline {
-  display: inline-block;
-}
-.btn_primary {
-  background-color: #04be02;
-}
-.btn_primary:not(.btn_disabled):visited {
-  color: #ffffff;
-}
-.btn_primary:not(.btn_disabled):active {
-  color: rgba(255, 255, 255, 0.9);
-  background-color: #039702;
-}
-button.btn {
-  width: 100%;
-  border: 0;
-  outline: 0;
-  -webkit-appearance: none;
-}
-button.btn:focus {
-  outline: 0;
-}
-.wxapi_container {
-  font-size: 16px;
-}
-h1 {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 2em;
-  padding-left: 15px;
-  color: #8d8c92;
-}
-.desc {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 2em;
-  color: #8d8c92;
-}
-.wxapi_index_item a {
-  display: block;
-  color: #3e3e3e;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-.wxapi_form {
-  background-color: #ffffff;
-  padding: 0 15px;
-  margin-top: 30px;
-  padding-bottom: 15px;
-}
-h3 {
-  padding-top: 16px;
-  margin-top: 25px;
-  font-size: 16px;
-  font-weight: 400;
-  color: #3e3e3e;
-  position: relative;
-}
-h3:first-child {
-  padding-top: 15px;
-}
-h3:before {
-  content: " ";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 200%;
-  height: 1px;
-  border-top: 1px solid #ededed;
-  -webkit-transform-origin: 0 0;
-  transform-origin: 0 0;
-  -webkit-transform: scale(0.5);
-  transform: scale(0.5);
-}
-.btn {
-  margin-bottom: 15px;
-}
--->
-</style>
-<script>
-    $(document).ready(function(){
-        initPage();
-    });
-    function initPage() {
-        alert(window.location.href);/***用于获得当前连接url用**/
-        /***用户点击分享到微信圈后加载接口接口*******/
-        $.post("others/getWxConfig",{"url":window.location.href,"openId":"<%=request.getSession().getAttribute("othersOpenId")%>"},function(data,status){
-            data=eval("("+data+")");
-            console.log(data.appId+" "+data.timestamp+" "+data.nonceStr+" "+data.signature);
-            wx.config({
-                debug: true,
-                appId: data.appId,
-                timestamp:data.timestamp,
-                nonceStr:data.nonceStr,
-                signature:data.signature,
-                jsApiList: [
-                    'checkJsApi',
-                    'getLocation',
-                    'onMenuShareTimeline',
-                    'hideOptionMenu',
-                ]
-            })
-            wx.ready(function(){
-                alert("准备分享");
-            });
-            wx.error(function(res){
-                alert("验证失败"+res);
-                // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-            });
-        });
-    }
-</script>
+<script type="text/javascript" src="/js/others/wx_sdk.js"></script>
+</head>
   <body>
   	<label>openId</label>
   	<input type="text" value=<%=request.getSession().getAttribute("othersOpenId")%> id="openID"/>
@@ -294,4 +64,20 @@ h3:before {
     }
    </script>
   </body>
+  		<input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> />
+  		<button  class = "btn btn_primary" onclick="Personal()" >私人定制</button>
+  		<button class = "btn btn_primary" >失物招领</button>
+		<button class = "btn btn_primary"  id="BBS" onclick="BBS()" >论坛</button>
+  		<button  class = "btn btn_primary" id="ddd" onclick="getLocationdd()">SDK获取微信当前位置</button>
+  </body>
+  <script type="text/javascript">
+  		function BBS(){
+  			var openID = $("#openID").val();
+  			window.location.href = "bbs/jsp/mine.jsp?openID=" + openID;  
+  		}
+  		function Personal(){
+  			var openID = $("#openID").val();
+  			window.location.href = "/psDesign/getRoadName?openID=" + openID;  
+  		}
+  </script>
 </html>
