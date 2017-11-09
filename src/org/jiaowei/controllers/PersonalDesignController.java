@@ -164,8 +164,10 @@ public class PersonalDesignController {
     		message="你的表现很好，无违章";
     	}
     	System.out.println("小朋友你违章"+openId);
+    	if(delayTimeNUM>=0){
     	 Timer timer = new Timer();
          timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
+    	}
     	 /*  String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
     			   openId, String.format(message));
     	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
@@ -190,8 +192,10 @@ public class PersonalDesignController {
     		message="道路通畅可以放心通行";
     	}
     	System.out.println("道路信息");
+    	if(delayTimeNUM>=0){
     	Timer timer = new Timer();
         timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
+    	}
     	
     	
     }
