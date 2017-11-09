@@ -1,8 +1,12 @@
 package org.jiaowei.controllers;
 
+import java.awt.Robot;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -151,28 +155,33 @@ public class PersonalDesignController {
     }
     @RequestMapping(value = "/getViolationInformation")
     @ResponseBody
-    public void getViolationInformation(String openId,String lookType,String DATE,String TIME,String license,String color){
+    public void getViolationInformation(String openId,String lookType,String DATE,String TIME,String license,String color,String delayTime){
     	String message = null;
-    	
+    	int delayTimeNUM=Integer.valueOf(delayTime);
     	if(license.equals("123")){
     		message="你闯了红灯，罚款500";
     	}else{
     		message="你的表现很好，无违章";
     	}
     	System.out.println("小朋友你违章"+openId);
-    	   String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+    	if(delayTimeNUM>=0){
+    	 Timer timer = new Timer();
+         timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
+    	}
+    	 /*  String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
     			   openId, String.format(message));
     	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
 		//发送給用户
 		// 这里有点问题 获取不到对应的公众号accessToken
-		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);*/
     	
     }
     @RequestMapping(value = "/getTraffic")
     @ResponseBody
     public void getTraffic(String openId,String lookType,String DATE,
-    		String TIME,String lxfd,String htlj_begin,String htlj_end,String dlfx){
+    		String TIME,String lxfd,String htlj_begin,String htlj_end,String dlfx,String delayTimeT){
     	String message = null;
+    	int delayTimeNUM=Integer.valueOf(delayTimeT);
     	if(lxfd.equals("G42沪蓉高速")){
     		message="10月26日9时21分，G42沪蓉高速垫忠段上行方向明月山隧道因施工养护，上行方向正线封闭，下行方向单道双通。"
     				+ "长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计11月25日结束。";
@@ -183,12 +192,10 @@ public class PersonalDesignController {
     		message="道路通畅可以放心通行";
     	}
     	System.out.println("道路信息");
-    	String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
- 			   openId, String.format(message));
- 	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
-		//发送給用户
-		// 这里有点问题 获取不到对应的公众号accessToken
-		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+    	if(delayTimeNUM>=0){
+    	Timer timer = new Timer();
+        timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
+    	}
     	
     	
     }
@@ -208,6 +215,30 @@ public class PersonalDesignController {
     	
     	
     }
+    class Task extends TimerTask {
+        private String openId;
+        private String message;
+ 
+        public  Task(String openId,String message) {
+            this.openId = openId;
+            this.message=message;
+        }
+       
+ 
+        @Override
+        public void run() {
+        	System.out.println(".........."+openId);
+        	 String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+      			   openId, String.format(message));
+      	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
+  		//发送給用户
+  		// 这里有点问题 获取不到对应的公众号accessToken
+  		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+            
+        }
+ 
+    }
+    
     
     
     

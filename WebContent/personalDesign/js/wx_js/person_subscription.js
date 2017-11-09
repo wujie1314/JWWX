@@ -141,49 +141,33 @@ function judgetype() {
 					if ($("#license").val() != ""
 							&& $("#color").find("option:selected").text() != "请选择牌照颜色") {
 						var temper = $("#DATE").val() + " " + $("#TIME").val();
-						var dt = new Date(temper.replace(/-/, "/"));
-						window.setTimeout(getViolationInformation, dt
-								- (new Date));
-						$("#license").val("");
-						var a = document.getElementById("color");
-						a.options[0].selected = true;
-						var a = document.getElementById("lookType");
-						a.options[0].selected = true;
-						$("#DATE").val("");
-						$("#TIME").val("");
-						alert("请求成功");
+						var date= new Date(Date.parse(temper.replace(/-/g,   "/")));
+						var delayTime2=(date - (new Date()));
+						alert(delayTime2);
+						getViolationInformation(delayTime2);
+						alert("请求成功违章定时");
 					} else
 						alert("填写车辆信息");
 				} else
 					alert("请填写日期");
 			} else {
-				getViolationInformation();
+				var delayTime=0;
+				getViolationInformation(delayTime);
 			}
 		} else if (type == "路况信息") {
 			var lookType1 = $("#lookType").find("option:selected").text();
 			if (lookType1 == "定时推送") {
 				if ($("#DATE").val() != "" && $("#TIME").val() != "") {
 					var temper1 = $("#DATE").val() + " " + $("#TIME").val();
-					var dt1 = new Date(temper1.replace(/-/, "/"));
-					window.setTimeout(getTraffic, dt1 - (new Date));
-					var a = document.getElementById("lxfd");
-					a.options[0].selected = true;
-					var a = document.getElementById("lookType");
-					a.options[0].selected = true;
-					var a = document.getElementById("htlj_begin");
-					a.options[0].selected = true;
-					var a = document.getElementById("htlj_end");
-					a.options[0].selected = true;
-					var a = document.getElementById("dlfx");
-					a.options[0].selected = true;
-					$("#DATE").val("");
-					$("#TIME").val("");
+					var date1= new Date(Date.parse(temper1.replace(/-/g,   "/")));
+					var delayTime1=(date1 - (new Date()));
+					getTraffic(delayTime1);
 					alert("请求成功");
 				} else
 					alert("请填写日期");
-
 			} else
-				getTraffic();
+				var delayTime1=0;
+				getTraffic(delayTime1);
 		} else if($("#ph").find("option:selected").text()!="请选择截图来源"&& $("#section").find("option:selected").text()!="请选择路段"){
 			getTrafficByPicture();
 			
@@ -194,7 +178,7 @@ function judgetype() {
 		alert("请选择订阅类型");
 
 }
-function getViolationInformation() {
+function getViolationInformation(delayTime1) {
 	var parame = {};
 	parame.openId =$("#Id").val();
 	parame.lookType = $("#lookType").find("option:selected").text();
@@ -202,6 +186,7 @@ function getViolationInformation() {
 	parame.TIME = $("#TIME").val();
 	parame.license = $("#license").val();
 	parame.color = $("#color").find("option:selected").text();
+	parame.delayTime =delayTime1;
 	if ($("#license").val() != ""
 			&& $("#color").find("option:selected").text() != "请选择牌照颜色") {
 		$.ajax({
@@ -217,13 +202,13 @@ function getViolationInformation() {
 				a.options[0].selected = true;
 				$("#DATE").val("");
 				$("#TIME").val("");
-				alert("请求成功");
+				alert("请求成功违章信息");
 			}
 		});
 	} else
 		alert("填写车辆信息");
 }
-function getTraffic() {
+function getTraffic(delayTimeT) {
 	var parame = {};
 	parame.openId = $("#Id").val();
 	parame.lookType = $("#lookType").find("option:selected").text();
@@ -233,8 +218,9 @@ function getTraffic() {
 	parame.htlj_begin = $("#htlj_begin").find("option:selected").text();
 	parame.htlj_end = $("#htlj_end").find("option:selected").text();
 	parame.dlfx = $("#dlfx").find("option:selected").text();
-	if($("#lxfd").find("option:selected").text()!="请选择线路名称"&&$("#htlj_begin").find("option:selected").text()!="请选择开始路段"&&
-			$("#htlj_end").find("option:selected").text()!="请选择结束路段"&&$("#dlfx").find("option:selected").text()!="请选择道路方向"){
+	parame.delayTime =delayTimeT;
+	if($("#lxfd").find("option:selected").text()!="请选择线路名称"&& $("#htlj_begin").find("option:selected").text()!="请选择开始路段"&&
+			$("#htlj_end").find("option:selected").text()!="请选择结束路段"&& $("#dlfx").find("option:selected").text()!="请选择道路方向"){
 	$.ajax({
 		type : "post",
 		url : "/psDesign/getTraffic",
