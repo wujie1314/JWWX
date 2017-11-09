@@ -40,5 +40,9 @@ public class mineController {
 		return mineService.initTransportation(begin,end);
 	}
 	 
-	 
+	 @RequestMapping(value = "/initSpecialist")
+	 @ResponseBody
+	 public Map<String, Object> initSpecialist(int begin, int end){
+		return mineService.initSpecialist(begin,end);
+	}
 }

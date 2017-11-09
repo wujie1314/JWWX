@@ -41,7 +41,28 @@ public class WriteAboutController {
     	//System.out.println(" oppennID=" + oppenID + " content " + content);
 		return writeAboutService.announce(list, oppenID, content);
 	}
+    
+	/*
+	 *说说上传*
+	 */
+    @RequestMapping(value = "/specialist")
+    @ResponseBody
+	public String specialist(HttpServletRequest request,HttpServletResponse response){
+    	List<String> list = new ArrayList<String>();
+    	String oppenID = request.getParameter("oppenID");  
+    	String content = request.getParameter("content").toString();  
+    	String imgFile = request.getParameter("imgFile"); 
+    	String name = request.getParameter("name"); 
 
+    	JSONArray json = JSONArray.fromObject(imgFile);
+    	for (int i = 0; i < json.size(); i++) {
+			list.add((String) json.get(i));
+		}
+    	System.out.println(list.size());
+    	//System.out.println(" oppennID=" + oppenID + " content " + content);
+		return writeAboutService.specialist(list, oppenID, content,name);
+	}
+    
 	public List<String> getImgFile() {
 		return imgFile;
 	}
