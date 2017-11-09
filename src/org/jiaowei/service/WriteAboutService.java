@@ -8,4 +8,7 @@ public interface WriteAboutService extends CommonService{
 
 	String announce(List<String> imgFile, String oppennID, String content);
 
+	String specialist(List<String> imgFile, String oppennID, String content,
+			String name);
+
 }

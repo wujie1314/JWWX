@@ -123,7 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<!--face end-->
 	</div>
 </div>
-  <span class='submit' onclick="announce()">发表</span>
+  <span class='submit' onclick="announce()" id="announce">发表</span>
   <input type="file" id="file"/ style="display: none;">  
   <div id="result" align="center"></div>  
   </body>

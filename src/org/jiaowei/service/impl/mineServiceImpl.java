@@ -80,16 +80,16 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	public Map<String, Object> initTransportation(int begin, int end){
 		String sql = "";
 		sql = "SELECT * FROM (SELECT BBS_TELL. ID,BBS_USER.HEADIMAGE, BBS_TELL. CONTENT AS CONTENT,to_char(BBS_TELL.PUBLISHEDTIME,'YYYY-MM-DD HH24:MI:SS') AS PUBLISHEDTIME, "
-				 +" BBS_TELL.COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME,ROWNUM as rn FROM BBS_TELL,BBS_USER WHERE BBS_USER.ID = BBS_TELL.USERID ORDER BY BBS_TELL.ID desc)"
+				 +" BBS_TELL.COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME,ROWNUM as rn FROM BBS_TELL,BBS_USER WHERE BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL.ID desc)"
 				 +" WHERE rn > "+ begin +" and rn < " + end;
 		
 		String picSql = " SELECT BBS_PICTURE.TELLID,BBS_PICTURE.IMGDATA,ROWNUM AS RN FROM BBS_PICTURE,BBS_USER,BBS_TELL WHERE "
 						+" BBS_PICTURE.TELLID in (SELECT ID FROM(SELECT *FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
-						+"  BBS_USER.ID = BBS_TELL.USERID ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) AND BBS_PICTURE.TELLID = BBS_TELL.ID AND BBS_TELL.USERID = BBS_USER.ID";
+						+"  BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) AND BBS_PICTURE.TELLID = BBS_TELL.ID AND BBS_TELL.USERID = BBS_USER.ID";
 		
 		String commentSql = " SELECT BBS_COMMENTARIES.TELLID,BBS_COMMENTARIES.CONTENT,BBS_USER.WECHATNAME,BBS_USER.HEADIMAGE,BBS_COMMENTARIES.COMMENTSTIME, ROWNUM AS RN FROM BBS_COMMENTARIES,BBS_USER WHERE "
 						   +" BBS_COMMENTARIES.TELLID in (SELECT ID FROM(SELECT * FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
-						   +" BBS_USER.ID = BBS_TELL.USERID ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) and BBS_USER.ID = BBS_COMMENTARIES.COMMENTSID";
+						   +" BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) and BBS_USER.ID = BBS_COMMENTARIES.COMMENTSID";
 		System.out.println(sql);
 		System.out.println(picSql);
 		System.out.println(commentSql);
@@ -103,6 +103,36 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 		map.put("resultComment", listComment);
 		return map;
 	}
+	
+	@Override 
+	//初始化专家界面信息
+	public 	Map<String, Object> initSpecialist(int begin, int end){
+		String sql = "";
+		sql = "SELECT * FROM (SELECT BBS_TELL. ID,BBS_USER.HEADIMAGE, BBS_TELL. CONTENT AS CONTENT,to_char(BBS_TELL.PUBLISHEDTIME,'YYYY-MM-DD HH24:MI:SS') AS PUBLISHEDTIME, "
+				 +" BBS_TELL.COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME,ROWNUM as rn FROM BBS_TELL,BBS_USER WHERE BBS_USER.ID = BBS_TELL.USERID  AND BBS_USER.STATE = '1' ORDER BY BBS_TELL.ID desc)"
+				 +" WHERE rn > "+ begin +" and rn < " + end;
+		
+		String picSql = " SELECT BBS_PICTURE.TELLID,BBS_PICTURE.IMGDATA,ROWNUM AS RN FROM BBS_PICTURE,BBS_USER,BBS_TELL WHERE "
+						+" BBS_PICTURE.TELLID in (SELECT ID FROM(SELECT *FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
+						+"  BBS_USER.ID = BBS_TELL.USERID  AND BBS_USER.STATE = '1' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) AND BBS_PICTURE.TELLID = BBS_TELL.ID AND BBS_TELL.USERID = BBS_USER.ID";
+		
+		String commentSql = " SELECT BBS_COMMENTARIES.TELLID,BBS_COMMENTARIES.CONTENT,BBS_USER.WECHATNAME,BBS_USER.HEADIMAGE,BBS_COMMENTARIES.COMMENTSTIME, ROWNUM AS RN FROM BBS_COMMENTARIES,BBS_USER WHERE "
+						   +" BBS_COMMENTARIES.TELLID in (SELECT ID FROM(SELECT * FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
+						   +" BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) and BBS_USER.ID = BBS_COMMENTARIES.COMMENTSID";
+		System.out.println(sql);
+		System.out.println(picSql);
+		System.out.println(commentSql);
+		List<Object> list = findBySQL(sql);
+		List<Object> listPic = findBySQL(picSql);
+		List<Object> listComment = findBySQL(commentSql);
+		System.out.println(sql);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", list);
+		map.put("resultPic", listPic);
+		map.put("resultComment", listComment);
+		return map;
+	}
+
 	//判断用户是否存在
 	public String isExistUser(String openID){
 		String sql = "SELECT * FROM BBS_USER WHERE OPPENID = '" + openID + "'";
