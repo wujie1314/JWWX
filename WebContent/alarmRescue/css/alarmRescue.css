@@ -1,0 +1,186 @@
+ html,body{
+	margin:0;
+	padding:0;
+	z-index: -10;
+	position:fixed;
+	width:100%;
+	height:100%;
+	font-family: "Microsoft YaHei";
+}
+
+#dituContent{
+	position: absolute;
+	z-index: -10;
+	width:100%;
+	height:70%;
+	border:#ccc solid 1px;
+}
+/**
+.contentChoice,.repairDepot,.Relocation,.submit,#phone, #relocation,.currentPosition,.drivingDirection,.repairReason{
+	 display: -webkit-box;
+}
+*/
+.contentChoice{
+	width: 100%;
+	position:absolute;
+	height: 15%;
+	background:rgba(0,0,0,0.3);
+	z-index: 20;
+	display:flex;
+	justify-content:flex-start;
+	flex-direction:row;
+	flex-wrap:row;
+	overflow-x:scroll;
+}
+
+.repairDepot{
+	height: 100%;
+	display:flex;
+	padding:0 1%;
+	min-width:25%;
+}
+
+.repairFrame{
+	width:100%;
+	height:60%;
+	background:#fff;
+	margin:auto;
+	border-radius:8px;
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.repairDepotName{
+	font-size: 34px;
+	width:100%;
+	padding-left:20px;
+	padding-right:20px;
+	margin:auto;
+	display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.Relocation{
+	position:absolute;
+	width:15%;
+	height:10%;
+	display:flex;
+	right:0;
+	top:55%;
+}
+
+#relocation{
+	width:60%;
+	height:55%;	
+	background:#fff;
+	display:flex;
+	margin:auto;
+}
+
+.Relocation img{
+	width:60%;
+	height:60%;
+	margin:auto;
+}
+
+.contnetFoot{
+	width: 100%;
+	height: 30%;
+	position:absolute;
+	z-index: 20;
+	bottom: 0px;
+	background:#fff;
+}
+
+.currentPosition{
+	height:20%;
+	display:flex;
+	align-items:center;
+}
+
+.drivingDirection,.repairReason,.phoneNumber{
+	height:20%;
+	width:80%;
+	display:flex;
+	align-items:center;
+}
+
+.labelInfo{
+	font-size:38px;
+	margin-left:3%;
+	width:25%;
+}
+
+#phoneNum{
+	font-size:38px;
+	color:#333;
+	margin-left:10px;
+	background:#fff;
+	border:none;
+	height:90%;
+}
+
+#phone{
+	position:absolute;
+	width:15%;
+	height:15%;
+	background:	#FFF;
+	right:0;
+	display:flex;
+	margin-top:-5%;
+	align-items:center;
+}
+
+#phone img{
+	width:40%;
+	height:80%;
+	margin:auto;
+}
+
+#currentLocation,.choiceDirretion,.emergency{
+	margin-left:10px;
+	font-size: 38px;
+	display:inline-block;
+	width:75%;
+	color:#333;
+	display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+hr{
+	border:none;
+	border-top:1px solid #e5e5e5;
+	margin:0;
+}
+
+.choiceDirretion input,.emergency input{
+	width:40px;
+	height:40px;
+	margin:0 10px 0 0;
+	vertical-align:text-bottom;
+	margin-bottom:3px;
+}
+
+.choiceDirretion label,.emergency label{
+	margin-right:5%;
+}
+
+.submit{
+	width: 100%;
+	height: 40%;
+	display:flex;
+}
+#submitButton{
+	width: 90%;
+	height: 60%;
+	font-size: 38px;
+	margin: auto;
+	color: #fff;
+	background-color:#2a70d2;
+	border-radius:15px;
+}
