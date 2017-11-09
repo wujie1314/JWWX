@@ -106,7 +106,7 @@ function addPicture(){
 function announce(){
 	var content = $("#message").html();
 	var imgFileString = JSON.stringify(imgFile);
-
+	$("#announce").attr("disabled", true); 
     $.ajax({  
         async:false,//是否异步  
         cache:false,//是否使用缓存  

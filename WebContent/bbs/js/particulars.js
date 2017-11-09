@@ -86,6 +86,11 @@ function addACommentDiv(comment){
 //发表评论
 function review(){
 	 var reviewData = $("#message").html();
+	 if(reviewData.length == 0){
+		 alert("请输入您的评论内容");
+		 return;
+	 }
+	 $("#review").attr("disabled", true); 
 	 //alert(reviewData);
 	 $.ajax({
 			type :"post",
@@ -98,6 +103,7 @@ function review(){
 				openID : openID
 			},
 			success : function(data){
+				$("#review").attr("disabled", false); 
 				window.location.href = "bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID;
 				// alert(data.result);
 				//addContent(data)
