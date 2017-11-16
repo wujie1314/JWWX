@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
   <head>
     <base href="<%=basePath%>">
@@ -17,11 +17,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
 </head>
   <body>
-  		<input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> />
-  		<button class = "btn btn_primary" onclick="Personal()" >私人定制</button>
-  		<button class = "btn btn_primary" >失物招领</button>
-		<button class = "btn btn_primary"  id="BBS" onclick="BBS()" >论坛</button>
-  		<button class = "btn btn_primary" id="ddd" onclick="getLocationdd()">SDK获取微信当前位置</button>
+  		<%-- <input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> /> --%>
+  		<div class="linkNiv" onclick="Personal()" >
+  			<span class ="linkName">私人定制</span>	
+  		</div>
+  		<div class="linkNiv" onclick="" >
+  			<span class ="linkName">失物招领</span>	
+  		</div>
+  		<div class="linkNiv" id="BBS"  onclick="BBS()" >
+  			<span class ="linkName">论坛</span>	
+  		</div>
+  		<div class="linkNiv" id="ddd" onclick="getLocationdd()" >
+  			<span class ="linkName">SDK获取微信当前位置</span>	
+  		</div>
   </body>
   <script type="text/javascript">
   		function BBS(){
