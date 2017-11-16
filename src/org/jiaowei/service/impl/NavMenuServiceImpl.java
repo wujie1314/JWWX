@@ -414,6 +414,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 				msgFromWxEntity.setVideoUrl(WeiXinOperUtil.downloadImageFromWx(
 						map, request));
 			}else if("location".equals(map.get("MsgType"))){
+				// 地理位置信息，目前没有存储数据库
+				return;
 				
 			}else if ("event".equals(msgFromWxEntity.getMsgType())) {// 其他信息不记录进数据库
 			

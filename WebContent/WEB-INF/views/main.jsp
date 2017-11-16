@@ -471,7 +471,7 @@ body {
 					微信标识：<input name="openid" type="text" readonly="true">
 				</div>
 				<div style="margin-top: 5px;">
-					微信名称：<input name="nickname" type="text" readonly="true">
+					微信名称：<input name="nicknam e" type="text" readonly="true">
 				</div>
 				<div style="margin-top: 5px;">
 					电话号码：<input name="phone" type="text">
@@ -561,17 +561,92 @@ body {
 	<!-- 论坛window -->
 	<div id="bbs-window" class="easyui-window" title="新增论坛帖子"
 		closed="true" iconCls="icon-save">
-		<!--页面录音  开始-->
-		<div class="container">
-			<div class="bbs_left_list"></div>
-			<div class="bbs_right_content"></div>
-			<form id="uploadForm" name="uploadForm"
-				action="/fileUpload/saveVoice">
-				<input name="authenticity_token" value="xxxxx" type="hidden">
-				<input name="upload_file[filename]" value="1" type="hidden">
-				<input name="format" value="json" type="hidden">
-			</form>
-		</div>
+			<div class="bbs_left_list" >
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				
+			</div>
+			<div class="bbs_right_content" style="width:450px;height: 400px;float: right; ">
+				<textarea class="form-control" id="divText"></textarea>
+		  			<input type="file" id="bbsImg_file"/>  
+		  			<div class="bbs_imageDiv" id="bbs_imageDiv">
+		  		</div>
+		  		<button onclick="announce()">发表</button>
+			</div>
+			<form>
+				<input name="expert_name" id="expert_name"value="xxx" type="hidden">
+				<input name="expert_ID" id = "expert_ID"value="1" type="hidden">
+			</form> 
 	</div>
 	<div id="media-html" style="display: none">
 		<div id="jp_container_1" class="jp-video jp-video-180p"
@@ -610,6 +685,10 @@ body {
 		</div>
 	</div>
 </body>
+<!-- JS引入 -->
+<link type="text/css" rel="stylesheet" href="bbs/css/main_bbs_window.css" />
+<script type="text/javascript" src="bbs/js/dist/lrz.all.bundle.js"></script>
+<script type="text/javascript" src="bbs/js/specialistMessage.js"></script>
 
 <script src="/js/sockjs-0.3.min.js"></script>
 <script type="text/javascript" src='/js/websocket/swfobject.js'></script>
@@ -2282,7 +2361,7 @@ var basePath = '<%=basePath%>';
 			$.messager.alert("论坛提示", "请选择微信用户后录音！", "warning");
 			return false;
 		} */
-		openWindow("bbs-window", 360, 250);
+		openWindow("bbs-window", 700, 450);
 	}
 	
 	/*提交配置信息*/

@@ -21,15 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
   </head>
   
-  <body>
-		<textarea class="form-control" id="divText"></textarea>
-  		<input type="file" id="file"/>  
-  		<div class="imageDiv" id="imageDiv">
-  		
-  		</div>
-  		<button onclick="announce()">发表</button>
-  </body>
-  	<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
-	<script type="text/javascript" src="bbs/js/dist/lrz.all.bundle.js"></script>
+
+
 	<script type="text/javascript" src="bbs/js/specialistMessage.js"></script>
 </html>
