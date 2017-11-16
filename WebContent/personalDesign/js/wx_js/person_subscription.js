@@ -162,7 +162,7 @@ function judgetype() {
 					var date1= new Date(Date.parse(temper1.replace(/-/g,   "/")));
 					var delayTime1=(date1 - (new Date()));
 					getTraffic(delayTime1);
-					alert("请求成功");
+					
 				} else
 					alert("请填写日期");
 			} else
