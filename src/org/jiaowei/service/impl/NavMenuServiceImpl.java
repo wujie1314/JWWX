@@ -324,6 +324,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 			HttpServletResponse response, HttpServletRequest request) {
 		String openId = map.get("FromUserName");
 		
+		
 		//检查用户是否已经在服务状态 ,用来判断是否用自动回复功能
 		WxStatusTmpTEntity tmp = NavMenuInitUtils.getInstance().getTmpTEntity(openId);
 		// 微信用户发来信息保存数据库
@@ -395,8 +396,14 @@ public class NavMenuServiceImpl implements NavMenuService {
 			MyBeanUtils.copyMap2Bean(msgFromWxEntity,
 					XmlUtil.changeKeyFirstToLower(map));
 			if ("image".equals(msgFromWxEntity.getMsgType())) {
-				msgFromWxEntity.setImageUrl(WeiXinOperUtil.downloadImageFromWx(
-						map, request));
+				if(map.get("MediaId").equals("app")){
+					msgFromWxEntity.setImageUrl(WeiXinOperUtil.downloadFromUrl(map.get("PicUrl"), request));
+				}
+				else{
+					msgFromWxEntity.setImageUrl(WeiXinOperUtil.downloadImageFromWx(
+							map, request));
+				}
+			
 			} else if ("voice".equals(msgFromWxEntity.getMsgType())) {
 				msgFromWxEntity.setVoiceUrl(WeiXinOperUtil.downloadImageFromWx(
 						map, request));
@@ -406,7 +413,12 @@ public class NavMenuServiceImpl implements NavMenuService {
 			} else if ("video".equals(msgFromWxEntity.getMsgType())) {
 				msgFromWxEntity.setVideoUrl(WeiXinOperUtil.downloadImageFromWx(
 						map, request));
-			} else if ("event".equals(msgFromWxEntity.getMsgType())) {// 其他信息不记录进数据库
+			}else if("location".equals(map.get("MsgType"))){
+				// 地理位置信息，目前没有存储数据库
+				return;
+				
+			}else if ("event".equals(msgFromWxEntity.getMsgType())) {// 其他信息不记录进数据库
+			
 				return;
 			}
 		} catch (Exception e) {
@@ -509,6 +521,10 @@ public class NavMenuServiceImpl implements NavMenuService {
 				if("#".equals(content)){//是否返回上一级 返回顶级初始状态
 					// 清空该用户自动回复状态信息
 					WeiXinConst.navAutoMenu.remove(openId);
+					
+					String returnStr = XmlUtil.genTextResponseMsg(map, "已清除菜单信息");
+					WeiXinOperUtil.sendMsgToWX(response, returnStr);
+					wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
 					return;
 				}
 				result = autoRespondService.getRespondMes(content);
@@ -551,7 +567,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 		if(result == null || result.size() == 0){
 			content="";
 			result = autoRespondService.getRespondMes(content);
-			returnString += "输入错误,请重新输入: \n";
+			returnString += "未查询到相关"+content+"输入错误,请重新输入: \n";
 		}
 		// 存入对应的自动回复信息状态
 		WeiXinConst.navAutoMenu.put(openId, result);

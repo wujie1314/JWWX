@@ -11,5 +11,7 @@ public interface mineService extends CommonService{
 	String initUser(String openID);
 
 	Map<String, Object> initTransportation(int begin, int end);
+
+	Map<String, Object> initSpecialist(int begin, int end);
 	
 }

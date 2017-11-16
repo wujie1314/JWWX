@@ -17,7 +17,7 @@ function goMine(){
 }
 
 function goExpert(){
-	window.location.href = "/bbs/jsp/mine.jsp?openID=" + openID;
+	window.location.href = "bbs/jsp/specialist.jsp?openID=" + openID;
 }
 
 function goHighwayCondition(){

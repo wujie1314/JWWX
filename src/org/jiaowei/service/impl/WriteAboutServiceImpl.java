@@ -17,6 +17,8 @@ import org.jiaowei.entity.BbsUserEntity;
 import org.jiaowei.service.WriteAboutService;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
+
 import Decoder.BASE64Decoder;
 
 @Service
@@ -112,5 +114,58 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	    	   System.out.println(e);
 	       }  
 	       return fileName;  
+	}
+	
+	//保存专家发布的说说
+	@Override
+	public String specialist(List<String> imgFile,String oppennID,String content,String name){
+		initSpecialist(oppennID,name);
+		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
+
+		if (saveWriteAbout(BbsTellEntityID,oppennID,content)) {
+			for (int i = 0; i < imgFile.size(); i++) {
+				String fileName = savePicture(imgFile.get(i));
+				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));
+			}
+		}
+		return "0";
+	}
+	
+	//
+	public String initSpecialist(String openID,String name){
+		if(openID != null){
+			String id = isExistUser(openID);
+			if(id == null)
+				return SaveUser(openID,name);
+			else {
+				return id;
+			}
+			
+		}
+		return "error";
+	}
+	
+	private String isExistUser(String openID) {
+		String sql = "SELECT * FROM BBS_USER WHERE BBS_USER.OPPENID = '" + openID + "'";
+		List<BbsUserEntity> list = findBySQL(sql, BbsUserEntity.class);
+		if(list != null && list.size() != 0){
+			return list.get(0).getId();
+		}
+		return null;
+	}
+
+	//保存用户
+	public String SaveUser(String openID,String name){
+		BbsUserEntity bus = new BbsUserEntity();
+		String id = Calendar.getInstance().getTimeInMillis() +"";
+		bus.setId(id);
+		bus.setState("1");
+		bus.setOppenid(openID);
+		bus.setWechatName(name);
+		//String headImageData =getImgStr(getImageByUrl(jsonObject.getString("headimgurl"),"D:/uploads",jsonObject.getString("openid")));
+		//System.out.println("===" + headImageData);
+		//bus.setHeadImage(headImageData);
+		save(bus);
+		return id;
 	}
 }

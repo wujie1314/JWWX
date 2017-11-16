@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<div class="But">
 		<img src="bbs/images/bba_thumb.gif" class='bq'/>
-		<span class='submit' onclick="review()">评论</span>
+		<span class='submit' onclick="review()" id="review">评论</span>
 		<!--face begin-->
 		<div class="face">
 			<ul>
