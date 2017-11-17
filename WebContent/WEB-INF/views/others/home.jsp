@@ -13,8 +13,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 <link rel="stylesheet" type="text/css" href="/css/others/style.css"> 
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>	
-<script type="text/javascript" src="/js/others/wx_sdk.js"></script>
 <script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/others/wx_sdk.js"></script>
 </head>
   <body>
   		<input type="hidden" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> /> 
