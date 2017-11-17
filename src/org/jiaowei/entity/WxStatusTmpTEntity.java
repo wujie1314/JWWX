@@ -32,6 +32,7 @@ public class WxStatusTmpTEntity {
      *1：表示微信用户 已经接入到座席 通道未建立
      *2：表示微信用户 已经接入到座席 通道建立
      *3：表示已删除，关闭通道
+     *4：表示在留言队列中
      */
     private Integer serviceStatus = 0;
     

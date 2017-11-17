@@ -1,3 +1,4 @@
+<%@page import="com.alibaba.druid.sql.visitor.functions.Now"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="taglibs.jsp"%>
@@ -224,7 +225,7 @@ body {
 						onclick="recordInit();" class="easyui-linkbutton"
 						iconCls="icon-record" title="开始录音" plain="true">录音</a>
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
-						iconCls="icon-help" title="专家服务" plain="true">论坛</a>
+						iconCls="icon-help" title="专家服务" plain="true">专家</a>
 					</span>
 					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
@@ -551,6 +552,7 @@ body {
 			</div>
 			<form id="uploadForm" name="uploadForm"
 				action="/fileUpload/saveVoice">
+				<input name="openid" value="" type="hidden">
 				<input name="authenticity_token" value="xxxxx" type="hidden">
 				<input name="upload_file[filename]" value="1" type="hidden">
 				<input name="format" value="json" type="hidden">
@@ -2354,6 +2356,7 @@ var basePath = '<%=basePath%>';
 			$.messager.alert("录音提示", "请选择微信用户后录音！", "warning");
 			return false;
 		}
+		$("#uploadForm").find("input[name='openid']").val(nowOpenid);
 		openWindow("record-window", 360, 250);
 	}
 	function newbbs(){
@@ -2549,6 +2552,12 @@ var basePath = '<%=basePath%>';
 						});
 						uploader.init(); //初始化
 						//绑定文件添加进队列事件
+						uploader.bind('BeforeUpload', function (uploader, files) {  
+			                uploader.settings.url = "/fileUpload/save?openid=" +nowOpenid;
+			                alert(nowOpenid);
+			                console.log(uploader);  
+			                console.log(files);  
+         				});  
 						uploader.bind('FilesAdded', function(uploader, files) {
 							for (var i = 0, len = files.length; i < len; i++) {
 								var file_name = files[i].name; //文件名
@@ -2818,7 +2827,9 @@ var basePath = '<%=basePath%>';
 		html += '<td style="width:100%;">';
 		html += '<span style="float:right;margin-top:10px;"><img src="/image/img_right.jpg"></img></span>';
 		html += '<div class="bj" onmousedown="workContent(this,3,2)"><input type="hidden" name="msgId" value="'+id+'"/>';
-		html += '<embed src="'+content+'" windowlessVideo=1 autostart=false hidden=no units="pixels" width=300 height=44></embed>';
+		html += '<audio src="'+content+'" controls="controls"></audio>'
+		/* 标记 把原来的播放音频插件改为h5的audio标签  */
+		/* html += '<embed src="'+content+'" windowlessVideo=1 autostart=false hidden=no units="pixels" width=300 height=44></embed>'; */
 		html += '<input type="hidden" name="workId" value=""/></div>';
 		html += '</td>';
 		html += '</tr>';
