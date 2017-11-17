@@ -105,6 +105,10 @@ function addPicture(){
 //发表
 function announce(){
 	var content = $("#message").html();
+	var title = $("#title").val();
+	if(!isTitle()){
+		return;
+	}
 	var imgFileString = JSON.stringify(imgFile);
 	$("#announce").attr("disabled", true); 
     $.ajax({  
@@ -113,6 +117,7 @@ function announce(){
         type: "POST",  
         data:{
         	imgFile:imgFileString,
+        	title:title,
         	content:content,
         	oppenID:openID
         	},  
@@ -127,4 +132,17 @@ function announce(){
         	console.log(result)       
         }  
     });  
+}
+
+function isTitle(){
+	var title = $("#title").val();
+	if(title.length == 0){
+		alert("请输入标题");
+		return false;
+	}
+	if(title.length > 20 ){
+		alert("标题过长");
+		return false;
+	}
+	return true;
 }

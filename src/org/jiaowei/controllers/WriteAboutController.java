@@ -33,13 +33,15 @@ public class WriteAboutController {
     	String oppenID = request.getParameter("oppenID");  
     	String content = request.getParameter("content").toString();  
     	String imgFile = request.getParameter("imgFile"); 
+    	String title = request.getParameter("title"); 
+
     	JSONArray json = JSONArray.fromObject(imgFile);
     	for (int i = 0; i < json.size(); i++) {
 			list.add((String) json.get(i));
 		}
     	System.out.println(list.size());
     	//System.out.println(" oppennID=" + oppenID + " content " + content);
-		return writeAboutService.announce(list, oppenID, content);
+		return writeAboutService.announce(request,list, oppenID, content, title);
 	}
     
 	/*
@@ -52,6 +54,7 @@ public class WriteAboutController {
     	String oppenID = request.getParameter("oppenID");  
     	String content = request.getParameter("content").toString();  
     	String imgFile = request.getParameter("imgFile"); 
+    	String title  = request.getParameter("title"); 
     	String name = request.getParameter("name"); 
 
     	JSONArray json = JSONArray.fromObject(imgFile);
@@ -60,7 +63,7 @@ public class WriteAboutController {
 		}
     	System.out.println(list.size());
     	//System.out.println(" oppennID=" + oppenID + " content " + content);
-		return writeAboutService.specialist(list, oppenID, content,name);
+		return writeAboutService.specialist(request,list, oppenID, content,name,title);
 	}
     
 	public List<String> getImgFile() {

@@ -16,9 +16,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<meta name="viewport" content="width=device-width" />
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
 	<link rel="stylesheet" type="text/css" href="bbs/css/mine.css">
-    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.min.css">    
+    <link rel="stylesheet" href="bbs/css/xiala/mescroll.css">
+	<link rel="stylesheet" href="bbs/css/xiala/mescroll-option.css">
   </head>
   
   <body>
@@ -28,17 +31,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="row">
 				<ul class="nav">
 		  			<li role="presentation" id="expertsReply"><a onclick="goExpert()">专家解答</a></li>
-		  			<li role="presentation" id="trafficInfo"><a onclick="goHighwayCondition()">路况信息</a></li>
-		  			<li role="presentation" id="myPostings"><a onclick="goMine()">我的</a></li>
+		  			<li role="presentation" id="trafficInfo" style="text-decoration: none;background-color: #eee;width: 33.4%;"><a style="border-bottom: solid 4px #7AA4D6;color: #7AA4D6;">路况信息</a></li>
+		  			<li role="presentation" id="myPostings" ><a onclick="goMine()">我的</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
-  	<div id="allInvitation"></div>
+	<p id="downloadTip" class="download-tip">10条新信息</p>
+	  	<!--下拉刷新回调的提示-->
+	<!--滑动区域-->
+	<div id="mescroll" class="mescroll">
+		  	<div id="allInvitation"></div>
+	</div>
 	  <div class="postPlus">
 			<img src="bbs/images/plus.png" onclick="goAddTell()">
 		</div>
   </body>
+  	<script src="bbs/js/xiala/mescroll.js" type="text/javascript" charset="utf-8"></script>
+	<script src="bbs/js/xiala/mescroll-option.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="bbs/js/commonality.js"></script>
 	<script type="text/javascript" src="bbs/js/transportation.js"></script>

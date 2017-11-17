@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.activiti.engine.impl.cmd.SaveAttachmentCmd;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -39,37 +41,48 @@ import org.apache.commons.codec.binary.Base64;
 public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	
 	@Override
-	public Map<String, Object> init(String openID){
+	public List<Object> init(String openID,int begin, int end){
 		String sql = "";
 		if(openID != null)
-			sql = "SELECT BBS_TELL. ID,BBS_USER.HEADIMAGE, BBS_TELL. CONTENT AS CONTENT,to_char(BBS_TELL.PUBLISHEDTIME,'YYYY-MM-DD HH24:MI:SS') AS PUBLISHEDTIME, "
-				 +" BBS_TELL. COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME FROM BBS_TELL,BBS_USER WHERE USERID = (SELECT ID FROM BBS_USER WHERE OPPENID = '"+ openID +"') AND BBS_USER.ID = BBS_TELL.USERID ORDER BY PUBLISHEDTIME desc";
+			sql = " SELECT * FROM (SELECT " 
+				+ " BBS_TELL.ID AS tellID,"
+				+ " BBS_USER.WECHATNAME AS name,"
+				+ " BBS_USER.HEADIMAGE,"
+				+ " BBS_TELL.PUBLISHEDTIME,"
+				+ " BBS_TELL.COMMENTSNUMBER,"
+				+ " BBS_TELL.TITLE,"
+				+ " BBS_TELL.CONTENT,"
+				+ " ROWNUM AS rn"
+				+ " FROM BBS_TELL,BBS_USER"
+				+ " WHERE USERID = (SELECT ID FROM BBS_USER "
+				+ " WHERE OPPENID = '"+ openID +"'"
+				+ " )AND BBS_USER. ID = BBS_TELL.USERID) a"
+				+ " LEFT JOIN (SELECT wm_concat (BBS_PICTURE. PATH) AS path,"
+				+ " wm_concat (DISTINCT BBS_PICTURE.TELLID) AS picTellID"
+				+ " FROM BBS_PICTURE"
+				+ " GROUP BY BBS_PICTURE.TELLID) b"
+				+ " ON a.tellID = b.picTellID"
+				+ " WHERE rn >= "+ begin +" AND rn < " + end
+				+ " ORDER BY PUBLISHEDTIME DESC";
 		else
 			return null;
-		String picSql = "SELECT BBS_TELL.ID,BBS_PICTURE.IMGDATA FROM BBS_PICTURE,BBS_TELL,BBS_USER WHERE BBS_TELL.USERID = BBS_USER.ID AND"
-						+" BBS_TELL.ID = BBS_PICTURE.TELLID AND BBS_USER.OPPENID = '"+openID+"'";
-		List<Object> list = findBySQL(sql);
-		List<Object> listPic = findBySQL(picSql);
 		System.out.println(sql);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", list);
-		map.put("resultPic", listPic);
-		return map;
-		
+		List<Object> list = findBySQL(sql);
+		return list;
 	}
 	
 	//初始化用户的数据
 	@Override
-	public String initUser(String openID){
+	public String initUser(HttpServletRequest request,String openID){
 		JSONObject jsonObject = getWxNickname(openID);
 		//System.out.println(jsonObject.get("nickname") + jsonObject.getString("headimgurl"));
 		if(jsonObject.get("nickname") != null){
 			String id = isExistUser(openID);
 			if (id != null && id.length() != 0) {
-				return updateUser(jsonObject,id);
+				return updateUser(request,jsonObject,id);
 			}
 			else {
-				return SaveUser(jsonObject);
+				return SaveUser(request,jsonObject);
 			}
 		}
 		return "error";
@@ -77,67 +90,68 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	
 	//初始化交通狀況的信息
 	@Override
-	public Map<String, Object> initTransportation(int begin, int end){
+	public List<Object> initTransportation(int begin, int end){
 		String sql = "";
-		sql = "SELECT * FROM (SELECT BBS_TELL. ID,BBS_USER.HEADIMAGE, BBS_TELL. CONTENT AS CONTENT,to_char(BBS_TELL.PUBLISHEDTIME,'YYYY-MM-DD HH24:MI:SS') AS PUBLISHEDTIME, "
-				 +" BBS_TELL.COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME,ROWNUM as rn FROM BBS_TELL,BBS_USER WHERE BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL.ID desc)"
-				 +" WHERE rn > "+ begin +" and rn < " + end;
+		sql = " SELECT * FROM (SELECT " 
+				+ " BBS_TELL.ID AS tellID,"
+				+ " BBS_USER.WECHATNAME AS name,"
+				+ " BBS_USER.HEADIMAGE,"
+				+ " BBS_TELL.PUBLISHEDTIME,"
+				+ " BBS_TELL.COMMENTSNUMBER,"
+				+ " BBS_TELL.TITLE,"
+				+ " BBS_TELL.CONTENT,"
+				+ " ROWNUM AS rn"
+				+ " FROM BBS_TELL,BBS_USER"
+				+ " WHERE USERID in (SELECT ID FROM BBS_USER "
+				+ " WHERE STATE = '0'"
+				+ " )AND BBS_USER. ID = BBS_TELL.USERID) a"
+				+ " LEFT JOIN (SELECT wm_concat (BBS_PICTURE. PATH) AS path,"
+				+ " wm_concat (DISTINCT BBS_PICTURE.TELLID) AS picTellID"
+				+ " FROM BBS_PICTURE"
+				+ " GROUP BY BBS_PICTURE.TELLID) b"
+				+ " ON a.tellID = b.picTellID"
+				+ " WHERE rn >= "+ begin +" AND rn < " + end
+				+ " ORDER BY PUBLISHEDTIME DESC";
 		
-		String picSql = " SELECT BBS_PICTURE.TELLID,BBS_PICTURE.IMGDATA,ROWNUM AS RN FROM BBS_PICTURE,BBS_USER,BBS_TELL WHERE "
-						+" BBS_PICTURE.TELLID in (SELECT ID FROM(SELECT *FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
-						+"  BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) AND BBS_PICTURE.TELLID = BBS_TELL.ID AND BBS_TELL.USERID = BBS_USER.ID";
-		
-		String commentSql = " SELECT BBS_COMMENTARIES.TELLID,BBS_COMMENTARIES.CONTENT,BBS_USER.WECHATNAME,BBS_USER.HEADIMAGE,BBS_COMMENTARIES.COMMENTSTIME, ROWNUM AS RN FROM BBS_COMMENTARIES,BBS_USER WHERE "
-						   +" BBS_COMMENTARIES.TELLID in (SELECT ID FROM(SELECT * FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
-						   +" BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) and BBS_USER.ID = BBS_COMMENTARIES.COMMENTSID";
 		System.out.println(sql);
-		System.out.println(picSql);
-		System.out.println(commentSql);
 		List<Object> list = findBySQL(sql);
-		List<Object> listPic = findBySQL(picSql);
-		List<Object> listComment = findBySQL(commentSql);
-		System.out.println(sql);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", list);
-		map.put("resultPic", listPic);
-		map.put("resultComment", listComment);
-		return map;
+		return list;
 	}
 	
 	@Override 
 	//初始化专家界面信息
-	public 	Map<String, Object> initSpecialist(int begin, int end){
+	public 	List<Object> initSpecialist(int begin, int end){
 		String sql = "";
-		sql = "SELECT * FROM (SELECT BBS_TELL. ID,BBS_USER.HEADIMAGE, BBS_TELL. CONTENT AS CONTENT,to_char(BBS_TELL.PUBLISHEDTIME,'YYYY-MM-DD HH24:MI:SS') AS PUBLISHEDTIME, "
-				 +" BBS_TELL.COMMENTSNUMBER AS COMMENTSNUMBER, BBS_USER.WECHATNAME,ROWNUM as rn FROM BBS_TELL,BBS_USER WHERE BBS_USER.ID = BBS_TELL.USERID  AND BBS_USER.STATE = '1' ORDER BY BBS_TELL.ID desc)"
-				 +" WHERE rn > "+ begin +" and rn < " + end;
-		
-		String picSql = " SELECT BBS_PICTURE.TELLID,BBS_PICTURE.IMGDATA,ROWNUM AS RN FROM BBS_PICTURE,BBS_USER,BBS_TELL WHERE "
-						+" BBS_PICTURE.TELLID in (SELECT ID FROM(SELECT *FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
-						+"  BBS_USER.ID = BBS_TELL.USERID  AND BBS_USER.STATE = '1' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) AND BBS_PICTURE.TELLID = BBS_TELL.ID AND BBS_TELL.USERID = BBS_USER.ID";
-		
-		String commentSql = " SELECT BBS_COMMENTARIES.TELLID,BBS_COMMENTARIES.CONTENT,BBS_USER.WECHATNAME,BBS_USER.HEADIMAGE,BBS_COMMENTARIES.COMMENTSTIME, ROWNUM AS RN FROM BBS_COMMENTARIES,BBS_USER WHERE "
-						   +" BBS_COMMENTARIES.TELLID in (SELECT ID FROM(SELECT * FROM(SELECT BBS_TELL. ID,ROWNUM AS rn FROM BBS_TELL,BBS_USER WHERE "
-						   +" BBS_USER.ID = BBS_TELL.USERID AND BBS_USER.STATE = '0' ORDER BY BBS_TELL. ID DESC )WHERE rn > "+ begin +" AND rn < "+ end +")) and BBS_USER.ID = BBS_COMMENTARIES.COMMENTSID";
+		sql = " SELECT * FROM (SELECT " 
+				+ " BBS_TELL.ID AS tellID,"
+				+ " BBS_USER.WECHATNAME AS name,"
+				+ " BBS_USER.HEADIMAGE,"
+				+ " BBS_TELL.PUBLISHEDTIME,"
+				+ " BBS_TELL.COMMENTSNUMBER,"
+				+ " BBS_TELL.TITLE,"
+				+ " BBS_TELL.CONTENT,"
+				+ " ROWNUM AS rn"
+				+ " FROM BBS_TELL,BBS_USER"
+				+ " WHERE USERID in (SELECT ID FROM BBS_USER "
+				+ " WHERE STATE = '1'"
+				+ " )AND BBS_USER. ID = BBS_TELL.USERID) a"
+				+ " LEFT JOIN (SELECT wm_concat (BBS_PICTURE. PATH) AS path,"
+				+ " wm_concat (DISTINCT BBS_PICTURE.TELLID) AS picTellID"
+				+ " FROM BBS_PICTURE"
+				+ " GROUP BY BBS_PICTURE.TELLID) b"
+				+ " ON a.tellID = b.picTellID"
+				+ " WHERE rn >= "+ begin +" AND rn < " + end
+				+ " ORDER BY PUBLISHEDTIME DESC";
 		System.out.println(sql);
-		System.out.println(picSql);
-		System.out.println(commentSql);
 		List<Object> list = findBySQL(sql);
-		List<Object> listPic = findBySQL(picSql);
-		List<Object> listComment = findBySQL(commentSql);
-		System.out.println(sql);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("result", list);
-		map.put("resultPic", listPic);
-		map.put("resultComment", listComment);
-		return map;
+		return list;
 	}
 
 	//判断用户是否存在
 	public String isExistUser(String openID){
 		String sql = "SELECT * FROM BBS_USER WHERE OPPENID = '" + openID + "'";
-		//System.out.println(sql);
-		List<Object> bu = findBySQL(sql);
+		System.out.println(sql);
+		List<BbsUserEntity> bu = findBySQL(sql, BbsUserEntity.class);
 		if(bu == null || bu.size() == 0){
 			return null;
 		}
@@ -146,26 +160,26 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	}
 	
 	//保存用户
-	public String SaveUser(JSONObject jsonObject){
+	public String SaveUser(HttpServletRequest request,JSONObject jsonObject){
 		BbsUserEntity bus = new BbsUserEntity();
 		bus.setId(Calendar.getInstance().getTimeInMillis() +"");
 		bus.setState("0");
 		bus.setOppenid(jsonObject.getString("openid"));
 		bus.setWechatName(jsonObject.getString("nickname"));
-		String headImageData =getImgStr(getImageByUrl(jsonObject.getString("headimgurl"),"D:/uploads",jsonObject.getString("openid")));
+		String headImage =getImageByUrl(request,jsonObject.getString("headimgurl"),"/uploads/",jsonObject.getString("openid"));
 		//System.out.println("===" + headImageData);
-		bus.setHeadImage(headImageData);
+		bus.setHeadImage(headImage);
 		save(bus);
 		return "success";
 	}
 	
 	//更新用户信息
-	public String updateUser(JSONObject jsonObject,String id){
+	public String updateUser(HttpServletRequest request,JSONObject jsonObject,String id){
 		BbsUserEntity bus = new BbsUserEntity();
 		bus.setId(id);
 		bus.setOppenid(jsonObject.getString("openid"));
 		bus.setWechatName(jsonObject.getString("nickname"));
-		String headImageData =getImgStr(getImageByUrl(jsonObject.getString("headimgurl"),"D:/uploads",jsonObject.getString("openid")));
+		String headImageData =getImageByUrl(request,jsonObject.getString("headimgurl"),"/uploads/",jsonObject.getString("openid"));
 		bus.setHeadImage(headImageData);
 		updateEntity(bus);
 		return "success";
@@ -249,9 +263,10 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 
     * 图片下载到本地服务器
 	*保存base64编码
+	*返回图片存储地址
     */
 
-    public String getImageByUrl(String imageurl, String savepath, String name) {
+    public String getImageByUrl(HttpServletRequest request,String imageurl, String savepath, String name) {
     try {
     	// 构造URL
 	    URL url = new URL(imageurl);
@@ -263,13 +278,15 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	    byte[] bs = new byte[1024];
 	    // 读取到的数据长度
 	    int len;
-	    File filePath = new File(savepath);
+	    String imgPath = request.getServletContext().getRealPath(savepath);
+
+	    File filePath = new File(imgPath);
 	    if (!filePath.exists()) {
 	    		filePath.mkdirs();
 	    	}
 
 	    // 输出的文件流
-	    OutputStream os = new FileOutputStream(savepath + "/"+ name + ".jpg");
+	    OutputStream os = new FileOutputStream(imgPath + name + ".jpg");
 	    // 开始读取
 	    while ((len = is.read(bs)) != -1) {
 	    	os.write(bs, 0, len);
@@ -277,9 +294,9 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	    // 完毕，关闭所有链接
 	    os.close();
 	    is.close();
-	    return savepath + "/" + name + ".jpg" ;
+	    return savepath + name + ".jpg" ;
     } catch (Exception e) {
-    	return "error";
+    	return savepath + "default.jpg";
     }
     }
     /**

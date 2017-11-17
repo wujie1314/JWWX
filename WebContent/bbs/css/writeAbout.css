@@ -1,8 +1,8 @@
 *{margin:0px; padding:0px;}
-body{background-color: #b695951a}
+body{background-color:#f2f2f5;}
 #qq{
 	width: 92%;
-	height: 70%;
+	height: 90%;
 	background: #fff;
 	margin: 12px auto 30px;
 	border-radius: 5px;
@@ -25,10 +25,11 @@ body{background-color: #b695951a}
 	word-break:break-all;
 	overflow: hidden;
 }
-#qq .But{width: 90%;
-		height: 50%;
-		margin: 15px auto 0px;
-		position: relative;}
+#qq .But{
+	width: 90%;
+	height: 34%;
+	margin: 15px auto 0px;
+	position: relative;}
 #qq .But img.bq{
 	float: left;
 	margin-left: 17px;}
@@ -47,8 +48,8 @@ body{background-color: #b695951a}
 	margin-left: 4%;}
 
 /*face begin*/
-#qq .But .face{widwidth: 94%;
-				height: 114%;
+#qq .But .face{ width: 94%;
+				height: 83%;
 				background: #fff;
 				padding: 10px;
 				border: 1px solid #ddd;

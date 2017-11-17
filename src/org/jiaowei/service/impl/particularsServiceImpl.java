@@ -25,13 +25,14 @@ public class particularsServiceImpl extends CommonServiceImpl implements particu
 					+ " BBS_USER.WECHATNAME, "
 					+ " BBS_USER.HEADIMAGE "
 					+ " FROM BBS_TELL,BBS_USER WHERE BBS_TELL.ID = '"+ tellID +"' AND BBS_TELL.USERID = BBS_USER.ID ";
-		String picSell = "SELECT BBS_PICTURE.IMGDATA FROM BBS_PICTURE WHERE BBS_PICTURE.TELLID = '"+ tellID +"'";
+		String picSell = "SELECT BBS_PICTURE.PATH FROM BBS_PICTURE WHERE BBS_PICTURE.TELLID = '"+ tellID +"'";
 		String commentSql = "SELECT to_char(BBS_COMMENTARIES.COMMENTSTIME,'YYYY-MM-DD HH24:MI:SS') AS COMMENTSTIME,BBS_COMMENTARIES.CONTENT,BBS_USER.HEADIMAGE,BBS_USER.WECHATNAME "
 					+ "FROM BBS_COMMENTARIES,BBS_USER WHERE BBS_COMMENTARIES.TELLID = '"+ tellID+"' AND BBS_COMMENTARIES.COMMENTSID = BBS_USER.ID";
+
 		List<Object> tellList = findBySQL(tellSql);
 		List<Object> picList = findBySQL(picSell);
 		List<Object> commentList = findBySQL(commentSql);
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("tell", tellList);
 		map.put("pic", picList);

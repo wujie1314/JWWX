@@ -10,6 +10,9 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.jiaowei.common.service.impl.CommonServiceImpl;
 import org.jiaowei.entity.BbsPictureEntity;
 import org.jiaowei.entity.BbsTellEntity;
@@ -25,12 +28,11 @@ import Decoder.BASE64Decoder;
 public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAboutService{
 	
 	@Override
-	public String announce(List<String> imgFile,String oppennID,String content){
+	public String announce(HttpServletRequest request,List<String> imgFile,String oppennID,String content,String title){
 		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
-		//System.out.println(BbsTellEntityID);
-		if (saveWriteAbout(BbsTellEntityID,oppennID,content)) {
+		if (saveWriteAbout(BbsTellEntityID,oppennID,content,title)) {
 			for (int i = 0; i < imgFile.size(); i++) {
-				String fileName = savePicture(imgFile.get(i));
+				String fileName = savePicture(request,imgFile.get(i));
 				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));
 			}
 		}
@@ -38,13 +40,14 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	}
 	
 	//保存说说
-	public boolean saveWriteAbout(String BbsTellEntityID,String oppenID,String content){
+	public boolean saveWriteAbout(String BbsTellEntityID,String oppenID,String content,String title){
 		BbsTellEntity b = new BbsTellEntity();
 		b.setUserID(getUserID(oppenID));
 		b.setPublishedTime(new Timestamp(System.currentTimeMillis()));
 		b.setContent(content);
 		b.setCommentsNumber(0);
 		b.setId(BbsTellEntityID);
+		b.setTitle(title);
 		save(b);
 		return true;
 	}
@@ -63,26 +66,26 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	public boolean savePictrueEntity(String BbsTellEntityID,String fileName,String userID,String imgData){
 		BbsPictureEntity bp = new BbsPictureEntity();
 		String BbsPictureEntityID= Calendar.getInstance().getTimeInMillis()+ ""; //图片的主键
-		String imgPath = "D:/uploads/" + fileName;
+		String imgPath = "/uploads/" + fileName;
 		bp.setId(BbsPictureEntityID);
 		bp.setFileName(fileName);
 		bp.setPath(imgPath);
 		bp.setTellId(BbsTellEntityID);
 		
 	    //使用BASE64对图片文件数据进行解码操作 
-	    int index = imgData.indexOf(";base64,");  
-		String imgDataState = imgData.substring("data:image/".length(), index); //图片的类型
-		bp.setImgData(imgData);
-		bp.setImgDataState(imgDataState);
+	    //int index = imgData.indexOf(";base64,");  
+		//String imgDataState = imgData.substring("data:image/".length(), index); //图片的类型
+		//bp.setImgData(imgData);
+		//bp.setImgDataState(imgDataState);
 		save(bp);
 		return true;
 	}
 	/*
 	 *保存图片在本地*/
-	public String savePicture(String imgFile) {
+	public String savePicture(HttpServletRequest request,String imgFile) {
 		   //在自己的项目中构造出一个用于存放用户照片的文件夹  
-	       //String imgPath = this.getServletContext().getRealPath("/uploads/");
-	      String imgPath = "D:/uploads/";
+	      String imgPath = request.getServletContext().getRealPath("/uploads/");
+	      //String imgPath = "D:/uploads/";
 	      String fileName = "IMAGE_" + String.valueOf(Calendar.getInstance().getTime().getTime()) + ".jpg";
 	      //String fileName = "a.jpg";
 	       //如果此文件夹不存在则创建一个  
@@ -118,17 +121,17 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	
 	//保存专家发布的说说
 	@Override
-	public String specialist(List<String> imgFile,String oppennID,String content,String name){
+	public String specialist(HttpServletRequest request,List<String> imgFile,String oppennID,String content,String name,String title){
 		initSpecialist(oppennID,name);
 		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
 
-		if (saveWriteAbout(BbsTellEntityID,oppennID,content)) {
+		if (saveWriteAbout(BbsTellEntityID,oppennID,content,title)) {
 			for (int i = 0; i < imgFile.size(); i++) {
-				String fileName = savePicture(imgFile.get(i));
+				String fileName = savePicture(request,imgFile.get(i));
 				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));
 			}
 		}
-		return "0";
+		return BbsTellEntityID;
 	}
 	
 	//

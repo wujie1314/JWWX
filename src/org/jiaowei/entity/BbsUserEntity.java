@@ -16,7 +16,7 @@ public class BbsUserEntity {
 	private String oppenid;
 	private String state;
 	private String wechatName; //微信的用户名
-	private String headImage; //用户头像，base64编码
+	private String headImage; //用户头像
 	
 
 	@Id
