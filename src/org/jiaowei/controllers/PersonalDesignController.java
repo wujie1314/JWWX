@@ -27,6 +27,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sun.print.resources.serviceui;
+
 
 @Controller
 @RequestMapping("/psDesign")
@@ -179,19 +181,19 @@ public class PersonalDesignController {
     @RequestMapping(value = "/getTraffic")
     @ResponseBody
     public void getTraffic(String openId,String lookType,String DATE,
-    		String TIME,String lxfd,String htlj_begin,String htlj_end,String dlfx,String delayTimeT){
+    		String TIME,String lxfd,String htlj_begin,String htlj_end,String dlfx,String delayTime){
     	String message = null;
-    	int delayTimeNUM=Integer.valueOf(delayTimeT);
+    	int delayTimeNUM=Integer.valueOf(delayTime);
     	if(lxfd.equals("G42沪蓉高速")){
     		message="10月26日9时21分，G42沪蓉高速垫忠段上行方向明月山隧道因施工养护，上行方向正线封闭，下行方向单道双通。"
     				+ "长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计11月25日结束。";
-    	}if(lxfd.equals("G50沪渝高手")){
+    	}else if(lxfd.equals("G50沪渝高手")){
     		message="  6月12日17时24分，G50沪渝高速垫忠段下行方向谭家寨隧道封闭施工，"
     				+ "上行方向单洞双通，双向长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计12月31日施工结束。";
     	}else{
     		message="道路通畅可以放心通行";
     	}
-    	System.out.println("道路信息");
+    	System.out.println("道路信息文字");
     	if(delayTimeNUM>=0){
     	Timer timer = new Timer();
         timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
@@ -202,17 +204,25 @@ public class PersonalDesignController {
     @RequestMapping(value = "/getTrafficByPicture")
     @ResponseBody
     public void getTrafficByPicture(String openId,String lookType,String DATE,
-    		String TIME,String ph,String section){
-    	String message = "图片一张";
-    	
-    	System.out.println("道路信息");
-    	String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
- 			   openId, String.format(message));
- 	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
-		//发送給用户
-		// 这里有点问题 获取不到对应的公众号accessToken
-		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
-    	
+    		String TIME,String ph,String section,String delayTime){
+    	String message=null;
+    	int delayTimeNUM=Integer.valueOf(delayTime);
+    	if(section.equals("G75渝黔段")){
+    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1002&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    		
+    	}else if(section.equals("G65渝湘段")){
+    	 message = "http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    	}else if(section.equals("G50沪渝高速")){
+    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";	
+    	}else {
+			message="http://www.cq96096.cn/videoImg/nextList?parentId=1009&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+		}
+    	System.out.println("道路信息截图");
+    	if(delayTimeNUM>=0){
+        	Timer timer = new Timer();
+            timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
+        	}
+        	
     	
     }
     class Task extends TimerTask {

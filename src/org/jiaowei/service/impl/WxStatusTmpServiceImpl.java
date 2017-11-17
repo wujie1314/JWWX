@@ -44,5 +44,4 @@ public class WxStatusTmpServiceImpl extends CommonServiceImpl implements WxStatu
 		
 	}
 	
-	
 }

@@ -341,6 +341,13 @@ public class NavMenuInitUtils {
 		}
 	}
 	/**
+	 * 删除留言队列微信用户
+	 * @param openId
+	 */
+	public void removeMessageMap(String openId){
+		messageMap.remove(openId);
+	}
+	/**
 	 * 设置离去队列
 	 * @param deptId
 	 * @param openId
@@ -876,6 +883,8 @@ public class NavMenuInitUtils {
 		        //添加服务队列
 		        putServiceMap(openId, entity);
 		        result = true;
+		        WaitQ waitQ=new WaitQ();
+		        waitQ.completetask();
 		        SeatW seatW=new SeatW();
 		        seatW.startProcessInstance();
 			}

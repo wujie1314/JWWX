@@ -284,7 +284,13 @@ public class WeiXinOperUtil {
         Long currentTime = System.currentTimeMillis() / 1000;
         
         AccessTokenEntity accessTokenEntity = WeiXinConst.accessTokenMap.get(publicID);
-
+        if(accessTokenEntity != null){
+            System.out.println("当前的公众号("+publicID+")的accessToken:"+accessTokenEntity.getAccessToken());
+        }
+        if(publicID == null ){
+        	System.out.println("公众号ID为空，请确定正确传入该值");
+        	return null;
+        }
         Map<String, Object> publicInfo = getPublicInfoById(publicID);
         if(publicInfo == null){
         	System.out.println("===============================================================");
@@ -471,7 +477,7 @@ public class WeiXinOperUtil {
                 WeiXinConst.accessToken.setAccessToken(accessToken);
                 WeiXinConst.accessToken.setObtainTime(System.currentTimeMillis() / 1000);
                 WeiXinConst.accessToken.setExpireIn(Long.valueOf(expiresIn));
-                WeiXinConst.accessTokenMap.put("gh_6119413afa1b",WeiXinConst.accessToken);
+                WeiXinConst.accessTokenMap.put("1",WeiXinConst.accessToken);
             } catch (IOException e) {
             	e.printStackTrace();
                 logger.info("获取accessToken发生了异常:" + e.getMessage());
@@ -506,7 +512,7 @@ public class WeiXinOperUtil {
                 WeiXinConst.jsapiTicket.setJsapiTicket(ticket);
                 WeiXinConst.jsapiTicket.setObtainTime(System.currentTimeMillis() / 1000);
                 WeiXinConst.jsapiTicket.setExpireIn(Long.valueOf(expiresIn));
-                WeiXinConst.jsapiTicketMap.put("gh_6119413afa1b",WeiXinConst.jsapiTicket);
+                WeiXinConst.jsapiTicketMap.put("1",WeiXinConst.jsapiTicket);
             } catch (IOException e) {
             	e.printStackTrace();
             }
@@ -694,7 +700,6 @@ public class WeiXinOperUtil {
 
     
     public static String downloadFromUrl(String url,HttpServletRequest request){
-    	 String path = request.getRealPath("/") + File.separator + "upload";
     	try {
     		CloseableHttpClient httpclient = HttpClients.createDefault();
         	HttpGet httpGet = new HttpGet(url);
@@ -703,6 +708,19 @@ public class WeiXinOperUtil {
         	String contentType = response.getEntity().getContentType().toString().trim();
         	 if (!StringUtil.isEmpty(contentType)) {
         		 System.out.println(contentType);
+        		 HttpEntity entity = response.getEntity();
+                 String path = request.getRealPath("/") + File.separator + "upload";
+//                 String path = "/workspace/idea/weixin/src/main/webapp"+File.separator + "upload";
+                 File file = new File(path);
+                 if (!file.exists()) {
+                     file.mkdir();
+                 }
+                 String imagePath = File.separator + System.currentTimeMillis() + ".jpg";
+                 file = new File(path + imagePath);
+                 FileOutputStream fileout = new FileOutputStream(file);
+                 entity.writeTo(fileout);
+                 fileout.close();
+                 return "/upload" + imagePath;
              }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -880,8 +898,9 @@ public class WeiXinOperUtil {
      * @param file 需要上传的文件
      * @throws IOException
      */
-    public static String uploadMedia(File file, String mediaType) throws IOException {
-        String url ="https://api.weixin.qq.com/cgi-bin/media/upload?access_token=" + WeiXinOperUtil.getAccessToken() + "&type=" + mediaType;// 传临时素材
+    public static String uploadMedia(File file, String mediaType,String openid) throws IOException {
+    	String publicId = NavMenuInitUtils.getInstance().userPublicIdMap.get(openid);
+        String url ="https://api.weixin.qq.com/cgi-bin/media/upload?access_token=" + WeiXinOperUtil.getAccessToken(publicId) + "&type=" + mediaType;// 传临时素材
         String DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36";
         String DEFAULT_CHARSET = "UTF-8";
         URL urlGet = new URL(url);
@@ -1179,7 +1198,7 @@ public class WeiXinOperUtil {
     	File file = new File("E:\\123456.png");
     	String result;
 		try {
-			result = uploadMedia(file, "image");
+//			result = uploadMedia(file, "image");
 //			System.out.println("---->"+result);
 			//oHMgqxIFpc9zoGQQbBsrI9KcWJrk 邓科
 			//oHMgqxMPkOAH7CzAmPISCkC9oI-4

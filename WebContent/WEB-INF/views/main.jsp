@@ -1,3 +1,4 @@
+<%@page import="com.alibaba.druid.sql.visitor.functions.Now"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="taglibs.jsp"%>
@@ -223,7 +224,10 @@ body {
 						title="发送图片" plain="true">图片</a><a href="#"
 						onclick="recordInit();" class="easyui-linkbutton"
 						iconCls="icon-record" title="开始录音" plain="true">录音</a>
-					</span><span style="float: right;"> <a href="#"
+						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
+						iconCls="icon-help" title="专家服务" plain="true">专家</a>
+					</span>
+					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
 						iconCls="icon-clock" title="查询消息记录" plain="true">消息记录</a>
 					</span>
@@ -468,7 +472,7 @@ body {
 					微信标识：<input name="openid" type="text" readonly="true">
 				</div>
 				<div style="margin-top: 5px;">
-					微信名称：<input name="nickname" type="text" readonly="true">
+					微信名称：<input name="nicknam e" type="text" readonly="true">
 				</div>
 				<div style="margin-top: 5px;">
 					电话号码：<input name="phone" type="text">
@@ -548,12 +552,103 @@ body {
 			</div>
 			<form id="uploadForm" name="uploadForm"
 				action="/fileUpload/saveVoice">
+				<input name="openid" value="" type="hidden">
 				<input name="authenticity_token" value="xxxxx" type="hidden">
 				<input name="upload_file[filename]" value="1" type="hidden">
 				<input name="format" value="json" type="hidden">
 			</form>
 		</div>
 		<!--页面录音  结束-->
+	</div>
+	<!-- 论坛window -->
+	<div id="bbs-window" class="easyui-window" title="新增论坛帖子"
+		closed="true" iconCls="icon-save">
+			<div class="bbs_left_list" >
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+					<li class= "bbs_li_list">
+						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
+						<div class="bbs_expert_info">
+							<span class="expert_name" id = "12357210">陈立</span>
+							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
+						</div>
+					</li> 
+				</ul>
+				
+			</div>
+			<div class="bbs_right_content" style="width:450px;height: 400px;float: right; ">
+				<textarea class="form-control" id="divText"></textarea>
+		  			<input type="file" id="bbsImg_file"/>  
+		  			<div class="bbs_imageDiv" id="bbs_imageDiv">
+		  		</div>
+		  		<button onclick="announce()">发表</button>
+			</div>
+			<form>
+				<input name="expert_name" id="expert_name"value="xxx" type="hidden">
+				<input name="expert_ID" id = "expert_ID"value="1" type="hidden">
+			</form> 
 	</div>
 	<div id="media-html" style="display: none">
 		<div id="jp_container_1" class="jp-video jp-video-180p"
@@ -592,6 +687,10 @@ body {
 		</div>
 	</div>
 </body>
+<!-- JS引入 -->
+<link type="text/css" rel="stylesheet" href="bbs/css/main_bbs_window.css" />
+<script type="text/javascript" src="bbs/js/dist/lrz.all.bundle.js"></script>
+<script type="text/javascript" src="bbs/js/specialistMessage.js"></script>
 
 <script src="/js/sockjs-0.3.min.js"></script>
 <script type="text/javascript" src='/js/websocket/swfobject.js'></script>
@@ -2257,8 +2356,17 @@ var basePath = '<%=basePath%>';
 			$.messager.alert("录音提示", "请选择微信用户后录音！", "warning");
 			return false;
 		}
+		$("#uploadForm").find("input[name='openid']").val(nowOpenid);
 		openWindow("record-window", 360, 250);
 	}
+	function newbbs(){
+	/* 	if (nowOpenid == "") {
+			$.messager.alert("论坛提示", "请选择微信用户后录音！", "warning");
+			return false;
+		} */
+		openWindow("bbs-window", 700, 450);
+	}
+	
 	/*提交配置信息*/
 	function toSubmit() {
 		var customerNum = $("input[name=customerNum]").val();
@@ -2444,6 +2552,12 @@ var basePath = '<%=basePath%>';
 						});
 						uploader.init(); //初始化
 						//绑定文件添加进队列事件
+						uploader.bind('BeforeUpload', function (uploader, files) {  
+			                uploader.settings.url = "/fileUpload/save?openid=" +nowOpenid;
+			                alert(nowOpenid);
+			                console.log(uploader);  
+			                console.log(files);  
+         				});  
 						uploader.bind('FilesAdded', function(uploader, files) {
 							for (var i = 0, len = files.length; i < len; i++) {
 								var file_name = files[i].name; //文件名
@@ -2713,7 +2827,9 @@ var basePath = '<%=basePath%>';
 		html += '<td style="width:100%;">';
 		html += '<span style="float:right;margin-top:10px;"><img src="/image/img_right.jpg"></img></span>';
 		html += '<div class="bj" onmousedown="workContent(this,3,2)"><input type="hidden" name="msgId" value="'+id+'"/>';
-		html += '<embed src="'+content+'" windowlessVideo=1 autostart=false hidden=no units="pixels" width=300 height=44></embed>';
+		html += '<audio src="'+content+'" controls="controls"></audio>'
+		/* 标记 把原来的播放音频插件改为h5的audio标签  */
+		/* html += '<embed src="'+content+'" windowlessVideo=1 autostart=false hidden=no units="pixels" width=300 height=44></embed>'; */
 		html += '<input type="hidden" name="workId" value=""/></div>';
 		html += '</td>';
 		html += '</tr>';

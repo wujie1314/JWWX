@@ -738,7 +738,7 @@ public class CustomerServiceController {
     @ResponseBody
     public String getSysUserInfo(){
     	List<Object> list = new ArrayList<Object>();
-    	String hql="FROM SysUserEntity WHERE deptId IN(3,5,6,12)";
+    	String hql="FROM SysUserEntity WHERE deptId IN(3,5,6,12)"; // 标记
     	list=sysUserService.findByHql(hql);
         String result = JSON.toJSONString(list); 
     	return result;
@@ -748,7 +748,7 @@ public class CustomerServiceController {
     public String changeBusyOrFree(String userId){
 //        Set<String> keys = WeiXinConst.servicingMap.keySet();
     	List<SysUserEntity> list = new ArrayList<SysUserEntity>();
-    	String hql="FROM SysUserEntity WHERE deptId IN(3,5,6,12)"; // 写死了一个东西
+    	String hql="FROM SysUserEntity WHERE deptId IN(3,5,6,12)"; // 标记
     	list=sysUserService.findByHql(hql);
     	WxStatusTmpTEntity entity=new WxStatusTmpTEntity();
     	for(int j=0;j<list.size();j++){

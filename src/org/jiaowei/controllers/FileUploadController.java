@@ -28,7 +28,7 @@ public class FileUploadController {
 
     @RequestMapping(value = "/saveVoice")
     @ResponseBody
-    public String saveVoice(@RequestParam("upload_file[filename]") MultipartFile file,
+    public String saveVoice(@RequestParam("upload_file[filename]") MultipartFile file,String openid,
                            HttpServletRequest request) throws Exception {
         String uploadDir = request.getRealPath("/") + "/upload";
         File dirPath = new File(uploadDir);
@@ -47,7 +47,7 @@ public class FileUploadController {
         os.close();
         //上传文件到微信服务器
         String weiXinReturnString = null;
-        weiXinReturnString = WeiXinOperUtil.uploadMedia(new File(fullPath), "voice");
+        weiXinReturnString = WeiXinOperUtil.uploadMedia(new File(fullPath), "voice",openid);
         //TODO：
 //        String tmp = "media_url:/upload/" +fileName;
 //        weiXinReturnString.substring(0,weiXinReturnString.length())
@@ -58,7 +58,7 @@ public class FileUploadController {
     }
 
     @RequestMapping(value = "/save")
-    public void saveFile(@RequestParam MultipartFile file,
+    public void saveFile(@RequestParam MultipartFile file,@RequestParam String openid,
                            HttpServletRequest request,HttpServletResponse response) throws Exception {
         String uploadDir = request.getRealPath("/") + "/upload";
         File dirPath = new File(uploadDir);
@@ -77,7 +77,7 @@ public class FileUploadController {
         os.close();
         //上传文件到微信服务器
         String weiXinReturnString = null;
-        weiXinReturnString = WeiXinOperUtil.uploadMedia(new File(fullPath), "image");
+        weiXinReturnString = WeiXinOperUtil.uploadMedia(new File(fullPath), "image",openid);
         JSONObject json=new JSONObject();
         json.put("webData",fileName);
         json.put("wxData",weiXinReturnString);
