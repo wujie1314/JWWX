@@ -255,6 +255,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 			// 加入导航队列
 			tmp.setMessage(true);
 			tmp.setBeginTimestamp(System.currentTimeMillis());
+			tmp.setServiceStatus(4);
 			// 加入留言队列
 			NavMenuInitUtils.getInstance().messageMap.put(openId, tmp);
 //			returnStr = "即将上线，敬请期待。请留言";
@@ -347,6 +348,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 				sendMsgWxHint(map, openId, "座席忙，请稍等....", false, tmp);
 				wxStatusTmpService.saveMsgDatebase(null, "座席忙，请稍等...", openId);
 			} else if (2 == status) { // 2：表示微信用户 已经接入到座席 通道建立
+				if(tmp.getServiceHintNum() == 2){
+					sendMsgWxHint(map, openId, "座席忙，请稍等...", false, tmp);
+				}
 				String sessionId = tmp.getSessionId();
 				if (!StringUtil.isEmpty(sessionId)) {
 					WebSocketSession session = WeiXinConst.webSocketSessionMap
@@ -371,7 +375,17 @@ public class NavMenuServiceImpl implements NavMenuService {
 					tmp.setSendType(1);
 					tmp.setChatOvertime(System.currentTimeMillis() / 1000);
 				}
-			} else {  // 3：表示已删除，关闭通道
+			}else if(4 == status){  //留言队列里
+				WeiXinOperUtil.sendMsgWx("你当前在留言队列里，是否退出\n【9】退出 ", openId);
+				if ("text".equals(map.get("MsgType"))
+						&& ("9".equals(map.get("Content")) || "【9】".equals(map
+								.get("Content")))){
+					NavMenuInitUtils.getInstance().removeMessageMap(openId);
+					WeiXinOperUtil.sendMsgWx("你已退出！", openId);
+				}
+				wxStatusTmpService.saveMsgDatebase(null, "你当前在留言队列里，是否退出", openId);
+			}else {  // 3：表示已删除，关闭通道
+			
 				// 处理評分
 				comment(map, tmp);
 				NavMenuInitUtils.getInstance().removeRemoveMap(openId);
