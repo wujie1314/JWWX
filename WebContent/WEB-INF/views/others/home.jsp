@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="/js/jquery/jquery-1.7.2.min.js"></script>
 </head>
   <body>
-  		<%-- <input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> /> --%>
+  		<input type="text" id="openID" value=<%=request.getSession().getAttribute("othersOpenId")%> /> 
   		<div class="linkNiv" onclick="Personal()" >
   			<span class ="linkName">私人定制</span>	
   		</div>

@@ -35,7 +35,7 @@ public class SeatW {
 				.createTaskQuery()
 				.taskAssignee(assignee)
 				.list();
-		if (list!=null&&list.size()>0) {
+		if (list!=null && list.size()>0) {
 			for (Task task:list) {
 				System.out.println("任务ID："+task.getId());
 				System.out.println("任务名称："+task.getName());
@@ -46,7 +46,7 @@ public class SeatW {
 				System.out.println("流程定义ID："+task.getProcessDefinitionId());
 			}	
 		}
-		if(list!=null){
+		if(list!=null && list.size()>0){
 		String taskId=list.get(0).getId();
 		processEngine.getTaskService()
 		              .complete(taskId);

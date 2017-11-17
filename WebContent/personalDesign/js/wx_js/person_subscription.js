@@ -166,8 +166,8 @@ function judgetype() {
 				} else
 					alert("请填写日期");
 			} else
-				var delayTime1=0;
-				getTraffic(delayTime1);
+				var delayTimeg=0;
+				getTraffic(delayTimeg);
 		} else if($("#ph").find("option:selected").text()!="请选择截图来源"&& $("#section").find("option:selected").text()!="请选择路段"){
 			getTrafficByPicture();
 			
@@ -239,7 +239,7 @@ function getTraffic(delayTimeT) {
 			e.options[0].selected = true;
 			$("#DATE").val("");
 			$("#TIME").val("");
-			alert("请求成功");
+			alert("请求成功道路信息");
 
 		}
 	});
@@ -270,7 +270,7 @@ function getTrafficByPicture(){
 			d.options[0].selected = true;
 			$("#DATE").val("");
 			$("#TIME").val("");
-			alert("请求成功");
+			alert("请求成功图片");
 			
 
 
