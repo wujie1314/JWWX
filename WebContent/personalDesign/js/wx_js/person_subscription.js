@@ -171,7 +171,19 @@ function judgetype() {
 				var delayTimeg=0;
 				getTraffic(delayTimeg);
 		}else if(type=="公交信息"){
-			
+			if (lookType == "定时推送") {
+				if ($("#DATE").val() != "" && $("#TIME").val() != "") {
+						var temperB = $("#DATE").val() + " " + $("#TIME").val();
+						var dateB= new Date(Date.parse(temperB.replace(/-/g,   "/")));
+						var delayTimeB=(date - (new Date()));
+						getBus(delayTimeB);
+						alert("请求公交信息");
+				} else
+					alert("请填写日期");
+			} else {
+				var delayTimeB1=0;
+				getBus(delayTimeB1);
+			}
 		}		
 	} else
 		alert("请选择订阅类型");
@@ -206,6 +218,29 @@ function getViolationInformation(delayTime1) {
 		});
 	} else
 		alert("填写车辆信息");
+}
+function getBus(delayTimeB){
+	var parame = {};
+	parame.openId = $("#Id").val();
+	parame.lookType = $("#lookType").find("option:selected").text();
+	parame.DATE = $("#DATE").val();
+	parame.TIME = $("#TIME").val();
+	parame.delayTime =delayTimeB;
+	$.ajax({
+		type : "post",
+		url : "/psDesign/getBus",
+		dataType : "json",
+		data : parame,
+		success : function(data) {
+			var b = document.getElementById("lookType");
+			b.options[0].selected = true;
+			$("#DATE").val("");
+			$("#TIME").val("");
+			alert("请求公交信息成功");
+
+		}
+	});
+	
 }
 function getTraffic(delayTimeT) {
 	var parame = {};
