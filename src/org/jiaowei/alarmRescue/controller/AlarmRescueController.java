@@ -30,6 +30,8 @@ public class AlarmRescueController {
 		public Map<String, Object> alarmRescue(@RequestParam(value = "ID") String ID,
 				@RequestParam(value="longitude") String longitude,
 				@RequestParam(value="latitude") String latitude,
+				@RequestParam(value="startPosition",required=false) String startPosition,
+				@RequestParam(value="endPosition",required=false) String endPosition,
 				@RequestParam(value="phoneNum",required=false) String phoneNum,
 				@RequestParam(value="repairReason",required=false) String repairReason) throws UnsupportedEncodingException{
 			
@@ -37,10 +39,13 @@ public class AlarmRescueController {
 			   phoneNum=URLDecoder.decode(phoneNum,"utf-8");
 		   if(repairReason != null && !repairReason.isEmpty())
 				repairReason=URLDecoder.decode(repairReason,"utf-8");
-			ID="20";
-
-			System.out.println("=========="+phoneNum + repairReason);
-			Map<String, Object> result = service.getAlarmInfo(ID, longitude, latitude, phoneNum, repairReason);
+		   if(startPosition != null && !startPosition.isEmpty())
+			   startPosition=URLDecoder.decode(startPosition,"utf-8");
+		   if(endPosition != null && !endPosition.isEmpty())
+			   endPosition=URLDecoder.decode(endPosition,"utf-8");
+		
+			System.out.println("=========="+phoneNum + repairReason+startPosition);
+			Map<String, Object> result = service.getAlarmInfo(ID, longitude, latitude, startPosition, endPosition, phoneNum, repairReason);
 			return result;
 		}
 }

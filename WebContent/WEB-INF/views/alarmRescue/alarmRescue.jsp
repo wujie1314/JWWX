@@ -18,8 +18,7 @@
 <meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
 <!--引用百度地图API-->
 <script type="text/javascript"
-	src="http://api.map.baidu.com/api?v=2.0&ak=37CVkrQsay3OgzWeXHC6TuWrGAdFZa8C
-"></script>
+	src="http://api.map.baidu.com/api?v=2.0&ak=37CVkrQsay3OgzWeXHC6TuWrGAdFZa8C"></script>
 <link rel="stylesheet" type="text/css" href="alarmRescue/css/alarmRescue.css">
 
 <script src="alarmRescue/js/jquery-2.1.1.min.js"></script>
@@ -30,7 +29,7 @@
 	<!--百度地图容器-->
 	
 		<div id="dituContent"></div>
-		
+		<!-- 
 		<div class="contentChoice">
 			<div class="repairDepot">
 				<div class="repairFrame">
@@ -81,8 +80,13 @@
 			</div>
 			
 		</div>
-
+ -->
+ 
 		<div class="Relocation">
+
+			<div id="showRepairFactory">
+				<img src="alarmRescue/img/icon_radio.png" />
+			</div>
 
 			<div id="relocation" onclick="createMap();">
 				<img src="alarmRescue/img/icon_site.png" />
@@ -92,35 +96,35 @@
 
 		<div class="contnetFoot">
 			<div class="currentPosition">
-				<label class="labelInfo">当前位置:</label> <label id="currentLocation">G50s</label>
+				<label class="labelInfo">当前位置:</label> <label id="currentLocation"></label>
 			</div>
 			<hr />
-			<!--  	<div class="drivingDirection">
-		<label class="labelInfo">行驶方向:</label>
-		<div class="choiceDirretion">
-			<label><input name="direction" type="radio" value="上行" />上行</label> 
-			<label><input name="direction" type="radio" value="下行" />下行</label> 
-			<label><input name="direction" type="radio" value="双向" />双向</label> 
-		</div>
-	</div> -->
+		<div class="drivingDirection">
+			<label class="labelInfo">行驶方向:</label>
+			
+				<input name="direction" type="text" placeholder="请输入起点" id="startPosition"/>
+				<hr style="width:8%;border:none;margin-right:3%;margin-left:3%;border-top:5px solid #333;"/>
+				<input name="direction" type="text"  placeholder="请输入终点" id="endPosition" />
+		
+		</div> 
+	<hr />
 			<div class="phoneNumber">
 				<label class="labelInfo">联系电话:</label> <input name="phone"
-					type="text" placeholder="请输入联系电话" id="phoneNum" />
+					type="text" placeholder="请输入联系电话" id="phoneNum"></input>
 			</div>
 			<hr />
 
 			<div id="phone" onclick="callPhone();">
-				<img src="alarmRescue/img/phone.png" />
+				<img src="alarmRescue/img/icon_phone.png" />
 			</div>
 
 			<div class="repairReason">
 				<label class="labelInfo">维修原因:</label>
 				<div class="emergency">
-					<label><input name="repairReason" type="checkbox"
-						value="爆胎" id="emergency1" />爆胎</label> <label><input
-						name="repairReason" type="checkbox" value="没油" id="emergency2" />没油</label>
-					<label><input name="repairReason" type="checkbox"
-						value="拖车" id="emergency3" />拖车</label>
+				<label>
+					<input name="repairReason" type="radio" id="emergency1" checked="checked" name="报警" value="报警"/>报警</label>
+				<label>
+					<input name="repairReason" type="radio" name="求助" value="求助" id="emergency2" >求助</label>
 				</div>
 
 			</div>
