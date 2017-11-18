@@ -83,11 +83,11 @@ public class AutoSchedule {
 //    	System.out.println("--->"+waitMap.size());
     	for (Integer deptId : waitMap.keySet()) {
 			if(deptId != null){
-				System.out.println("进入等待队列");
+//				System.out.println("进入等待队列");
 				List<WxStatusTmpTEntity> waitList = NavMenuInitUtils.getInstance().getWaitTempEntityOrder(deptId);
-				System.out.println("----waitList--->"+waitList.size());
+//				System.out.println("----waitList--->"+waitList.size());
 				List<SysUserEntity> userList = NavMenuInitUtils.getInstance().getSysUserOrder(deptId);
-				System.out.println("----userList--->"+userList.size());
+//				System.out.println("----userList--->"+userList.size());
 				for (WxStatusTmpTEntity temp : waitList) {
 					boolean isAllotSuccess = NavMenuInitUtils.getInstance().weixinAllotCs(temp, userList);
 					System.out.println("----isAllotSuccess----->"+isAllotSuccess);
@@ -398,7 +398,8 @@ public class AutoSchedule {
 
     @Scheduled(cron = "0/30 * *  * * ? ")   //每30秒执行一次
     public void autoMessageTask() {
-    	long messageTime = 1 * 60 * 1000;
+    	long messageTime = 1 * 60 * 1000; //1分钟
+    	long messageMaxTime = messageTime * 60 * 12 ; //12 个小时
     	long one = System.currentTimeMillis()  ;
     	ConcurrentMap<String, WxStatusTmpTEntity> messageMap = NavMenuInitUtils.getInstance().messageMap;
     	
@@ -449,6 +450,12 @@ public class AutoSchedule {
 							wxStatusTmpService.saveMsgDatebase(tmp, CommonConstantUtils.allotSysHint(),  tmp.getWxOpenid());
 							NavMenuInitUtils.getInstance().messageMap.remove(openId);
     					}
+    				}
+    				if(tmp.getMessageEndTime() != null && tmp.getMessageEndTime() != 0 && 
+    						(one - tmp.getMessageEndTime()) > messageMaxTime){
+    					// 如果该留言12小时内没处理 ，自动从留言队列删除
+    					System.out.println("openId :" +openId +"的留言已失效（12个小时）");
+    					NavMenuInitUtils.getInstance().removeMessageMap(openId);
     				}
     			}
 		 	}
@@ -844,12 +851,14 @@ public class AutoSchedule {
     	} else if(entity.getSendType() == 1){//座席超时
     		if(tempTimes >= CommonConstantUtils.serviceState21Times() && tempTimes < CommonConstantUtils.serviceState22Times()){
     			if(entity.getServiceHintNum() == 0){
+    				System.out.println("坐席第一次超时");
     				sendMsgWxService(entity, CommonConstantUtils.serviceState21SysHint(), wxOpenId, false);
                     entity.setServiceHintNum(1);
                     wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.serviceState21SysHint(), wxOpenId);
 				}
     		} else if(tempTimes >= CommonConstantUtils.serviceState22Times() && tempTimes < CommonConstantUtils.serviceState23Times()){
     			if(entity.getServiceHintNum() == 1){
+    				System.out.println("坐席第二次超时");
     				sendMsgWxService(entity, CommonConstantUtils.serviceState22SysHint(), wxOpenId, false);
     				entity.setTwoSecFlag(true);
                     entity.setServiceHintNum(2);
@@ -857,6 +866,7 @@ public class AutoSchedule {
 				} else if(tempTimes >=  CommonConstantUtils.serviceState231Times() && tempTimes <= CommonConstantUtils.serviceState232Times()){
 //					System.out.println("----------->:tempTimes:"+tempTimes+","+CommonConstantUtils.serviceState231Times()+","+CommonConstantUtils.serviceState232Times());
 					if(entity.getServiceOffHintNum() == 0){
+						System.out.println("坐席第二次到第三次之间，友情提示坐席");
 	    				sendMsgToService(entity.getSessionId(), CommonConstantUtils.serviceState231SysHint(), wxOpenId, false);
 	                    entity.setServiceOffHintNum(1);
 	                    wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.serviceState231SysHint(), wxOpenId);
@@ -865,6 +875,7 @@ public class AutoSchedule {
     		} else if(tempTimes >=  CommonConstantUtils.serviceState23Times()){
     			if(entity.getServiceHintNum() == 2){
 //    				WeiXinConst.servicingMap.remove(key);
+    				System.out.println("坐席第三次超时，从服务队列删除");
     				NavMenuInitUtils.getInstance().removeServiceMap(key);
     				NavMenuInitUtils.getInstance().userDeptMap.remove(key);
     				PeopleServic peopleServic= new PeopleServic();

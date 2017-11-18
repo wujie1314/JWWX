@@ -47,7 +47,7 @@ public class PeopleServic {
 				System.out.println("流程定义ID：" + task.getProcessDefinitionId());
 			}
 		}
-		if (list != null) {
+		if (list != null && list.size() > 0) {
 			String taskId = list.get(0).getId();
 			processEngine.getTaskService().complete(taskId);
 			System.out.println("完成任务：任务ID" + taskId);

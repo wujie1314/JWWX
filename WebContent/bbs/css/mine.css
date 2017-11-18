@@ -1,16 +1,21 @@
 body{
      margin:0;  
      padding:0;  
-     background-color:pink;  
-}
-
-.all{
-	margin:0;  
-     padding:0;  
-     background-color:#adb8c0;
+     background-color:#f2f2f5;;  
 }
 .menu{
-	background-color: #FFF;
+	z-index: 9990;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 44px;
+	border-bottom: 1px solid #eee;
+	background-image: url(img/header.jpg);
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: white;
 }
 .nav{
 	width: 99%;
@@ -32,7 +37,7 @@ body{
 	border-bottom: solid 2px #ffffff;
 }
 .nav a:hover{
-	border-bottom: solid 2px #7AA4D6;
+	border-bottom: solid 4px #7AA4D6;
 	color: #7AA4D6;
 	background-color: #ffffff;
 }
@@ -74,8 +79,8 @@ body{
 	height: 6%;
 	width: 6%;
 	position: fixed;
-	left: 72%;
-	top: 74%;
+	left: 84%;
+	top: 80%;
 	z-index: 1001;
 }
 
@@ -117,3 +122,39 @@ body{
 	font-size: 13px;
 	color: #ccc;
 }
+
+/*新增========*/
+/*列表*/
+.mescroll {
+	position: fixed;
+	top: 44px;
+	bottom: 51px;
+	height: auto;
+}
+/*回到顶部按钮*/
+.mescroll-totop {
+	bottom: 70px;
+}
+
+/*下拉刷新回调的提示*/
+.download-tip {
+	z-index: 9900;
+	position: fixed;
+	top: 10px;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	font-size: 12px;
+	text-align: center;
+	background-color: rgba(255, 130, 1, .7);
+	color: white;
+	-webkit-transition: top 300ms;
+	transition: top 300ms;
+}
+* {
+	margin: 0;
+	padding: 0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: transparent;}

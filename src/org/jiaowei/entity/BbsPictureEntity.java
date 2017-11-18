@@ -16,9 +16,6 @@ public class BbsPictureEntity {
 	private String tellId;
 	private String path;
 	private String fileName;
-	private String imgData;
-	private String imgDataState;
-
 
 	@Id
     @Column(name = "ID")
@@ -52,23 +49,4 @@ public class BbsPictureEntity {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
-	@Basic
-	@Column(name = "IMGDATA")
-	public String getImgData() {
-		return imgData;
-	}
-	public void setImgData(String imgData) {
-		this.imgData = imgData;
-	}
-	
-	@Basic
-	@Column(name = "IMGDATASTATE")
-	public String getImgDataState() {
-		return imgDataState;
-	}
-	public void setImgDataState(String imgDataState) {
-		this.imgDataState = imgDataState;
-	}
-	
 }

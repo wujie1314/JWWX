@@ -1,17 +1,20 @@
 package org.jiaowei.service;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.jiaowei.common.service.CommonService;
 
 public interface mineService extends CommonService{
 
-	Map<String, Object> init(String openID);
+	List<Object> initTransportation(int begin, int end);
 
-	String initUser(String openID);
+	List<Object> initSpecialist(int begin, int end);
 
-	Map<String, Object> initTransportation(int begin, int end);
+	String initUser(HttpServletRequest request, String openID);
 
-	Map<String, Object> initSpecialist(int begin, int end);
+	List<Object> init(String openID, int begin, int end);
 	
 }

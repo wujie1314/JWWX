@@ -19,6 +19,7 @@ public class BbsTellEntity {
 	private String id;
 	private String content;
 	private String userID;
+	private String title;
 	private Timestamp publishedTime;
 	private Integer commentsNumber;
 	
@@ -45,6 +46,14 @@ public class BbsTellEntity {
 	}
 	public void setUserID(String userID) {
 		this.userID = userID;
+	}
+	@Basic
+    @Column(name = "TITLE")
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	@Basic
 	@Column(name  = "PUBLISHEDTIME")

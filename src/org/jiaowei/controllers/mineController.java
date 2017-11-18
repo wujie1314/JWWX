@@ -1,6 +1,9 @@
 package org.jiaowei.controllers;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONObject;
 
@@ -21,8 +24,10 @@ public class mineController {
 	  */
 	 @RequestMapping(value = "/init")
 	 @ResponseBody
-	 public Map<String, Object> init(String openID){
-		return mineService.init(openID);
+	 public List<Object> init(String openID,int num, int size){
+		int begin = (num-1) * size;
+		int end =    num* size;
+		return mineService.init(openID,begin,end);
 	}
 	 
 	 /*
@@ -30,19 +35,19 @@ public class mineController {
 	  */
 	 @RequestMapping(value = "/initUser")
 	 @ResponseBody
-	 public String initUser(String openID){
-		return mineService.initUser(openID);
+	 public String initUser(HttpServletRequest request,String openID){
+		return mineService.initUser(request,openID);
 	}
 	 
 	 @RequestMapping(value = "/initTransportation")
 	 @ResponseBody
-	 public Map<String, Object> initTransportation(int begin, int end){
+	 public List<Object> initTransportation(int begin, int end){
 		return mineService.initTransportation(begin,end);
 	}
 	 
 	 @RequestMapping(value = "/initSpecialist")
 	 @ResponseBody
-	 public Map<String, Object> initSpecialist(int begin, int end){
+	 public List<Object> initSpecialist(int begin, int end){
 		return mineService.initSpecialist(begin,end);
 	}
 }

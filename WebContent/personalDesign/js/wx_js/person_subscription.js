@@ -143,7 +143,6 @@ function judgetype() {
 						var temper = $("#DATE").val() + " " + $("#TIME").val();
 						var date= new Date(Date.parse(temper.replace(/-/g,   "/")));
 						var delayTime2=(date - (new Date()));
-						alert(delayTime2);
 						getViolationInformation(delayTime2);
 						alert("请求成功违章定时");
 					} else
@@ -161,19 +160,19 @@ function judgetype() {
 					var temper1 = $("#DATE").val() + " " + $("#TIME").val();
 					var date1= new Date(Date.parse(temper1.replace(/-/g,   "/")));
 					var delayTime1=(date1 - (new Date()));
+					if($("#ph").find("option:selected").text()!="请选择截图来源"&& $("#section").find("option:selected").text()!="请选择路段"){
+						getTrafficByPicture(delayTime1);
+					}else
 					getTraffic(delayTime1);
-					alert("请求成功");
+					
 				} else
 					alert("请填写日期");
 			} else
-				var delayTime1=0;
-				getTraffic(delayTime1);
-		} else if($("#ph").find("option:selected").text()!="请选择截图来源"&& $("#section").find("option:selected").text()!="请选择路段"){
-			getTrafficByPicture();
+				var delayTimeg=0;
+				getTraffic(delayTimeg);
+		}else if(type=="公交信息"){
 			
-			
-		}else
-			alert("请填写数据!");
+		}		
 	} else
 		alert("请选择订阅类型");
 
@@ -239,16 +238,16 @@ function getTraffic(delayTimeT) {
 			e.options[0].selected = true;
 			$("#DATE").val("");
 			$("#TIME").val("");
-			alert("请求成功");
+			alert("请求成功道路信息");
 
 		}
 	});
 	}else if($("#ph").find("option:selected").text()!="请选择截图来源"&& $("#section").find("option:selected").text()!="请选择路段"){
-		getTrafficByPicture();
+		getTrafficByPicture(delayTimeT);
 	}else alert("请把道路信息填写完整");
 
 }
-function getTrafficByPicture(){
+function getTrafficByPicture(delayTimep){
 	var parame = {};
 	parame.openId = $("#Id").val();
 	parame.lookType = $("#lookType").find("option:selected").text();
@@ -256,6 +255,7 @@ function getTrafficByPicture(){
 	parame.TIME = $("#TIME").val();
 	parame.ph = $("#ph").find("option:selected").text();
 	parame.section = $("#section").find("option:selected").text();
+	parame.delayTime =delayTimep;
 	$.ajax({
 		type : "post",
 		url : "/psDesign/getTrafficByPicture",
@@ -270,7 +270,7 @@ function getTrafficByPicture(){
 			d.options[0].selected = true;
 			$("#DATE").val("");
 			$("#TIME").val("");
-			alert("请求成功");
+			alert("请求成功图片");
 			
 
 

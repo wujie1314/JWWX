@@ -1,12 +1,11 @@
-
 $(document).ready(function(){
     initPage();
 });
 function initPage() {
-    alert(window.location.href);/***用于获得当前连接url用**/
+   // alert(window.location.href);/***用于获得当前连接url用**/
 /***用户点击分享到微信圈后加载接口接口*******/
 $.post("others/getWxConfig",{"url":window.location.href,"openId":$('#openID').val()},function(data,status){
-    console.log(data.appId+" "+data.timestamp+" "+data.nonceStr+" "+data.signature);
+    /*console.log(data.appId+" "+data.timestamp+" "+data.nonceStr+" "+data.signature);*/
     wx.config({
         debug: true,
         appId: data.appId,

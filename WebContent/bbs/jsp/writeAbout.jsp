@@ -24,12 +24,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   <div id="qq">
 	<p>有什么新鲜事想告诉大家?</p>
+	<input type="text" class="form-control" id="title" placeholder="输入标题" style="width: 91%;margin: 3% auto;">
 	<div class="message" id="message" onkeydown="justifyWord(this.id)" contentEditable='true' >
 	</div>
 
 	<div class="But">
-		<img src="/bbs/images/bba_thumb.gif" class='bq'/>
-		<img src="/bbs/images/camera_thumb.gif" title="[图片上传]" onclick="addPicture()">
+		<img src="/bbs/images/icon_expression.png" class='bq' style="width: 10%;margin-left: 0%;"/>
+		<img src="/bbs/images/icon_photo.png" title="[图片上传]" onclick="addPicture()" style="width: 10%;margin-top: 1%;margin-left: 1%;">
 		<!--face begin-->
 		<div class="face">
 			<ul>
