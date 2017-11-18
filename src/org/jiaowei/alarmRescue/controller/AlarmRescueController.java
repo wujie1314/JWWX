@@ -44,7 +44,6 @@ public class AlarmRescueController {
 		   if(endPosition != null && !endPosition.isEmpty())
 			   endPosition=URLDecoder.decode(endPosition,"utf-8");
 		
-			System.out.println("=========="+phoneNum + repairReason+startPosition);
 			Map<String, Object> result = service.getAlarmInfo(ID, longitude, latitude, startPosition, endPosition, phoneNum, repairReason);
 			return result;
 		}
