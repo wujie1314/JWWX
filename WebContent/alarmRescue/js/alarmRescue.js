@@ -1,7 +1,6 @@
 var latitude = "";
 var longitude = "";
 $(function() {
-
 	createMap();// 创建地图
 	var HEIGHT = $('.contentChoice').height();
 	var HEIGHT1 = $('.contnetFoot').height();
@@ -10,7 +9,7 @@ $(function() {
         $('.contnetFoot').height(HEIGHT1);
     });
 });
-// 创建地图函数：
+// 创建地图函数
 function createMap() {
 	var map = new BMap.Map("dituContent");// 在百度地图容器中创建一个地图
 	var point = new BMap.Point(106.557165, 29.570997);// 定义一个中心点坐标
@@ -36,24 +35,26 @@ function createMap() {
 
 	var geolocation = new BMap.Geolocation();
 	var geoc = new BMap.Geocoder();
-	var myIcon = new BMap.Icon("img/icon_point.png", new BMap.Size(30, 30));
+	var myIcon = new BMap.Icon("alarmRescue/img/icon_point.png", new BMap.Size(30, 30));
 
+	
 	map.addEventListener("touchstart", function(e) {
 		longitude = e.point.lng;
 		latitude = e.point.lat;
 		point = new BMap.Point(longitude, latitude);// 定位
-
+		var label = new BMap.Label("新位置",{offset:new BMap.Size(25,-15)});
 		var marker2 = new BMap.Marker(point, {
 			icon : myIcon
-		}); // 创建标注
+		}); 
+		marker2.setLabel(label);
+		
 		map.clearOverlays();
+		
 		geoc.getLocation(point, function(rs) {
-			console.log(point);
-			console.log(rs);
 			console.log(rs.addressComponents);
-			$('#currentLocation').html(
-					rs.address + rs.business.replace(/,/g, ''));
+			$('#currentLocation').html(rs.address + rs.business.replace(/,/g, ''));
 		});
+		
 		map.addOverlay(marker2);
 	});
 
@@ -64,8 +65,6 @@ function createMap() {
 			point = new BMap.Point(longitude, latitude);// 定位
 
 			geoc.getLocation(point, function(rs) {
-				console.log(point);
-				console.log(rs);
 				console.log(rs.addressComponents);
 				// var addComp = rs.addressComponents;
 				// var position = addComp.province + addComp.city +
@@ -84,41 +83,77 @@ function createMap() {
 	}, {
 		enableHighAccuracy : true
 	});
+	
 }
+
+$("#showRepairFactory").click(function(){
+	window.location="http://ditu.amap.com/search?query=%E7%BB%B4%E4%BF%AE&query_type=RQBXY&longitude=106.322422&latitude=29.586976&city=500000&zoom=16";
+	
+});
+	
+
+function showRepairFactory(){
+	var local = new BMap.LocalSearch(map, { renderOptions:{map: map, autoViewport: true}});
+	local.searchNearby("汽修", new BMap.Point(longitude, latitude));
+
+}
+
+//
+//$(":checkbox").click(function(){
+//	$(this).attr("checked",true);//设置当前选中checkbox的状态为checked
+//	$(this).siblings().attr("checked",false); //设置当前选中的checkbox同级(兄弟级)其他checkbox状态为未选中
+//	});
+//
+//$(':checkbox').each(function(){ //遍历页面中所有的checkbox
+//	$(this).click(function(){//为页面中每一个checkbox设置点击事件
+//	if($(this).attr('checked')){ //如果有checkbox状态为选中
+//	$(':checkbox').removeAttr('checked'); //移除checked属性，改变checkbox状态为未选中(为页面中所有checkbox复选框添加设置)
+//	//$(':checkbox').attr('disabled','disabled'); //或者直接设置checkbox复选框为禁用(为页面中所有checkbox复选框添加设置)
+//	$(this).attr('checked','checked'); //为当前点击选中的checkbox复选框添加checked属性
+//	} 
+//	}); 
+//	});
 
 function submit() {
 	var id = getUrlParam("ID");
- //   var direction = $('input:radio[name="direction"]:checked').val();
-    
-    var repairReason = ""; 
-    $('input[name="repairReason"]:checked').each(function(){ 
-    	repairReason += $(this).val() + " "; 
-    }); 
+    var repairReason = $('input:radio[name="repairReason"]:checked').val();
+    var phone = $('#phoneNum').val();
 
-    console.log(repairReason);
-    console.log("latitude:==="+latitude + "longitude:==="+longitude);
-    
-    var parame = {};
-    parame.ID = id;
-    parame.longitude = longitude;
-    parame.latitude = latitude;
-    parame.phoneNum = encodeURI($('#phoneNum').val());
- //   parame.direction = encodeURI(direction);
-    parame.repairReason = encodeURI(repairReason);
-    
-    $.ajax({
-    	url: 'alarmRescue/alarmRescue',
-    	method: 'get',
-    	contentType: "application/json;charset=utf-8", // 中文乱码
-    	data: parame,
-		success : function(o) {
-			alert("提交成功");
-			
-			
-			
-			
-		}
+    $("#phoneNum").click(function(){
+    	if($('#phoneNum').val() == "手机号码有误或为空,请重填"){
+	    	$('#phoneNum').val("");
+	    	$('#phoneNum').css("color","#333");
+    	}
     });
+    if(!(/^1[34578]\d{9}$/.test(phone))){  
+    	$('#phoneNum').val("手机号码有误或为空,请重填");
+    	$('#phoneNum').css("color","#f00");
+        return false; 
+    } 
+//    var repairReason = ""; 
+//    $('input[name="repairReason"]:checked').each(function(){ 
+//    	repairReason += $(this).val() + " "; 
+//    }); 
+    else{
+	    var parame = {};
+	    parame.ID = id;
+	    parame.longitude = longitude;
+	    parame.latitude = latitude;
+	    parame.startPosition = encodeURI($('#startPosition').val());
+	    parame.endPosition = encodeURI($('#endPosition').val());
+	    parame.phoneNum = encodeURI($('#phoneNum').val());
+	    parame.repairReason = encodeURI(repairReason);
+	    console.log(parame);
+	    $.ajax({
+	    	url: 'alarmRescue/alarmRescue',
+	    	method: 'get',
+	    	contentType: "application/json;charset=utf-8", // 中文乱码
+	    	data: parame,
+			success : function(o) {
+				alert("提交成功");				
+			}
+	    });
+    }
 }
 
 function callPhone() {
