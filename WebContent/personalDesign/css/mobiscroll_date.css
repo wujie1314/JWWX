@@ -259,7 +259,7 @@
     line-height: 40px;
     padding: 0 15px;
     margin: 0 2px;
-    font-size: 14px;
+    font-size: 30px;
     font-weight: bold;
     text-decoration: none;
     text-shadow: 0 -1px 1px #000;
@@ -390,11 +390,11 @@
     padding: 1px 10px;
 }
 .android-ics .dwv {
-    height: 36px;
-    line-height: 36px;
+    height: 45px;
+    line-height: 45px;
     padding: 0;
     border-bottom: 2px solid #31b6e7;
-    font-size: 18px;
+    font-size: 30px;
 }
 .android-ics .dwwl {
     margin: 0 2px;
@@ -406,7 +406,7 @@
 }
 .android-ics .dww .dw-li {
     color: #fff;
-    font-size: 18px;
+    font-size: 33px;
     text-shadow: none;
 }
 .android-ics .dww .dw-li.dw-hl {
@@ -477,8 +477,8 @@
     padding: 0;
 }
 .android-ics .dw .dwb {
-    height: 36px;
-    line-height: 36px;
+    height: 52px;
+    line-height: 52px;
     padding: 0;
     margin: 0;
     font-weight: normal;
