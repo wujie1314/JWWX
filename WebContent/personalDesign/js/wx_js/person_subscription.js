@@ -28,6 +28,7 @@ jq1(function() {
 	};
 	$("#DATE").mobiscroll($.extend(opt['date'], opt['default1']));
 	$("#TIME").mobiscroll($.extend(opt['time'], opt['default1']));
+	type ="公交信息";
 	$(".tabbable ul li").click(function() {
 		type = $(this).children("a").html();
 
