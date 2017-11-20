@@ -11,6 +11,7 @@ function getURLName(name) {
 
 var openID = getURLName("openID");
 var tellID = getURLName("tellID");
+var isReview = false;
 $(function(){
 	init();
 })
@@ -94,8 +95,11 @@ function review(){
 		 alert("请输入您的评论内容");
 		 return;
 	 }
-	 $("#review").attr("disabled", true); 
-	 //alert(reviewData);
+	 if(isReview){
+		 return;
+	 }
+	 else
+		 isReview = true;
 	 $.ajax({
 			type :"post",
 			url : "/particularsController/review",
@@ -107,7 +111,7 @@ function review(){
 				openID : openID
 			},
 			success : function(data){
-				$("#review").attr("disabled", false); 
+				//$("#review").attr("disabled", false); 
 				window.location.href = "bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID;
 				// alert(data.result);
 				//addContent(data)
