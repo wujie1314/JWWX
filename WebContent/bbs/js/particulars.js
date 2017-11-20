@@ -42,15 +42,15 @@ function addContent(data){
 }
 
 //加载说说
-//message[0]:内容 message[1]:时间  message[2]:评论量 message[3]:用户名 message[4]:头像 message[5]:ID
+//message[0]:内容 message[1]:时间  message[2]:评论量 message[3]:用户名 message[4]:头像 message[5]:ID message[6]:标题
 function addTellMessage(message){
 	var headDiv = "";
-	headDiv += "<div class='headImg'><img src='"+ message[4] +"' style='width: 80%;height: 80%;margin-left: 10%;margin-top: 10%;'></div>"
+	headDiv += "<div class='headImg'><img src='"+ message[4] +"' style='width: 40px;height: 40px;margin-left: 10%;margin-top: 10%;border-radius:50%'></div>"
 			+  "<div class='nameAndTime'><div class='userName'>"+ message[3] +"</div>"
 			+  "<div class='tellTime'>"+ message[1] + "</div><div>";
 	$("#tellMessage").append(headDiv);
 	var contentDiv = "";
-	contentDiv = message[0];
+	contentDiv = "【" + message[5] +"】"+ message[0];
 	$("#tellContent").append(contentDiv);
 	
 /*	var operationDiv = "";
@@ -61,13 +61,15 @@ function addTellMessage(message){
 function addPic(pic){
 	var picDiv = "";
 	for(var i=0; i<pic.length; i++)
-		picDiv += "<img src='"+ pic[i] +"' style='width: 30%;height: 90%;margin-top: 5%;margin-left: 5%;'>";
+		picDiv += "<img src='"+ pic[i] +"' style='width: 30%;margin-top: 5%;margin-left: 5%;'>";
 	$("#tellPicture").append(picDiv);
 }
 
 //加载评论
 //comment[0]：时间  comment[1]：评论内容 comment[2]：评论人头像 comment[3] 评论人ID
 function addCommentDiv(comment){
+	var hr = "<hr>";
+	$("#tellComment").append(hr);
 	for(var i=0; i<comment.length; i++)
 		addACommentDiv(comment[i])
 }
@@ -76,11 +78,13 @@ function addCommentDiv(comment){
 function addACommentDiv(comment){
 	var commentDiv = "";
 	commentDiv += "<div class='AComment'>" 
-			   +"<img src='"+ comment[2] +"' style='height: 100%;'>"
+			   +"<img src='"+ comment[2] +"' style='height: 100%;border-radius:50%'>"
 			   + "<span class='commentSpan'>:</span>"
 			   + comment[1] + "</div>";
 	$("#tellComment").append(commentDiv);
-
+	var hr = "<hr>";
+	$("#tellComment").append(hr);
+	
 }
 
 //发表评论

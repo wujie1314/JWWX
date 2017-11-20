@@ -3,7 +3,7 @@
 	margin-left: 2%;
 }
 .tellMessage{
-	height: 10%;
+	height: 12%;
 }
 .headImg{
 	width: 20%;
@@ -18,10 +18,14 @@
 	margin-top: 5%;
 }
 .tellPicture{
-	height: 20%;
+	width: 70%;
+	margin-left: 18%;
 }
 .tellOperation{
 	height: 5%;
+}
+.tellContent{
+	font-size: 14px;
 }
 .AComment{
 	height: 5%;
@@ -31,7 +35,13 @@
 .commentSpan{
 	margin-left: 1%;
 }
-
+.userName{
+	font-size: 15px;
+}
+.tellTime{
+	color: #ccc;
+	font-size: 14px;
+}
 #qq{width:100%;/*宽*/height:170px;/*高*/background:#fff;/*背景颜色*/
 	border-radius:5px;/*Html5 圆角*/}
 #qq p{font-size: 12px;
