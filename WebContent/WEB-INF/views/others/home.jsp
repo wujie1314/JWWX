@@ -27,9 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<div class="linkNiv" id="BBS"  onclick="BBS()" >
   			<span class ="linkName">论坛</span>	
   		</div>
-  		<div class="linkNiv" id="ddd" onclick="getLocationdd()" >
+  		<!-- <div class="linkNiv" id="ddd" onclick="getLocationdd()" >
   			<span class ="linkName">SDK获取微信当前位置</span>	
-  		</div>
+  		</div> -->
   </body>
   <script type="text/javascript">
   		function BBS(){
@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		}
   		function Personal(){
   			var openID = $("#openID").val();
-  			window.location.href = "/psDesign/getRoadName?openID=" + openID;  
+  			window.location.href = "/psDesign/getRoadName?openID=" + openID;    
   		}
   </script>
 </html>

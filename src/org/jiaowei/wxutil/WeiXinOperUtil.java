@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mysql.jdbc.Statement;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -1194,6 +1195,20 @@ public class WeiXinOperUtil {
         return null;
     }
     
+    /**/
+    public static void callSendNote(String url){
+        try {
+	    	CloseableHttpClient httpclient = HttpClients.createDefault();
+	        HttpGet httpGet = new HttpGet(url);
+	        CloseableHttpResponse response = null;
+			response = httpclient.execute(httpGet);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     public static void main(String[] args) {
     	File file = new File("E:\\123456.png");
     	String result;
@@ -1219,4 +1234,6 @@ public class WeiXinOperUtil {
 			e.printStackTrace();
 		}
 	}
+    
+    
 }

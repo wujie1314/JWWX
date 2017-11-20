@@ -226,6 +226,8 @@ body {
 						iconCls="icon-record" title="开始录音" plain="true">录音</a>
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
 						iconCls="icon-help" title="专家服务" plain="true">专家</a>
+						<a href="#" onclick="openCallPolice();" class="easyui-linkbutton"
+						iconCls="icon-email" title="报警救援" plain="true">报警救援短信</a>
 					</span>
 					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
@@ -563,8 +565,8 @@ body {
 	<!-- 论坛window -->
 	<div id="bbs-window" class="easyui-window" title="新增论坛帖子"
 		closed="true" iconCls="icon-save">
-			<div class="bbs_left_list" >
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
+			<div class="bbs_left_list" id="bbs_left_list">
+				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)" >
 					<li class= "bbs_li_list">
 						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
 						<div class="bbs_expert_info">
@@ -573,73 +575,13 @@ body {
 						</div>
 					</li> 
 				</ul>
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
-					<li class= "bbs_li_list">
-						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
-						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
-							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
-						</div>
-					</li> 
-				</ul>
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
-					<li class= "bbs_li_list">
-						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
-						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
-							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
-						</div>
-					</li> 
-				</ul>
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
-					<li class= "bbs_li_list">
-						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
-						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
-							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
-						</div>
-					</li> 
-				</ul>
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
-					<li class= "bbs_li_list">
-						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
-						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
-							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
-						</div>
-					</li> 
-				</ul>
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
-					<li class= "bbs_li_list">
-						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
-						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
-							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
-						</div>
-					</li> 
-				</ul>
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
-					<li class= "bbs_li_list">
-						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
-						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
-							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
-						</div>
-					</li> 
-				</ul>
-				<ul class= "bbs_ul_list" onclick="bbs_click_selected(this)">
-					<li class= "bbs_li_list">
-						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
-						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
-							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
-						</div>
-					</li> 
-				</ul>
-				
 			</div>
 			<div class="bbs_right_content" style="width:450px;height: 400px;float: right; ">
+				<label>标题</label>
+				<input type="text" id = "expert_title" name="expert_title" value="" />
+				<label>内容</label>
 				<textarea class="form-control" id="divText"></textarea>
+					<label>上传图片</label>
 		  			<input type="file" id="bbsImg_file"/>  
 		  			<div class="bbs_imageDiv" id="bbs_imageDiv">
 		  		</div>
@@ -649,6 +591,19 @@ body {
 				<input name="expert_name" id="expert_name"value="xxx" type="hidden">
 				<input name="expert_ID" id = "expert_ID"value="1" type="hidden">
 			</form> 
+	</div>
+	<!-- 报警救援 -->
+	<div id="callPolice-window" class="easyui-window" title="短信-提示"
+		closed="true" iconCls="icon-save">
+			<div class="sendmessagebox">
+				<div>
+					&nbsp;&nbsp;工&nbsp;单&nbsp;号：&nbsp;<input type="text" id="alarmRescue_orderId" name="alarmRescue_orderId">
+				</div>
+				<div class="singlebox">
+					&nbsp;&nbsp;电&nbsp;话&nbsp;号：&nbsp;<input type="text" id = "alarmRescue_telephone" name="alarmRescue_telephone">
+				</div>
+				<button class="sendnotebtn" onclick="sendAlarmRescue()">发送短信</button>
+			</div>
 	</div>
 	<div id="media-html" style="display: none">
 		<div id="jp_container_1" class="jp-video jp-video-180p"
@@ -687,6 +642,9 @@ body {
 		</div>
 	</div>
 </body>
+<!-- 报警救援引入 -->
+<link type="text/css" rel="stylesheet" href="alarmRescue/css/seatAlarmRescue.css" />
+<script type="text/javascript" src="alarmRescue/js/seatAlarmRescue.js"></script>
 <!-- JS引入 -->
 <link type="text/css" rel="stylesheet" href="bbs/css/main_bbs_window.css" />
 <script type="text/javascript" src="bbs/js/dist/lrz.all.bundle.js"></script>
@@ -2364,7 +2322,18 @@ var basePath = '<%=basePath%>';
 			$.messager.alert("论坛提示", "请选择微信用户后录音！", "warning");
 			return false;
 		} */
+		fullExpertListHtml(getExpertInfo());
 		openWindow("bbs-window", 700, 450);
+	}
+	
+	/*发短信给用户*/
+	function openCallPolice(){
+		/* 	if (nowOpenid == "") {
+		$.messager.alert("论坛提示", "请选择微信用户后录音！", "warning");
+		return false;
+		} */
+		
+		openWindow("callPolice-window", 370, 180);
 	}
 	
 	/*提交配置信息*/

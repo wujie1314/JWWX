@@ -595,7 +595,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 		// 判断是否是最后一级，是返回一个链接图文信息
 		if(result.size() == 1 && result.get(0).getUrl() != null){
 			//是的直接覆盖前面写的String;
-			returnString = XmlUtil.gen1ArticlesResponseMsg(map, "标题",
+			returnString = XmlUtil.gen1ArticlesResponseMsg(map, result.get(0).getContent(),
     				result.get(0).getContent(), result.get(0).getUrl().replaceAll("openIdReplaceAll", openId));
 			WeiXinOperUtil.sendMsgToWX(response, returnString);
 			wxStatusTmpService.saveMsgDatebase(null, returnString, openId);

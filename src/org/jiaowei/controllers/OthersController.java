@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +27,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class OthersController {
-
+	
+	private static ResourceBundle rb;
+	static {
+		rb = ResourceBundle.getBundle("weixin");
+	}
+	
 	@Autowired
     private MsgFromCustomerServiceService msgFromCustomerService;
 	
@@ -59,6 +66,7 @@ public class OthersController {
     @ResponseBody
     public String receiveAppMessage(@RequestBody Map<String, String> map, HttpServletResponse response, HttpServletRequest request) {
     	 String msgType = map.get("MsgType"), content = map.get("Content");
+    	 System.out.println(map);
 		navMenuService.sendCustomerService(map, response, request);
 		return "-1";
     }
@@ -83,6 +91,18 @@ public class OthersController {
          return list;
     }
     
+    
+    @RequestMapping(value = "others/sendNote",method=RequestMethod.POST)
+    @ResponseBody
+    public String sendNote(@RequestBody Map<String, Object> parm){
+    	
+    	String url = rb.getString("notePath");
+    	url = url.replace("telephone",parm.get("telephone").toString());
+    	url = url.replace("content", parm.get("content").toString());
+    	System.out.println(url);
+    	WeiXinOperUtil.callSendNote(url);
+    	return null;
+    }
     
     
     /**
