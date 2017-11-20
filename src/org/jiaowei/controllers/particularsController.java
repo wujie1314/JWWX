@@ -2,6 +2,8 @@ package org.jiaowei.controllers;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.jiaowei.service.particularsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ public class particularsController {
 	 
 	 @RequestMapping(value = "/review")
 	 @ResponseBody
-	 public Map<String, Object> review(String tellID,String reviewData, String openID){
-		return particularsService.review(tellID,reviewData,openID);
+	 public Map<String, Object> review(HttpServletRequest request,String tellID,String reviewData, String openID){
+		return particularsService.review(request,tellID,reviewData,openID);
 	}
 }
