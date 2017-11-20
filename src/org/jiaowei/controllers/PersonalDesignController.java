@@ -225,6 +225,21 @@ public class PersonalDesignController {
         	
     	
     }
+    @RequestMapping(value = "/getBus")
+    @ResponseBody
+    public void getBus(String openId,String lookType,String DATE,
+    		String TIME,String delayTime){
+    	String message=null;
+    	int delayTimeNUM=Integer.valueOf(delayTime);
+    	message="http://web.chelaile.net.cn/wwd/index?src=webapp_weixin_chongqing";
+    	System.out.println("公交信息");
+    	if(delayTimeNUM>=0){
+        	Timer timer = new Timer();
+            timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
+        	}
+        	
+    	
+    }
     class Task extends TimerTask {
         private String openId;
         private String message;

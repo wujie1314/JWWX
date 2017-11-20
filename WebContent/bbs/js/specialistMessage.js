@@ -24,7 +24,6 @@ function announce(){
 	var imgFileString = JSON.stringify(imgFile);
 	var expert_name = $('#expert_name').val();
 	var expert_ID = $("#expert_ID").val();
-
     $.ajax({  
         async:false,//是否异步  
         cache:false,//是否使用缓存  
@@ -39,9 +38,12 @@ function announce(){
         timeout: 1000,  
         contentType : 'application/x-www-form-urlencoded; charset=utf-8',  
         url: "/WriteAboutController/specialist",  
-        success: function(result){  
-        	alert("OK");
+        success: function(result){
+        	console.log("tellID 为 ========  "+ result);
+        	send_link(expert_ID,result); //推送论坛链接
+        	// 关闭窗口
         	closeWindow("bbs-window");
+        	// 清空窗口内容
         	clear_bbs_window();
         },  
         error: function(result){  
@@ -74,6 +76,25 @@ function cancel_selected(){
 	});
 }
 /*发表成功后分别给专家，和微信用户发链接信息*/
-function send_link(){
-	
+function send_link(expert_ID,tellID){
+	 $.ajax({  
+	        async:false,//是否异步  
+	        cache:false,//是否使用缓存  
+	        type: "POST",  
+	        data:{
+	        	openId:nowOpenid,
+	        	expertId:expert_ID,
+	        	tellId: tellID
+	        	},  
+	        dataType: "json",  
+	        timeout: 1000,  
+	        contentType : 'application/x-www-form-urlencoded; charset=utf-8',  
+	        url: "/WriteAboutController/sendLink",  
+	        success: function(result){  
+	        	console.log("成功推送链接");
+	        },  
+	        error: function(result){  
+	        	console.log(result)       
+	        }  
+	    });  
 }

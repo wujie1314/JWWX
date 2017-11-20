@@ -5,21 +5,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jiaowei.alarmRescue.controller.DataManipulation;
+import org.jiaowei.alarmRescue.controller.MysqlConn;
 import org.jiaowei.alarmRescue.service.IAlarmRescueService;
 import org.springframework.stereotype.Service;
 
 @Service("alarmRescue")
 public class AlarmRescueImpl implements IAlarmRescueService {	
 	@Override
-	public Map<String, Object> getAlarmInfo(String ID, String longitude, String latitude, String phoneNum, String repairReason) {
+	public Map<String, Object> getAlarmInfo(String ID, String longitude, String latitude, String startPosition, String endPosition, String phoneNum, String repairReason) {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<String, Object>();
-//		String content_desc = "方向:"+direction+"  维修原因:"+repairReason;
+		String content_desc = "方向  起点:"+startPosition+" 终点:"+endPosition+"  维修原因:"+repairReason;
 		String contact_way = phoneNum;
 		String jwd = longitude + "," + latitude;
 		map.put("ID", ID);
-//		map.put("content_desc", content_desc);
+		map.put("content_desc", content_desc);
 		map.put("contact_way", contact_way);
 		map.put("jwd", jwd);
 		
@@ -30,7 +30,7 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		else
 			map.put("create_time", date);
 		System.out.println("==========="+date);
-		DataManipulation.importData(map);
+		MysqlConn.dataManipulation(map);
 		return null;
 	}
 
