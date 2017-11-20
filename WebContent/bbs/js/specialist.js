@@ -1,8 +1,8 @@
-var openID = getURLName("openID");
+//var openID = getURLName("openID");
 var num = 1;
 var size = 10;
 var mescroll;
-//var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
+var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
 $(function(){
 	//init();
 	initXiala();

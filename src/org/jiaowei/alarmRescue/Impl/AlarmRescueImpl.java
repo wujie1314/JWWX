@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jiaowei.alarmRescue.controller.DataManipulation;
+import org.jiaowei.alarmRescue.controller.MysqlConn;
 import org.jiaowei.alarmRescue.service.IAlarmRescueService;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		else
 			map.put("create_time", date);
 		System.out.println("==========="+date);
-		DataManipulation.importData(map);
+		MysqlConn.dataManipulation(map);
 		return null;
 	}
 
