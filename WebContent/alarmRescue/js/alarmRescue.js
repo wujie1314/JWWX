@@ -1,5 +1,8 @@
 var latitude = "";
 var longitude = "";
+var id = getUrlParam("ID");
+var phone =getUrlParam("phone");
+
 $(function() {
 	createMap();// 创建地图
 	var HEIGHT = $('.contentChoice').height();
@@ -8,6 +11,8 @@ $(function() {
         $('.contentChoice').height(HEIGHT);
         $('.contnetFoot').height(HEIGHT1);
     });
+
+    $('#phoneNum').val(phone);
 });
 // 创建地图函数
 function createMap() {
@@ -115,17 +120,15 @@ function showRepairFactory(){
 //	});
 
 function submit() {
-	var id = getUrlParam("ID");
     var repairReason = $('input:radio[name="repairReason"]:checked').val();
-    var phone = $('#phoneNum').val();
-
+   
     $("#phoneNum").click(function(){
     	if($('#phoneNum').val() == "手机号码有误或为空,请重填"){
 	    	$('#phoneNum').val("");
 	    	$('#phoneNum').css("color","#333");
     	}
     });
-    if(!(/^1[34578]\d{9}$/.test(phone))){  
+    if(!(/^1[34578]\d{9}$/.test($('#phoneNum').val()))){  
     	$('#phoneNum').val("手机号码有误或为空,请重填");
     	$('#phoneNum').css("color","#f00");
         return false; 
