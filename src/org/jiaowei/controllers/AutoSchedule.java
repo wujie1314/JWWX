@@ -112,8 +112,6 @@ public class AutoSchedule {
 //    	waitQ.startProcessInstance();
 //    	TestActiviti textActiviti=new TestActiviti();
 //  	textActiviti.createTable();
-//       helloword helloword=new helloword();
-//       helloword.deploymentProcessDefinition();
       /* WaitQ waitQ=new WaitQ();
        waitQ.deploymentProcessDefinition();*/
     /*  SeatW seatW=new SeatW();
