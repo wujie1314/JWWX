@@ -172,7 +172,8 @@ function judgetype() {
 				var delayTimeg=0;
 				getTraffic(delayTimeg);
 		}else if(type=="公交信息"){
-			if (lookType == "定时推送") {
+			var lookType2 = $("#lookType").find("option:selected").text();
+			if (lookType2 == "定时推送") {
 				if ($("#DATE").val() != "" && $("#TIME").val() != "") {
 						var temperB = $("#DATE").val() + " " + $("#TIME").val();
 						var dateB= new Date(Date.parse(temperB.replace(/-/g,   "/")));
