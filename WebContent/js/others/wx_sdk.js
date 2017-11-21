@@ -1,6 +1,6 @@
-$(document).ready(function(){
-    initPage();
-});
+/*$(document).ready(function(){
+	initPage() ;
+});*/
 function initPage() {
    // alert(window.location.href);/***用于获得当前连接url用**/
 /***用户点击分享到微信圈后加载接口接口*******/

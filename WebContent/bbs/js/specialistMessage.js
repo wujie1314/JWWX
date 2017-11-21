@@ -1,6 +1,5 @@
 var imgFile = new Array();
 
-
 //压缩图片进行显示
 $("#bbsImg_file").change(function () {
 	/* 压缩图片 */
@@ -24,6 +23,7 @@ function announce(){
 	var imgFileString = JSON.stringify(imgFile);
 	var expert_name = $('#expert_name').val();
 	var expert_ID = $("#expert_ID").val();
+	var expert_title = $("#expert_title").val();
     $.ajax({  
         async:false,//是否异步  
         cache:false,//是否使用缓存  
@@ -32,7 +32,8 @@ function announce(){
         	imgFile:imgFileString,
         	content:content,
         	oppenID:expert_ID,   //"专家的ID" 
-        	name: expert_name //专家的名字
+        	name: expert_name, //专家的名字
+        	title:expert_title
         	},  
         dataType: "json",  
         timeout: 1000,  
@@ -65,8 +66,8 @@ function bbs_click_selected(dd){
 	$(dd).find("li").addClass("export_selected");
 	var span = $(dd).find("span");
 	console.log(span);
-	$('#expert_ID').val($(span).text());
-	$('#expert_name').val($(span).attr("ID"));
+	$('#expert_ID').val($(span).attr("ID"));
+	$('#expert_name').val($(span).text());
 }
 /*只能选中一个*/
 function cancel_selected(){
@@ -97,4 +98,44 @@ function send_link(expert_ID,tellID){
 	        	console.log(result)       
 	        }  
 	    });  
+}
+
+/*拼接专家列表html*/
+function fullExpertListHtml(data){
+	$('#bbs_left_list').empty();
+	var html = "";
+	for (var i = 0; i < data.length; i++) {
+		html += "<ul class= 'bbs_ul_list' onclick='bbs_click_selected(this)' >"
+		html += "<li class= 'bbs_li_list'>";
+		html += "<img class='j-img' src='http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66' " +
+				"data-src='http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66' />";
+		html += "<div class='bbs_expert_info'>";
+		html += "<span class='expert_name' id='"+data[i].id+"'>"+data[i].expertName+"</span>";
+		html += "<p class='expert_des'>"+data[i].introduce+"</p>";			
+		html += "</div></li></ul>";
+		$('#bbs_left_list').append(html);
+		html = "";
+	}
+}
+
+/*获取专家列表*/
+function getExpertInfo(){
+	 var data = null;
+	 $.ajax({  
+	        async:false,//是否异步  
+	        cache:false,//是否使用缓存  
+	        type: "get",  
+	        dataType: "json",  
+	        timeout: 1000,  
+	        contentType : 'application/x-www-form-urlencoded; charset=utf-8',  
+	        url: "/WriteAboutController/expertInfo",  
+	        success: function(result){
+	        	data = result;
+	        	console.log(result);
+	        },  
+	        error: function(result){  
+	        	console.log(result)       
+	        }  
+	    }); 
+	 return data;
 }

@@ -1,8 +1,8 @@
-//var openID = getURLName("openID");
+var openID = getURLName("openID");
 var num = 1;
 var size = 10;
 var mescroll;
-var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
+//var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
 $(function(){
 	//init();
 	initXiala();
@@ -63,14 +63,14 @@ function addInvitationDiv(data){
 	var InvitationDiv = "";
 	InvitationDiv += "<div class='content' id='content' >";
 	InvitationDiv += "<div class='head'>" 
-				  +     "<div class='headImage'><img src='"+ data[2] +"' style='width: 80%;height: 80%;margin-left: 10%;margin-top: 10%;'></div>"
+		  +     "<div class='headImage'><img src='"+ data[2] +"' style='width: 40px;height: 40px;margin-left: 10%;margin-top: 10%;border-radius:50%'></div>"
 				  +     "<div class='headNANDT'><div class='headName'>"+ data[1] + "</div>"
 				  +		"<div class='headTime'>"+ data[3]+"</div></div>"
 				  +	 "</div>";
-	InvitationDiv += "<div class='contentText' style='margin-left:70px;'>"+"【" + data[5] +"】" + data[6] +"</div>";
+	InvitationDiv += "<div class='contentText' style='margin-left:50px;'>"+"【" + data[5] +"】" + data[6] +"</div>";
 	if(data[8] != null)
-		InvitationDiv += "<div class='contentPicture' style='margin-left:70px;margin-top:10px;'>"+ getPictrue(data[8])  +"</div>";
-	InvitationDiv += "<div class='foot' style='margin-left:70px;margin-top:10px;'>"+"<span>当前评论："+data[4] +"| </span>"+ "<span onclick='reply("+ data[0] +")'>回复 | </span>" + "<span onclick='particulars("+ data[0] +")'> 详情</span>" + "</div>";
+		InvitationDiv += "<div class='contentPicture' style='margin-left:57px;margin-top:10px;'>"+ getPictrue(data[8])  +"</div>";
+	InvitationDiv += "<div class='foot' style='margin-left:57px;margin-top:10px;'>"+"<span>当前评论："+data[4] +"| </span>"+ "<span onclick='reply("+ data[0] +")'>回复 | </span>" + "<span onclick='particulars("+ data[0] +")'> 详情</span>" + "</div>";
 	InvitationDiv += "</div>";
 	$("#allInvitation").append(InvitationDiv);
 }

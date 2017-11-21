@@ -165,6 +165,7 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 		bus.setState("1");
 		bus.setOppenid(openID);
 		bus.setWechatName(name);
+		bus.setHeadImage("/uploads/defaultSpecialist.jpg");
 		//String headImageData =getImgStr(getImageByUrl(jsonObject.getString("headimgurl"),"D:/uploads",jsonObject.getString("openid")));
 		//System.out.println("===" + headImageData);
 		//bus.setHeadImage(headImageData);

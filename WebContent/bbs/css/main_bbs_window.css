@@ -35,3 +35,14 @@
 .export_selected{
 	background-color: #e9e9e9 ; 
 }
+.expert_name{
+	font-family: initial;
+    color: blueviolet;	
+    margin-bottom: 5px;
+}
+.expert_des{
+	margin-top: 5px;
+    overflow: hidden;
+    width: 100%;
+    height: 42px;
+}

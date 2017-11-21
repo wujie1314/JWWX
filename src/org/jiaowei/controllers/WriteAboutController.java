@@ -3,14 +3,18 @@ package org.jiaowei.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import org.jiaowei.entity.ExpertEntity;
 import org.jiaowei.entity.MsgFromCustomerServiceEntity;
 import org.jiaowei.entity.WxStatusTmpTEntity;
+import org.jiaowei.service.ExpertService;
 import org.jiaowei.service.WriteAboutService;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinConst;
@@ -18,6 +22,7 @@ import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
@@ -29,8 +34,16 @@ import com.alibaba.fastjson.JSONObject;
 @Controller
 @RequestMapping("/WriteAboutController")
 public class WriteAboutController {
+	
+	private static ResourceBundle rb;
+	static {
+		rb = ResourceBundle.getBundle("weixin");
+	}
+	
 	@Autowired
 	private WriteAboutService writeAboutService;
+	
+	@Autowired ExpertService expertService;
 	private List<String> imgFile;
 	
 	/*
@@ -49,6 +62,7 @@ public class WriteAboutController {
     	for (int i = 0; i < json.size(); i++) {
 			list.add((String) json.get(i));
 		}
+    	
     	System.out.println(list.size());
     	//System.out.println(" oppennID=" + oppenID + " content " + content);
 		return writeAboutService.announce(request,list, oppenID, content, title);
@@ -102,7 +116,7 @@ public class WriteAboutController {
     		return -3 +"" ;//帖子ID为空
     	}
     	
-        String basePath = request.getScheme()+"://"+request.getServerName() +":"+request.getServerPort();
+        String basePath = rb.getString("basePath");
         //拼接url链接
         String baseUrl = basePath +"/bbs/jsp/particulars.jsp?tellID="+tellID+"&openID=";
         
@@ -113,7 +127,7 @@ public class WriteAboutController {
 		String publicId =  NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
 	
 		String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-				openId, "专家解答地址->"+wxUrl);
+				openId, "专家解答地址-><a href='"+wxUrl+"'>专家解答</a>");
 		
 		String returnStr = 	WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicId),jsonContent );
         JSONObject json = JSON.parseObject(returnStr);
@@ -124,6 +138,15 @@ public class WriteAboutController {
 		// 缺接口
     	
     	return 1 +"";
+    }
+    
+    @RequestMapping(value="/expertInfo",method=RequestMethod.GET)
+    @ResponseBody
+    public String getExpertInfo(){
+    	List<Object> result =  expertService.getExpertInfo();
+    	String jsonString =  JSONObject.toJSON(result).toString();
+    	System.out.println(jsonString);
+    	return jsonString;
     }
     
 	public List<String> getImgFile() {
