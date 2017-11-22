@@ -34,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import activiti.PeopleServic;
 import activiti.WaitQ;
 
 @Service
@@ -394,6 +395,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 						"感谢您对我们服务的评分。");
 				WeiXinOperUtil.sendMsgToWX(response, returnStr);
 				wxStatusTmpService.saveMsgDatebase(tmp, "感谢您对我们服务的评分。", openId);
+				PeopleServic peopleServic= new PeopleServic();
+				peopleServic.completetask("P2");
 			}
 		}
 	}

@@ -145,7 +145,6 @@ function judgetype() {
 						var date= new Date(Date.parse(temper.replace(/-/g,   "/")));
 						var delayTime2=(date - (new Date()));
 						getViolationInformation(delayTime2);
-						alert("请求成功违章定时");
 					} else
 						alert("填写车辆信息");
 				} else
@@ -172,13 +171,13 @@ function judgetype() {
 				var delayTimeg=0;
 				getTraffic(delayTimeg);
 		}else if(type=="公交信息"){
-			if (lookType == "定时推送") {
+			var lookType2 = $("#lookType").find("option:selected").text();
+			if (lookType2 == "定时推送") {
 				if ($("#DATE").val() != "" && $("#TIME").val() != "") {
 						var temperB = $("#DATE").val() + " " + $("#TIME").val();
 						var dateB= new Date(Date.parse(temperB.replace(/-/g,   "/")));
-						var delayTimeB=(date - (new Date()));
+						var delayTimeB=(dateB - (new Date()));
 						getBus(delayTimeB);
-						alert("请求公交信息");
 				} else
 					alert("请填写日期");
 			} else {

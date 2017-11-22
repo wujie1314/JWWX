@@ -254,7 +254,7 @@ public class PersonalDesignController {
         public void run() {
         	System.out.println(".........."+openId);
         	 String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-      			   openId, String.format(message));
+      			   openId, String.format("私人定制消息："+message));
       	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
   		//发送給用户
   		// 这里有点问题 获取不到对应的公众号accessToken
