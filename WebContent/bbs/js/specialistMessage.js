@@ -31,9 +31,10 @@ function announce(){
         data:{
         	imgFile:imgFileString,
         	content:content,
-        	oppenID:expert_ID,   //"专家的ID" 
+        	specialistOppenID:expert_ID,   //"专家的ID" 
         	name: expert_name, //专家的名字
-        	title:expert_title
+        	title:expert_title, //标题
+        	userOpenID:userOpenID //用户的openID
         	},  
         dataType: "json",  
         timeout: 1000,  

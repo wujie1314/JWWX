@@ -75,19 +75,19 @@ public class WriteAboutController {
     @ResponseBody
 	public String specialist(HttpServletRequest request,HttpServletResponse response){
     	List<String> list = new ArrayList<String>();
-    	String oppenID = request.getParameter("oppenID");  
+    	String specialistOppenID = request.getParameter("specialistOppenID"); 
+    	String userOpenID = request.getParameter("userOpenID");
     	String content = request.getParameter("content").toString();  
     	String imgFile = request.getParameter("imgFile"); 
     	String title  = request.getParameter("title"); 
     	String name = request.getParameter("name"); 
-
     	JSONArray json = JSONArray.fromObject(imgFile);
     	for (int i = 0; i < json.size(); i++) {
 			list.add((String) json.get(i));
 		}
     	System.out.println(list.size());
     	//System.out.println(" oppennID=" + oppenID + " content " + content);
-		return writeAboutService.specialist(request,list, oppenID, content,name,title);
+		return writeAboutService.specialist(request,list, specialistOppenID, content,name,title,userOpenID);
 	}
     
     /**

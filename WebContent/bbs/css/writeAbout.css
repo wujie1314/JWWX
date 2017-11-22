@@ -74,8 +74,28 @@ body{background-color:#f2f2f5;}
 .msgCon .msgBox .msgTxt{font-size:12px; color:#666; line-height:25px;}
 .picture{
 	width: 100%;
-	height: 54%;
+	height: 60%;
 	margin-top: 4%;
 	display: flex;
 	flex-wrap: wrap;
+	border: 1px solid #ccc; 
+	overflow-y:auto;
+}
+.imageDiv{
+	height: 95%;
+	width: 47%;
+	border: 1px solid #ccc; 
+	margin-left: 1%;
+	margin-top: 1%;
+}
+.thisImage{
+	width: 100%;
+	height: 60%;
+}
+.img-rounded{
+	margin: auto auto;
+	height: 100%;
+}
+.imageDiv hr{
+	margin: 5px 0;
 }

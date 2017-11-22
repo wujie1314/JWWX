@@ -8,10 +8,11 @@ import org.jiaowei.common.service.CommonService;
 
 public interface WriteAboutService extends CommonService{
 
-	String specialist(HttpServletRequest request, List<String> imgFile,
-			String oppennID, String content, String name, String title);
-
 	String announce(HttpServletRequest request, List<String> imgFile,
 			String oppennID, String content, String title);
+
+	String specialist(HttpServletRequest request, List<String> imgFile,
+			String oppennID, String content, String name, String title,
+			String userOpenID);
 
 }
