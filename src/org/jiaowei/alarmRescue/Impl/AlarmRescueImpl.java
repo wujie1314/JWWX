@@ -21,7 +21,9 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		map.put("ID", ID);
 		map.put("content_desc", content_desc);
 		map.put("contact_way", contact_way);
-		map.put("jwd", jwd);
+		map.put("longitude", longitude);
+		map.put("latitude", latitude);
+		map.put("type", repairReason);
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		String date = dateFormat.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳

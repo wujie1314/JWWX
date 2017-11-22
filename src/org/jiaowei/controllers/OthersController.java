@@ -2,6 +2,7 @@ package org.jiaowei.controllers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +13,17 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.jiaowei.entity.MsgFromCustomerServiceEntity;
 import org.jiaowei.entity.MsgFromWxEntity;
 import org.jiaowei.entity.WeixinPublicInfoEntity;
+import org.jiaowei.entity.WeixinUserInfoEntity;
 import org.jiaowei.service.MsgFromCustomerServiceService;
 import org.jiaowei.service.NavMenuService;
 import org.jiaowei.service.WeixinAutoRespondService;
 import org.jiaowei.service.WeixinPublicInfoService;
+import org.jiaowei.service.WeixinUserInfoService;
+import org.jiaowei.util.DateUtils;
 import org.jiaowei.util.ListUtils;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinOperUtil;
@@ -30,8 +35,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+
 @Controller
 public class OthersController {
+	
+	private static Logger logger = Logger.getLogger(OthersController.class);
 	
 	private static ResourceBundle rb;
 	static {
@@ -49,6 +58,9 @@ public class OthersController {
     
     @Autowired
     private WeixinPublicInfoService publicInfoService;
+    
+    @Autowired
+    private WeixinUserInfoService weixinUserInfoService;
 	
 	@RequestMapping("/others/home")
 	public String othersList(String openId,HttpServletRequest request,  HttpServletResponse response){
@@ -65,8 +77,36 @@ public class OthersController {
     @RequestMapping(value="others/appmes",method=RequestMethod.POST)
     @ResponseBody
     public String receiveAppMessage(@RequestBody Map<String, String> map, HttpServletResponse response, HttpServletRequest request) {
+    	 if (null == map || map.size() < 1)
+            return "传入错误"; 
     	 String msgType = map.get("MsgType"), content = map.get("Content");
     	 System.out.println(map);
+         String openId = map.get("FromUserName");
+         String publicId = map.get("ToUserName");
+         String Nickname= map.get("Nickname");
+         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
+         if (null == list || 0 == list.size()) {
+//             String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(map.get("ToUserName")), openId);
+//             WeixinUserInfoEntity weixinUserInfoEntity = JSON.parseObject(userInfo, WeixinUserInfoEntity.class);
+        	 WeixinUserInfoEntity weixinUserInfoEntity = new WeixinUserInfoEntity();
+             weixinUserInfoEntity.setSubscribeTime(new Timestamp(System.currentTimeMillis()));
+             weixinUserInfoEntity.setNickname("app用户");
+             weixinUserInfoEntity.setSex("1");
+//             weixinUserInfoEntity.setHeadImgUrl(headImgUrl);
+             weixinUserInfoEntity.setHeadImg("/image/users/ic_app.png.jpg");
+             weixinUserInfoEntity.setSubscribleTimes(1);
+             weixinUserInfoEntity.setUserStatus(1);
+             weixinUserInfoEntity.setWxOpenId(openId);
+             weixinUserInfoService.save(weixinUserInfoEntity);
+             logger.info(String.format("app用戶", weixinUserInfoEntity.getNickname(), DateUtils.date2Str(DateUtils.datetimeFormat)));
+         } else if (list.size() > 0) {
+             WeixinUserInfoEntity weixinUserInfoEntity = list.get(0);
+             weixinUserInfoEntity.setSubscribeTime(new Timestamp(System.currentTimeMillis()));
+             weixinUserInfoEntity.setSubscribleTimes(weixinUserInfoEntity.getSubscribleTimes() + 1);
+             weixinUserInfoEntity.setUserStatus(1);
+             weixinUserInfoService.saveOrUpdate(weixinUserInfoEntity);
+           
+         }
 		navMenuService.sendCustomerService(map, response, request);
 		return "-1";
     }
@@ -94,12 +134,27 @@ public class OthersController {
     
     @RequestMapping(value = "others/sendNote",method=RequestMethod.POST)
     @ResponseBody
-    public String sendNote(@RequestBody Map<String, Object> parm){
+    public String sendNote(@RequestParam("telephone")String telephone, @RequestParam("orderId")String orderId){
     	
+    	if(orderId == null){
+    		System.out.println("orderId is null");
+    		return -1+"";
+    	}
+    	if(telephone == null){
+    		System.out.println("telephone is null");
+    	}
+    	// 获取项目发布地址
+    	String basePath = rb.getString("basePath");
+    	String alarmUrl = basePath+"/alarmRescue/alarmRescueJSP?ID="+orderId;
+    	
+    	String content = "报警救援，入口-> "+alarmUrl;
+    	// 获取短信接口
     	String url = rb.getString("notePath");
-    	url = url.replace("telephone",parm.get("telephone").toString());
-    	url = url.replace("content", parm.get("content").toString());
+    	url = url.replace("telephone",telephone);
+    	url = url.replace("content", content);
+    	
     	System.out.println(url);
+    	// 发送短信
     	WeiXinOperUtil.callSendNote(url);
     	return null;
     }

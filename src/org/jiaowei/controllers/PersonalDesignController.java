@@ -258,8 +258,9 @@ public class PersonalDesignController {
       	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
   		//发送給用户
   		// 这里有点问题 获取不到对应的公众号accessToken
-  		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
-            
+	  		if(!openId.subSequence(0, 3).equals("app")){
+				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+			}   
         }
  
     }

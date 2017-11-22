@@ -122,12 +122,6 @@ public class ConnWeixinController {
             
             logger.info("收到来自微信("+publicInfo.getId()+")-----"+publicInfo.getName()+" 发来的消息:" + FastJsonUtil.toJson(map));
             
-            // 一个微信用户对应一个部门
-			Integer deptId = Integer.parseInt(publicInfo.getDeptId().toString());
-			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
-			
-			
-			
 			
             //检查当前用户是否在用户表中
             checkUser(publicId,openId);
@@ -503,8 +497,8 @@ public class ConnWeixinController {
             logger.info(String.format("用户：在%s再次订阅公众号.", weixinUserInfoEntity.getNickname(), DateUtils.date2Str(DateUtils.datetimeFormat)));
         }
         NavigationMenuEntity entity = new NavigationMenuEntity();
-        String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
-        navMenuService.sendMenuWxHint(map, response, openId, dept+"-订阅subscription", entity, "感谢您关注重庆交通微信公众号，这里有全面的出行服务信息，权威的交通资讯发布。\n ");
+//        String dept = NavMenuInitUtils.getInstance().userDeptMap.get(openId).toString();
+//        navMenuService.sendMenuWxHint(map, response, openId, dept+"-订阅subscription", entity, "感谢您关注重庆交通微信公众号，这里有全面的出行服务信息，权威的交通资讯发布。\n ");
     }
 
     /**

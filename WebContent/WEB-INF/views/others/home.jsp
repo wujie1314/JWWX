@@ -21,11 +21,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<div class="linkNiv" onclick="Personal()" >
   			<span class ="linkName">私人定制</span>	
   		</div>
-  		<div class="linkNiv" onclick="" >
+  		<div class="linkNiv" onclick="lost_good()" >
   			<span class ="linkName">失物招领</span>	
   		</div>
   		<div class="linkNiv" id="BBS"  onclick="BBS()" >
   			<span class ="linkName">论坛</span>	
+  		</div>
+  		<div class="linkNiv"  onclick="alertRescue()" >
+  			<span class ="linkName">报警救援</span>	
   		</div>
   		<!-- <div class="linkNiv" id="ddd" onclick="getLocationdd()" >
   			<span class ="linkName">SDK获取微信当前位置</span>	
@@ -39,6 +42,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		function Personal(){
   			var openID = $("#openID").val();
   			window.location.href = "/psDesign/getRoadName?openID=" + openID;    
+  		}
+  		function lost_good(){
+  			window.location.href = "http://203.93.109.52:10844/jwwx2/weixin/jsp/goodsList.jsp"; //接入   
+  		}
+  		function alertRescue(){
+  			window.location.href = "/alarmRescue/alarmRescueJSP";
   		}
   </script>
 </html>

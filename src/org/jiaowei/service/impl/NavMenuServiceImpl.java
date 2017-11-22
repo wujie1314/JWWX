@@ -18,6 +18,7 @@ import org.jiaowei.entity.MsgFromWxEntity;
 import org.jiaowei.entity.NavMenuEntity;
 import org.jiaowei.entity.NavigationMenuEntity;
 import org.jiaowei.entity.WeixinAutoRespondEntity;
+import org.jiaowei.entity.WeixinPublicInfoEntity;
 import org.jiaowei.entity.WxStatusTmpTEntity;
 import org.jiaowei.service.*;
 import org.jiaowei.util.CommonConstantUtils;
@@ -200,12 +201,17 @@ public class NavMenuServiceImpl implements NavMenuService {
 	    	System.out.println("等待队列实例启动");
 			
 
-
+	    	
 			if (deptId == null) { // 需要改的地方
 				//获取公众号所对应的部门
 //				Map<String,Object> publicInfo = (Map<String,Object>)weixinPublicInfoService.getPublicInfoById(publicID);
 //				deptId = Integer.parseInt(publicInfo.get("dept_ID").toString());
-				deptId = NavMenuInitUtils.getInstance().userDeptMap.get(openId);
+				 // 一个微信用户对应一个部门
+				WeixinPublicInfoEntity publicInfo =  weixinPublicInfoService.getPublicInfoById(publicID);;
+				deptId = Integer.parseInt(publicInfo.getDeptId().toString());
+				
+				// 在进入人工服务是存入用户与部门
+				NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
 			}
 			// WeiXinConst.waitingMap.put(openId, entity);
 //			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId); 改到接收信息接口去了
@@ -390,9 +396,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 				comment(map, tmp);
 				NavMenuInitUtils.getInstance().removeRemoveMap(openId);
 				// WeiXinConst.deletedMap.remove(openId);
-				String returnStr = XmlUtil.genTextResponseMsg(map,
-						"感谢您对我们服务的评分。");
-				WeiXinOperUtil.sendMsgToWX(response, returnStr);
+				WeiXinOperUtil.sendMsgWx("感谢您对我们服务的评分", openId);
 				wxStatusTmpService.saveMsgDatebase(tmp, "感谢您对我们服务的评分。", openId);
 			}
 		}
@@ -428,8 +432,12 @@ public class NavMenuServiceImpl implements NavMenuService {
 				msgFromWxEntity.setVideoUrl(WeiXinOperUtil.downloadImageFromWx(
 						map, request));
 			}else if("location".equals(map.get("MsgType"))){
+				msgFromWxEntity.setLocationX(map.get("Location_X"));
+				msgFromWxEntity.setLocationY(map.get("Location_Y"));
+				msgFromWxEntity.setLable(map.get("Label"));
+				msgFromWxEntity.setContent(map.get("Lable"));
+				msgFromWxEntity.setScale(Integer.parseInt(map.get("Scale").toString()));
 				// 地理位置信息，目前没有存储数据库
-				return;
 				
 			}else if ("event".equals(msgFromWxEntity.getMsgType())) {// 其他信息不记录进数据库
 			
@@ -465,6 +473,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 			} else if ("video".equals(map.get("MsgType").toLowerCase().trim())) {
 				map.put("MediaUrl", WeiXinOperUtil.downloadImageFromWx(
 						map, request));
+			} else if ("location".equals(map.get("MsgType").toLowerCase().trim())){
+				System.out.println(map);
+				System.out.println("adss");
 			}
 			if (null != session) {
 				session.sendMessage(new TextMessage(FastJsonUtil.toJson(map)));
