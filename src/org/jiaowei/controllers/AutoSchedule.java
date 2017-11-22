@@ -159,6 +159,8 @@ public class AutoSchedule {
 	        			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
 	    	            sendMsgWx(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。", entity.getWxOpenid());
 	    	            wxStatusTmpService.saveMsgDatebase(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。",  entity.getWxOpenid());
+	    	            PeopleServic peopleServic= new PeopleServic();
+	    				peopleServic.completetask("P2");
 	            	}
 				} catch (Exception e) {
 					e.printStackTrace();
