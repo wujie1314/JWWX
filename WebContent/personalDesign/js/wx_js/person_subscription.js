@@ -177,7 +177,7 @@ function judgetype() {
 				if ($("#DATE").val() != "" && $("#TIME").val() != "") {
 						var temperB = $("#DATE").val() + " " + $("#TIME").val();
 						var dateB= new Date(Date.parse(temperB.replace(/-/g,   "/")));
-						var delayTimeB=(date - (new Date()));
+						var delayTimeB=(dateB - (new Date()));
 						getBus(delayTimeB);
 						alert("请求公交信息");
 				} else
