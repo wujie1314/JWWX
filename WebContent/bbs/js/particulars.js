@@ -113,6 +113,7 @@ function review(){
 			success : function(data){
 				//$("#review").attr("disabled", false); 
 				window.location.href="bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID+"&id="+10000*Math.random();
+				//window.location.href = "bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID;
 				// alert(data.result);
 				//addContent(data)
 				 

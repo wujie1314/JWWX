@@ -1,4 +1,5 @@
 var imgFile = new Array();
+//var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
 var openID = getURLName("openID");
 
 var pictureNum = 0;//图片数量

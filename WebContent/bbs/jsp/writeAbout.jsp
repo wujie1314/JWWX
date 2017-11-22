@@ -34,14 +34,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<!--face begin-->
 		<div class="face">
 			<ul>
-				<li><img src="bbs/images/horse2_thumb.gif" title="神马]"></li>
+				<!-- <li><img src="bbs/images/horse2_thumb.gif" title="神马]"></li>
 				<li><img src="bbs/images/fuyun_thumb.gif" title="[浮云]"></li>
 				<li><img src="bbs/images/geili_thumb.gif" title="[给力]"></li>
 				<li><img src="bbs/images/wg_thumb.gif" title="[围观]"></li>
 				<li><img src="bbs/images/vw_thumb.gif" title="[威武]"></li>
 				<li><img src="bbs/images/panda_thumb.gif" title="[熊猫]"></li>
 				<li><img src="bbs/images/rabbit_thumb.gif" title="兔子]"></li>
-				<li><img src="bbs/images/otm_thumb.gif" title="[奥特曼]"></li>
+				<li><img src="bbs/images/otm_thumb.gif" title="[奥特曼]"></li> -->
 				<li><img src="bbs/images/j_thumb.gif" title="[囧]"></li>
 				<li><img src="bbs/images/hufen_thumb.gif" title="[互粉]"></li>
 				<li><img src="bbs/images/liwu_thumb.gif" title="[礼物]"></li>
@@ -68,39 +68,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<li><img src="bbs/images/x_thumb.gif" title="[嘘]"></li>
 				<li><img src="bbs/images/cry.gif" title="[衰]"></li>
 				<li><img src="bbs/images/wq_thumb.gif" title="[委屈]"></li>
-				<!-- <li><img src="images/t_thumb.gif" title="[吐]"></li>
-				<li><img src="images/k_thumb.gif" title="[打哈气]"></li>
-				<li><img src="images/bba_thumb.gif" title="[抱抱]"></li>
-				<li><img src="images/angrya_thumb.gif" title="[怒]"></li>
-				<li><img src="images/yw_thumb.gif" title="[疑问]"></li>
-				<li><img src="images/cza_thumb.gif" title="[馋嘴]"></li>
-				<li><img src="images/88_thumb.gif" title="[拜拜]"></li>
-				<li><img src="images/sk_thumb.gif" title="[思考]"></li>
-				<li><img src="images/sweata_thumb.gif" title="[汗]"></li>
-				<li><img src="images/sleepya_thumb.gif" title="[困]"></li>
-				<li><img src="images/sleepa_thumb.gif" title="[睡觉]"></li>
-				<li><img src="images/money_thumb.gif" title="[钱]"></li>
-				<li><img src="images/sw_thumb.gif" title="[失望]"></li>
-				<li><img src="images/cool_thumb.gif" title="[酷]"></li>
-				<li><img src="images/hsa_thumb.gif" title="[花心]"></li>
-				<li><img src="images/hatea_thumb.gif" title="[哼]"></li>
-				<li><img src="images/gza_thumb.gif" title="[鼓掌]"></li>
-				<li><img src="images/dizzya_thumb.gif" title="[晕]"></li>
-				<li><img src="images/bs_thumb.gif" title="[悲伤]"></li>
-				<li><img src="images/crazya_thumb.gif" title="[抓狂]"></li>
-				<li><img src="images/h_thumb.gif" title="[黑线]"></li>
-				<li><img src="images/yx_thumb.gif" title="[阴险]"></li>
-				<li><img src="images/nm_thumb.gif" title="[怒骂]"></li>
-				<li><img src="images/hearta_thumb.gif" title="[心]"></li>
-				<li><img src="images/unheart.gif" title="[伤心]"></li>
-				<li><img src="images/pig.gif" title="[猪头]"></li>
-				<li><img src="images/ok_thumb.gif" title="[ok]"></li>
-				<li><img src="images/ye_thumb.gif" title="[耶]"></li>
-				<li><img src="images/good_thumb.gif" title="[good]"></li>
-				<li><img src="images/no_thumb.gif" title="[不要]"></li>
-				<li><img src="images/z2_thumb.gif" title="[赞]"></li>
-				<li><img src="images/come_thumb.gif" title="[来]"></li>
-				<li><img src="images/sad_thumb.gif" title="[弱]"></li>
+				<li><img src="bbs/images/t_thumb.gif" title="[吐]"></li>
+				<li><img src="bbs/images/k_thumb.gif" title="[打哈气]"></li>
+				<li><img src="bbs/images/bba_thumb.gif" title="[抱抱]"></li>
+				<li><img src="bbs/images/angrya_thumb.gif" title="[怒]"></li>
+				<li><img src="bbs/images/yw_thumb.gif" title="[疑问]"></li>
+				<li><img src="bbs/images/cza_thumb.gif" title="[馋嘴]"></li>
+				<li><img src="bbs/images/88_thumb.gif" title="[拜拜]"></li>
+				<li><img src="bbs/images/sk_thumb.gif" title="[思考]"></li>
+				<li><img src="bbs/images/sweata_thumb.gif" title="[汗]"></li>
+				<li><img src="bbs/images/sleepya_thumb.gif" title="[困]"></li>
+				<li><img src="bbs/images/sleepa_thumb.gif" title="[睡觉]"></li>
+				<li><img src="bbs/images/money_thumb.gif" title="[钱]"></li>
+				<li><img src="bbs/images/sw_thumb.gif" title="[失望]"></li>
+				<li><img src="bbs/images/cool_thumb.gif" title="[酷]"></li>
+				<li><img src="bbs/images/hsa_thumb.gif" title="[花心]"></li>
+				<li><img src="bbs/images/hatea_thumb.gif" title="[哼]"></li>
+				<li><img src="bbs/images/gza_thumb.gif" title="[鼓掌]"></li>
+				<li><img src="bbs/images/dizzya_thumb.gif" title="[晕]"></li>
+				<li><img src="bbs/images/bs_thumb.gif" title="[悲伤]"></li>
+				<li><img src="bbs/images/crazya_thumb.gif" title="[抓狂]"></li>
+				<li><img src="bbs/images/h_thumb.gif" title="[黑线]"></li>
+				<li><img src="bbs/images/yx_thumb.gif" title="[阴险]"></li>
+				<li><img src="bbs/images/nm_thumb.gif" title="[怒骂]"></li>
+				<li><img src="bbs/images/hearta_thumb.gif" title="[心]"></li>
+				<li><img src="bbs/images/unheart.gif" title="[伤心]"></li>
+				<li><img src="bbs/images/pig.gif" title="[猪头]"></li>
+				<li><img src="bbs/images/ok_thumb.gif" title="[ok]"></li>
+				<li><img src="bbs/images/ye_thumb.gif" title="[耶]"></li>
+				<li><img src="bbs/images/good_thumb.gif" title="[good]"></li>
+				<li><img src="bbs/images/no_thumb.gif" title="[不要]"></li>
+				<li><img src="bbs/images/z2_thumb.gif" title="[赞]"></li>
+				<li><img src="bbs/images/come_thumb.gif" title="[来]"></li>
+				<!-- <li><img src="images/sad_thumb.gif" title="[弱]"></li>
 				<li><img src="images/lazu_thumb.gif" title="[蜡烛]"></li>
 				<li><img src="images/clock_thumb.gif" title="[钟]"></li>
 				<li><img src="images/cake.gif" title="[蛋糕]"></li>

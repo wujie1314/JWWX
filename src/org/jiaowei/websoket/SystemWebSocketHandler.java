@@ -315,6 +315,9 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
             NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);
             NavMenuInitUtils.getInstance().messageMap.remove(wxOpenId);
+
+            PeopleServic peopleServic= new PeopleServic();
+			peopleServic.completetask("P2");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);
