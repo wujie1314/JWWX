@@ -15,10 +15,10 @@ function sendAlarmRescue(){
         url: "others/sendNote",  
         success: function(result){  
         	closeWindow("callPolice-window");
-        	console.log("成功推送链接");
+
         },  
-        error: function(result){  
-        	console.log(result)       
+        error: function(result){ 
+  
         }  
     });
 	
