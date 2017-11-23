@@ -570,7 +570,7 @@ body {
 					<li class= "bbs_li_list">
 						<img class="j-img" src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66" data-src="http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66">
 						<div class="bbs_expert_info">
-							<span class="expert_name" id = "12357210">陈立</span>
+							<span class="expert_name" id = "12357210" >陈立</span>
 							<p class="expert_des" >专家,曾获奖公路秩序树小才q是阿萨德</p>
 						</div>
 					</li> 
@@ -590,6 +590,7 @@ body {
 			<form>
 				<input name="expert_name" id="expert_name"value="xxx" type="hidden">
 				<input name="expert_ID" id = "expert_ID"value="1" type="hidden">
+				<input name="expert_phone" id="expert_phone" value="" type="hidden">
 			</form> 
 	</div>
 	<!-- 报警救援 -->
@@ -2053,6 +2054,8 @@ var basePath = '<%=basePath%>';
 					html=getImageHtml(data.data.id,data.data.imageUrl,adminD.fromUser);
 				} else if (msgType == "voice") {
 					html=getVoiceHtml(data.data.id,data.data.voiceUrl,adminD.fromUser);
+				} else if (msgType == "location"){
+					html=getLocationHtml(data.data.id,data.data.label,adminD.userId);
 				}
 				$("#console" + data.data.toUser).append(html);
 				$("#msgbox").scrollTop(9999999);
@@ -2800,6 +2803,30 @@ var basePath = '<%=basePath%>';
 		/* 标记 把原来的播放音频插件改为h5的audio标签  */
 		/* html += '<embed src="'+content+'" windowlessVideo=1 autostart=false hidden=no units="pixels" width=300 height=44></embed>'; */
 		html += '<input type="hidden" name="workId" value=""/></div>';
+		html += '</td>';
+		html += '</tr>';
+		html += '</table>';
+		html += '</div>';
+		return html;
+	}
+	function  getLocationHtml(id,content,userId){
+		var html = "";
+		html += '<div class="list-right">';
+		html += '<table style="padding:0px;margin:0px;">';
+		html += '<tr>';
+		html += '<td style="width:100%;">';
+		html += '<span style="float:right;margin-right:15px;"><font size="2">'
+				+ new Date().Format("hh:mm:ss") + '&nbsp;&nbsp;座席'
+				+ userId + '</font></span>';
+		html += '</td>';
+		html += '<td rowspan="2" width="50px" valign="top"><img src="/image/img_admin.jpg"/></td>';
+		html += '</tr>';
+		html += '<tr>';
+		html += '<td style="width:100%;">';
+		html += '<span style="float:right;margin-top:10px;"><img src="/image/img_right.jpg"></img></span>';
+		html += '<div class="bj" onmousedown="workContent(this,1,2)"><input type="hidden" name="msgId" value="'+id+'"/><font size="2">'
+				+ replaceQQFace(content);
+				+ '</font><input type="hidden" name="workId" value=""/></div>';
 		html += '</td>';
 		html += '</tr>';
 		html += '</table>';

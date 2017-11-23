@@ -20,6 +20,7 @@ public class BbsTellEntity {
 	private String content;
 	private String userID;
 	private String title;
+	private String state;
 	private Timestamp publishedTime;
 	private Integer commentsNumber;
 	
@@ -70,5 +71,14 @@ public class BbsTellEntity {
 	}
 	public void setCommentsNumber(Integer commentsNumber) {
 		this.commentsNumber = commentsNumber;
+	}
+	
+	@Basic
+	@Column(name = "STATE")
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 }

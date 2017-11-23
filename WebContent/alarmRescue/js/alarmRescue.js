@@ -56,7 +56,6 @@ function createMap() {
 		map.clearOverlays();
 		
 		geoc.getLocation(point, function(rs) {
-			console.log(rs.addressComponents);
 			$('#currentLocation').html(rs.address + rs.business.replace(/,/g, ''));
 		});
 		
@@ -70,11 +69,6 @@ function createMap() {
 			point = new BMap.Point(longitude, latitude);// 定位
 
 			geoc.getLocation(point, function(rs) {
-				console.log(rs.addressComponents);
-				// var addComp = rs.addressComponents;
-				// var position = addComp.province + addComp.city +
-				// addComp.district
-				// + addComp.street + addComp.streetNumber;
 				$('#currentLocation').html(
 						rs.address + rs.business.replace(/,/g, ''));
 			});
@@ -103,22 +97,6 @@ function showRepairFactory(){
 
 }
 
-//
-//$(":checkbox").click(function(){
-//	$(this).attr("checked",true);//设置当前选中checkbox的状态为checked
-//	$(this).siblings().attr("checked",false); //设置当前选中的checkbox同级(兄弟级)其他checkbox状态为未选中
-//	});
-//
-//$(':checkbox').each(function(){ //遍历页面中所有的checkbox
-//	$(this).click(function(){//为页面中每一个checkbox设置点击事件
-//	if($(this).attr('checked')){ //如果有checkbox状态为选中
-//	$(':checkbox').removeAttr('checked'); //移除checked属性，改变checkbox状态为未选中(为页面中所有checkbox复选框添加设置)
-//	//$(':checkbox').attr('disabled','disabled'); //或者直接设置checkbox复选框为禁用(为页面中所有checkbox复选框添加设置)
-//	$(this).attr('checked','checked'); //为当前点击选中的checkbox复选框添加checked属性
-//	} 
-//	}); 
-//	});
-
 function submit() {
     var repairReason = $('input:radio[name="repairReason"]:checked').val();
    
@@ -133,10 +111,6 @@ function submit() {
     	$('#phoneNum').css("color","#f00");
         return false; 
     } 
-//    var repairReason = ""; 
-//    $('input[name="repairReason"]:checked').each(function(){ 
-//    	repairReason += $(this).val() + " "; 
-//    }); 
     else{
 	    var parame = {};
 	    parame.ID = id;
@@ -146,7 +120,6 @@ function submit() {
 	    parame.endPosition = encodeURI($('#endPosition').val());
 	    parame.phoneNum = encodeURI($('#phoneNum').val());
 	    parame.repairReason = encodeURI(repairReason);
-	    console.log(parame);
 	    $.ajax({
 	    	url: 'alarmRescue/alarmRescue',
 	    	method: 'get',

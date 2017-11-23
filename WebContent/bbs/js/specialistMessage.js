@@ -24,6 +24,7 @@ function announce(){
 	var expert_name = $('#expert_name').val();
 	var expert_ID = $("#expert_ID").val();
 	var expert_title = $("#expert_title").val();
+	var phone = $("#expert_phone").val();
     $.ajax({  
         async:false,//是否异步  
         cache:false,//是否使用缓存  
@@ -31,9 +32,10 @@ function announce(){
         data:{
         	imgFile:imgFileString,
         	content:content,
-        	oppenID:expert_ID,   //"专家的ID" 
+        	specialistOppenID:expert_ID,   //"专家的ID" 
         	name: expert_name, //专家的名字
-        	title:expert_title
+        	title:expert_title, //标题
+        	userOpenID:userOpenID //用户的openID
         	},  
         dataType: "json",  
         timeout: 1000,  
@@ -41,7 +43,7 @@ function announce(){
         url: "/WriteAboutController/specialist",  
         success: function(result){
         	console.log("tellID 为 ========  "+ result);
-        	send_link(expert_ID,result); //推送论坛链接
+        	send_link(expert_ID,result,phone); //推送论坛链接
         	// 关闭窗口
         	closeWindow("bbs-window");
         	// 清空窗口内容
@@ -65,8 +67,10 @@ function bbs_click_selected(dd){
 	cancel_selected();
 	$(dd).find("li").addClass("export_selected");
 	var span = $(dd).find("span");
+	var input = $(dd).find("input").val();
 	console.log(span);
 	$('#expert_ID').val($(span).attr("ID"));
+	$('#expert_phone').val(input);
 	$('#expert_name').val($(span).text());
 }
 /*只能选中一个*/
@@ -77,7 +81,7 @@ function cancel_selected(){
 	});
 }
 /*发表成功后分别给专家，和微信用户发链接信息*/
-function send_link(expert_ID,tellID){
+function send_link(expert_ID,tellID,phone){
 	 $.ajax({  
 	        async:false,//是否异步  
 	        cache:false,//是否使用缓存  
@@ -85,7 +89,8 @@ function send_link(expert_ID,tellID){
 	        data:{
 	        	openId:nowOpenid,
 	        	expertId:expert_ID,
-	        	tellId: tellID
+	        	tellId: tellID,
+	        	phone:phone
 	        	},  
 	        dataType: "json",  
 	        timeout: 1000,  
@@ -110,7 +115,8 @@ function fullExpertListHtml(data){
 		html += "<img class='j-img' src='http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66' " +
 				"data-src='http://p1.music.126.net/H3QxWdf0eUiwmhJvA4vrMQ==/1407374893913311.jpg?param=66y66' />";
 		html += "<div class='bbs_expert_info'>";
-		html += "<span class='expert_name' id='"+data[i].id+"'>"+data[i].expertName+"</span>";
+		html += "<span class='expert_name' id='"+data[i].id+"''>"+data[i].expertName+"</span>";
+		html += "<input type='hidden' value='"+data[i].phone+"'>"
 		html += "<p class='expert_des'>"+data[i].introduce+"</p>";			
 		html += "</div></li></ul>";
 		$('#bbs_left_list').append(html);

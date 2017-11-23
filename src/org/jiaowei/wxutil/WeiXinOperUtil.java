@@ -5,13 +5,22 @@ import com.alibaba.fastjson.JSONObject;
 import com.mysql.jdbc.Statement;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.jiaowei.entity.AccessTokenEntity;
@@ -141,7 +150,9 @@ public class WeiXinOperUtil {
 		//发送給用户
         String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(wxOpenId);
 //        Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(wxOpenId); // 加入的
-		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);// 获取对应accessToken  已改
+    	if(!wxOpenId.subSequence(0, 3).equals("app")){
+			WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+		}
 	}
     
 //	public static void saveMsgDatebase(WxStatusTmpTEntity entity, String content, String wxOpenId){
@@ -610,6 +621,10 @@ public class WeiXinOperUtil {
     public static String getUserInfo(String accessToken, String openId) {
         if (StringUtil.isEmpty(openId) || StringUtil.isEmpty(accessToken))
             return null;
+        if(openId != null && openId.length() > 3 && openId.subSequence(0, 3).equals("app")){
+		    String userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"app用户\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ic_app.png.jpg\"}";
+		    return userInfo;
+		}
         CloseableHttpClient httpclient = HttpClients.createDefault();
         String host = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
         System.out.println(host);
@@ -1198,11 +1213,65 @@ public class WeiXinOperUtil {
     /**/
     public static void callSendNote(String url){
         try {
-	    	CloseableHttpClient httpclient = HttpClients.createDefault();
-	        HttpGet httpGet = new HttpGet(url);
-	        CloseableHttpResponse response = null;
-			response = httpclient.execute(httpGet);
-			
+//			System.out.println("[WeiXinOperUtil.callSendNote url] :====" + url);
+            String pre_url = url.split("\\?")[0];
+            String param = url.split("\\?")[1]+ "?" + url.split("\\?")[2];
+            String[] params = param.split("\\&");
+            List<NameValuePair> _params = new LinkedList<NameValuePair>();
+            int i=0;
+            for (String parVal : params) {
+            	String[] _val;
+            	if (i<6){
+            		_val = parVal.split("\\=");
+                	_params.add(new BasicNameValuePair(_val[0], _val[1]));
+            	} else {
+            		_val = parVal.split("\\=");
+            		String str = "";
+            		for (int j = 1; j < _val.length; j++) {
+            			 str += "="+_val[j];
+            		}
+            		str = str.substring(1);
+            		_params.add(new BasicNameValuePair(_val[0], str ));
+            		break;
+            	}            	 
+            	i++;
+			}
+//			System.out.println("[WeiXinOperUtil.callSendNote params] :====" + _params.toString());
+
+            HttpPost httpPost = new HttpPost(pre_url);
+            UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(_params,"utf-8");
+            httpPost.setEntity(formEntity);
+            HttpClient httpClient = HttpClients.createDefault();
+            HttpResponse httpresponse = null;
+            try{
+                httpresponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpresponse.getEntity();
+                String response = EntityUtils.toString(httpEntity, "utf-8");
+            }catch(ClientProtocolException e){
+                System.out.println("http请求失败，uri{},exception{}");
+            }catch(IOException e){
+                System.out.println("http请求失败，uri{},exception{}");
+            }
+            
+            
+//            //创建Get请求  
+//            HttpGet httpGet = new HttpGet(url);  
+//            //执行Get请求，  
+//            response = httpClient.execute(httpGet);  
+//
+        	
+//	    	CloseableHttpClient httpclient = HttpClients.createDefault();
+//	        HttpGet httpGet = new HttpGet();
+//	        
+//	        // 执行请求的对象
+//	        HttpClient client = new DefaultHttpClient(params);
+//	        
+//	        StringBuffer parm = new StringBuffer(url);
+//	        parm.append("&catalog_id=" + id);
+//	        parm.append("&pn=" + p);
+//	        CloseableHttpResponse response = null;
+//			response = httpclient.execute(httpGet);
+//			System.out.println(response);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1210,9 +1279,9 @@ public class WeiXinOperUtil {
     }
     
     public static void main(String[] args) {
-    	File file = new File("E:\\123456.png");
-    	String result;
-		try {
+//    	File file = new File("E:\\123456.png");
+//    	String result;
+//		try {
 //			result = uploadMedia(file, "image");
 //			System.out.println("---->"+result);
 			//oHMgqxIFpc9zoGQQbBsrI9KcWJrk 邓科
@@ -1225,15 +1294,18 @@ public class WeiXinOperUtil {
 ////			System.out.println("---->"+result);
 //			userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"image\",\"image\":{\"media_id\":\"%s\"}}",
 //                    "oHMgqxIFpc9zoGQQbBsrI9KcWJrk", "KzjbShpbrf-VR_xLSQ2i77zk8Nw7s7865_yw64dN5Mp7bH6vV8eGejKlEJon2CeZ");
-			String userJsonContent =String.format("{\"touser\":\"%s\",\"msgtype\":\"image\",\"image\":[{\"media_id\":\"%s\"},{\"media_id\":\"%s\"}]}",
-                  "oHMgqxIFpc9zoGQQbBsrI9KcWJrk", "KzjbShpbrf-VR_xLSQ2i77zk8Nw7s7865_yw64dN5Mp7bH6vV8eGejKlEJon2CeZ", "KzjbShpbrf-VR_xLSQ2i77zk8Nw7s7865_yw64dN5Mp7bH6vV8eGejKlEJon2CeZ");
+//			String userJsonContent =String.format("{\"touser\":\"%s\",\"msgtype\":\"image\",\"image\":[{\"media_id\":\"%s\"},{\"media_id\":\"%s\"}]}",
+//                  "oHMgqxIFpc9zoGQQbBsrI9KcWJrk", "KzjbShpbrf-VR_xLSQ2i77zk8Nw7s7865_yw64dN5Mp7bH6vV8eGejKlEJon2CeZ", "KzjbShpbrf-VR_xLSQ2i77zk8Nw7s7865_yw64dN5Mp7bH6vV8eGejKlEJon2CeZ");
 			//发送給用户
-			WeiXinOperUtil.sendMsgToWx(getAccessToken(), userJsonContent);// 不需要更改的
+//			WeiXinOperUtil.sendMsgToWx(getAccessToken(), userJsonContent);// 不需要更改的
 //			sendWxKefuImgsMsg(getAccessToken(), "oHMgqxMPkOAH7CzAmPISCkC9oI-4", null, null, "http://www.cq96096.cn/WS/10100101012110000008/15634/1_20160926_172942(00003501).jpg", "http://www.cq96096.cn/WS/10100101012110000008/15634/1_20160926_172942(00003501).jpg");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+    	
+    	String url = "http://120.196.116.126:8027/MWGate/wmgw.asmx/MongateSendSubmit?userId=M10383&password=521308&iMobiCount=1&pszSubPort=*&MsgId=0&pszMobis=18084054304&pszMsg=专家解答地址，专家入口-> http://niclz214.free.ngrok.cc/bbs/jsp/particulars.jsp?tellID=1511373469490%26openID=1234551";
+    	callSendNote(url);
+    }
     
     
 }

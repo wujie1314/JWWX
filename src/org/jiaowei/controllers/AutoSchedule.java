@@ -102,7 +102,9 @@ public class AutoSchedule {
 						String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(temp.getWxOpenid()); //通过微信openid获取对应的公众号
 						//发送給用户
 						// 这里有点问题 获取不到对应的公众号accessToken
-						WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+						if(!temp.getWxOpenid().subSequence(0, 3).equals("app")){
+							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+						}
 						wxStatusTmpService.saveMsgDatebase(temp, CommonConstantUtils.allotSysHint(),  temp.getWxOpenid());
 					}
 				}
@@ -154,7 +156,7 @@ public class AutoSchedule {
 	        for (String key : deletedKeys) {
 	        	try {
 	        		entity = removeMap.get(key);
-	        		if ((currentTime - entity.getLastChatTime()) >= 20) {
+	        		if ((currentTime - entity.getLastChatTime()) >= 400) {
 	        			removeMap.remove(key);
 	        			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
 	    	            sendMsgWx(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。", entity.getWxOpenid());
@@ -421,7 +423,9 @@ public class AutoSchedule {
 					String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(tmp.getWxOpenid()); //通过微信openid获取对应的公众号
 					
 					//发送給用户
-					WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+					if(!tmp.getWxOpenid().subSequence(0, 3).equals("app")){
+						WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+					}
 					wxStatusTmpService.saveMsgDatebase(tmp, "留言已结束，我们会尽快为你解答",  tmp.getWxOpenid());
 				
     			}
@@ -446,7 +450,9 @@ public class AutoSchedule {
 							String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(tmp.getWxOpenid()); //通过微信openid获取对应的公众号
 							//发送給用户
 							// 这里有点问题 获取不到对应的公众号accessToken
-							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+							if(!tmp.getWxOpenid().subSequence(0, 3).equals("app")){
+								WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+							}
 							wxStatusTmpService.saveMsgDatebase(tmp, CommonConstantUtils.allotSysHint(),  tmp.getWxOpenid());
 							NavMenuInitUtils.getInstance().messageMap.remove(openId);
     					}
@@ -914,7 +920,9 @@ public class AutoSchedule {
 		//发送給用户
 		String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(wxOpenId);
 //		Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(wxOpenId); // 加入的
-		WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);// 已改
+		if(!wxOpenId.subSequence(0, 3).equals("app")){
+			WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+		}
 		
 	}
 	

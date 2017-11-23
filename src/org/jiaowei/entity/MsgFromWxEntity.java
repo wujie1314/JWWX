@@ -25,7 +25,11 @@ public class MsgFromWxEntity {
     private Integer readFlag;
     private Timestamp readTime;
     private String workServiceId;
-
+    private String locationX;
+    private String locationY;
+    private String lable;
+    private Integer scale;
+    
     @Id
     @SequenceGenerator(name="MSG_FROM_WX_SQEN",sequenceName="MSG_FROM_WX_S",allocationSize = 1)
     @GeneratedValue(generator="MSG_FROM_WX_SQEN",strategy= GenerationType.SEQUENCE)
@@ -175,4 +179,44 @@ public class MsgFromWxEntity {
     public void setWorkServiceId(String workServiceId) {
         this.workServiceId = workServiceId;
     }
+
+    @Basic
+    @Column(name = "LOCATION_X")
+	public String getLocationX() {
+		return locationX;
+	}
+
+	public void setLocationX(String locationX) {
+		this.locationX = locationX;
+	}
+
+	@Basic
+	@Column(name = "LOCATION_Y")
+	public String getLocationY() {
+		return locationY;
+	}
+
+	public void setLocationY(String locationY) {
+		this.locationY = locationY;
+	}
+
+	@Basic
+	@Column(name = "LABEL")
+	public String getLable() {
+		return lable;
+	}
+
+	public void setLable(String lable) {
+		this.lable = lable;
+	}
+
+	@Basic
+	@Column(name = "SCALE")
+	public Integer getScale() {
+		return scale;
+	}
+
+	public void setScale(Integer scale) {
+		this.scale = scale;
+	}
 }

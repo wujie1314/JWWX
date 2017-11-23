@@ -128,7 +128,9 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                    	 	peopleServic.startProcessInstance();
                         String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
 //                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
-                        WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);// 获取对应accessToken  已改
+                    	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
+							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+						}
                         //发送座席
                        //通知前端已经关閉
                         try {
@@ -142,8 +144,11 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                         wxStatusTmpService.saveMsgDatebase(entity, "您好，我是"+userId+"号座席，请问有什么可以帮您？", wxOpenId);
                         entity.setSendType(0);//计算微信用户时间
                     }else if("FROMCS".equals(pamars.get("type"))){//坐席主动拉人
+                    	
                     	entity.setIsInitiative(1);//设置座席主动拉人
                     	entity.setSendType(1);//计算座席时间
+                    	entity.setSessionId(session.getId());
+                    	NavMenuInitUtils.getInstance().putServiceMap(wxOpenId, entity);
                     }else if("FROMCSYQ".equals(pamars.get("type"))){//坐席主动拉人
                     	entity.setIsInitiative(1);//设置座席主动拉人
                     	entity.setSendType(1);//计算座席时间
@@ -232,23 +237,27 @@ public class SystemWebSocketHandler implements WebSocketHandler {
         if (null != jsonContent) {
             String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(toUser);
 //            Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(toUser);
-            String returnStr = WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);// 获取对应accessToken  已改
-            JSONObject json = JSON.parseObject(returnStr);
-            if(!json.get("errcode").toString().equals("0")){//发送失败
-            	List<MsgFromCustomerServiceEntity> list=msgFromCustomerService.findByProperty(MsgFromCustomerServiceEntity.class, "id", id);
-            	MsgFromCustomerServiceEntity entity=list.get(0);
-            	entity.setIsSuccess(1);
-            	msgFromCustomerService.saveOrUpdate(entity);
-            	//通知客服发送失败
-            	String openId = entity.getToUser();
-//            	WxStatusTmpTEntity tmp = ConnWeixinController.getTempMemery(openId);
-            	WxStatusTmpTEntity tmp = NavMenuInitUtils.getInstance().getTmpTEntity(openId);
-            	String sessionId = tmp.getSessionId();
-            	WebSocketSession session = WeiXinConst.webSocketSessionMap.get(sessionId);
-            	String msg = "{\"Content\":\"" + "发送失败" + "\",\"CreateTime\":\"" + System.currentTimeMillis() / 1000 + "\",\"ToUserName\":\"service\",\"FromUserName\":\"" + openId+ "\",\"MsgType\":\"autotext\",\"MsgId\":\""+id+"\"}";
-                session.sendMessage(new TextMessage(msg));
+            // 存入数据库
+            List<MsgFromCustomerServiceEntity> list=msgFromCustomerService.findByProperty(MsgFromCustomerServiceEntity.class, "id", id);
+         	MsgFromCustomerServiceEntity entity=list.get(0);
+         	entity.setIsSuccess(1);
+         	msgFromCustomerService.saveOrUpdate(entity);
+            if(wxOpenId != null && wxOpenId.length() >3 && !wxOpenId.subSequence(0, 3).equals("app")){
+            	 String returnStr = WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);// 获取对应accessToken  已改
+                 JSONObject json = JSON.parseObject(returnStr);
+            	 if(!json.get("errcode").toString().equals("0")){//发送失败
+                 	
+                 	//通知客服发送失败
+                 	String openId = entity.getToUser();
+//                 	WxStatusTmpTEntity tmp = ConnWeixinController.getTempMemery(openId);
+                 	WxStatusTmpTEntity tmp = NavMenuInitUtils.getInstance().getTmpTEntity(openId);
+                 	String sessionId = tmp.getSessionId();
+                 	WebSocketSession session = WeiXinConst.webSocketSessionMap.get(sessionId);
+                 	String msg = "{\"Content\":\"" + "发送失败" + "\",\"CreateTime\":\"" + System.currentTimeMillis() / 1000 + "\",\"ToUserName\":\"service\",\"FromUserName\":\"" + openId+ "\",\"MsgType\":\"autotext\",\"MsgId\":\""+id+"\"}";
+                    session.sendMessage(new TextMessage(msg));
+                 }
+                 logger.info(String.format("座席发送信息到微信用户返回：%s", returnStr));
             }
-            logger.info(String.format("座席发送信息到微信用户返回：%s", returnStr));
         }
     }
 
@@ -293,7 +302,10 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 
             String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
 //            Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);
-            WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);// 获取对应accessToken  已改
+            
+        	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
+				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+			}
 
 //            WxStatusTmpTEntity entity = WeiXinConst.servicingMap.get(wxOpenId);
             WxStatusTmpTEntity entity = NavMenuInitUtils.getInstance().getServiceEntity(wxOpenId);
@@ -302,6 +314,8 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
             NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
             NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);
+            NavMenuInitUtils.getInstance().messageMap.remove(wxOpenId);
+
             PeopleServic peopleServic= new PeopleServic();
 			peopleServic.completetask("P2");
 		} catch (Exception e) {

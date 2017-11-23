@@ -1553,12 +1553,13 @@ public class CustomerServiceController {
             WeiXinConst.servicingYqMap.remove(wxOpenId);
             //删除servicingMap
 //            WeiXinConst.servicingMap.remove(wxOpenId);
-            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
+//            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId); 标记
             entity.setServiceStatus(3);
 
             entity.setLastChatTime(System.currentTimeMillis()/1000);
 //            WeiXinConst.waitingMap.remove(wxOpenId);
             NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
+            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
             if(entity.getIsInitiative() == 1){
             	//主动拉人不发送消息
             } else {
@@ -1569,7 +1570,11 @@ public class CustomerServiceController {
                                  "【1】非常满意 \n" +
                                  "【2】满意 \n" +
                                  "【3】不满意");
-                 String returnStr = WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publiicID), jsonContent);// 获取对应accessToken  已改
+                 
+                 String returnStr = "";
+                 if(!wxOpenId.subSequence(0, 3).equals("app")){
+                	  returnStr = WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publiicID), jsonContent);// 获取对应accessToken  已改
+                 }
                  wxStatusTmpService.saveMsgDatebase(entity, "感谢您对重庆交通的支持，刚才为您服务的是"+userEntity.getUserId()+"号座席，请您为她的服务评分。\n" +
                          "【1】非常满意 \n" +
                          "【2】满意 \n" +
@@ -2126,6 +2131,7 @@ public class CustomerServiceController {
 	public List<String> headImgUrlInList(HttpServletRequest request,List<String> list){
 		List<String> rList=new ArrayList<String>();
 		if(list != null && list.size() > 0){
+			System.out.println(list.get(0));
 			JSONObject obj = JSON.parseObject(list.get(0));
 	        List<WeixinUserInfoEntity> wxList = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", obj.getString("openid"));
 	        WeixinUserInfoEntity weixinUserInfoEntity = wxList.get(0);

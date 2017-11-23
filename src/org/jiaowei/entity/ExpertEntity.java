@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class ExpertEntity {
 	private String id;
 	private String expertName;
-	private int phone;
+	private String phone;
 	private String introduce;
 	
 	@Id
@@ -30,10 +30,10 @@ public class ExpertEntity {
 	
 	@Basic
 	@Column(name = "PHONE")
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	

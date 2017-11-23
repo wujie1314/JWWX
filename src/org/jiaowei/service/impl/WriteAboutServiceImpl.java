@@ -18,6 +18,8 @@ import org.jiaowei.entity.BbsPictureEntity;
 import org.jiaowei.entity.BbsTellEntity;
 import org.jiaowei.entity.BbsUserEntity;
 import org.jiaowei.service.WriteAboutService;
+import org.jiaowei.service.mineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
@@ -26,11 +28,15 @@ import Decoder.BASE64Decoder;
 
 @Service
 public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAboutService{
-	
+	 @Autowired
+	 private mineService mineService;
+	 
+	//保存用户的帖子
 	@Override
 	public String announce(HttpServletRequest request,List<String> imgFile,String oppennID,String content,String title){
 		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
-		if (saveWriteAbout(BbsTellEntityID,oppennID,content,title)) {
+		String userID = getUserID(oppennID);
+		if (saveWriteAbout(BbsTellEntityID,userID,content,title,"0")) {
 			for (int i = 0; i < imgFile.size(); i++) {
 				String fileName = savePicture(request,imgFile.get(i));
 				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));
@@ -40,14 +46,15 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	}
 	
 	//保存说说
-	public boolean saveWriteAbout(String BbsTellEntityID,String oppenID,String content,String title){
+	public boolean saveWriteAbout(String BbsTellEntityID,String userID,String content,String title,String state){
 		BbsTellEntity b = new BbsTellEntity();
-		b.setUserID(getUserID(oppenID));
+		b.setUserID(userID);
 		b.setPublishedTime(new Timestamp(System.currentTimeMillis()));
 		b.setContent(content);
 		b.setCommentsNumber(0);
 		b.setId(BbsTellEntityID);
 		b.setTitle(title);
+		b.setState(state);
 		save(b);
 		return true;
 	}
@@ -121,11 +128,14 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	
 	//保存专家发布的说说
 	@Override
-	public String specialist(HttpServletRequest request,List<String> imgFile,String oppennID,String content,String name,String title){
-		initSpecialist(oppennID,name);
+	public String specialist(HttpServletRequest request,List<String> imgFile,String oppennID,String content,
+			String name,String title,String userOpenID){
+		initSpecialist(oppennID,name); //初始化专家数据
+		String userID = mineService.initUser(request, userOpenID);//初始化用户
+		
 		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
 
-		if (saveWriteAbout(BbsTellEntityID,oppennID,content,title)) {
+		if (saveWriteAbout(BbsTellEntityID,userID,content,title,"1")) {
 			for (int i = 0; i < imgFile.size(); i++) {
 				String fileName = savePicture(request,imgFile.get(i));
 				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));

@@ -75,19 +75,19 @@ public class WriteAboutController {
     @ResponseBody
 	public String specialist(HttpServletRequest request,HttpServletResponse response){
     	List<String> list = new ArrayList<String>();
-    	String oppenID = request.getParameter("oppenID");  
+    	String specialistOppenID = request.getParameter("specialistOppenID"); 
+    	String userOpenID = request.getParameter("userOpenID");
     	String content = request.getParameter("content").toString();  
     	String imgFile = request.getParameter("imgFile"); 
     	String title  = request.getParameter("title"); 
     	String name = request.getParameter("name"); 
-
     	JSONArray json = JSONArray.fromObject(imgFile);
     	for (int i = 0; i < json.size(); i++) {
 			list.add((String) json.get(i));
 		}
     	System.out.println(list.size());
     	//System.out.println(" oppennID=" + oppenID + " content " + content);
-		return writeAboutService.specialist(request,list, oppenID, content,name,title);
+		return writeAboutService.specialist(request,list, specialistOppenID, content,name,title,userOpenID);
 	}
     
     /**
@@ -105,6 +105,7 @@ public class WriteAboutController {
     public String sendLinkToWxAndExpert(@RequestParam("openId")String openId,
     		@RequestParam("expertId")String expertId,
     		@RequestParam("tellId")String tellID,
+    		@RequestParam("phone")String phone,
     		HttpServletRequest request,HttpServletResponse response){
     	if(openId == null || openId.isEmpty()){
     		return -1 +""; //微信用户ID为空
@@ -118,25 +119,31 @@ public class WriteAboutController {
     	
         String basePath = rb.getString("basePath");
         //拼接url链接
-        String baseUrl = basePath +"/bbs/jsp/particulars.jsp?tellID="+tellID+"&openID=";
+        String baseUrl = basePath +"/bbs/jsp/particulars.jsp?tellID="+tellID+"%26openID=";
         
         // 微信url
         String wxUrl = baseUrl + openId;
         System.out.println(wxUrl);
         //获取对应的公众号
-		String publicId =  NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
+		String publicID =  NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
 	
 		String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-				openId, "专家解答地址-><a href='"+wxUrl+"'>专家解答</a>");
-		
-		String returnStr = 	WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicId),jsonContent );
-        JSONObject json = JSON.parseObject(returnStr);
-        if(!json.get("errcode").toString().equals("0")){//发送失败
-        	
-        }
+				openId, "专家解答地址-><a href='"+wxUrl+"'>前去评论</a>");
+		if(!openId.subSequence(0, 3).equals("app")){
+			String returnStr = WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+	        JSONObject json = JSON.parseObject(returnStr);
+	        if(!json.get("errcode").toString().equals("0")){//发送失败
+	        	System.out.println("发送失败");
+	        }
+		}
 		//发短信给专家
-		// 缺接口
-    	
+        String message = baseUrl + expertId;
+        System.out.println(message);
+        String url = rb.getString("notePath");
+    	url = url.replace("telephone",phone);
+    	url = url.replace("content", "专家解答地址，专家入口-> "+message);
+    	System.out.println(url);
+    	WeiXinOperUtil.callSendNote(url);
     	return 1 +"";
     }
     
