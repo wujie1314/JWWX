@@ -7,7 +7,7 @@ import org.jiaowei.entity.WeixinAutoRespondEntity;
 
 public interface WeixinAutoRespondService extends CommonService {
 
-	List<WeixinAutoRespondEntity> getRespondMes(String content);
+	List<WeixinAutoRespondEntity> getRespondMes(String content,Integer deptId);
 
 	List<WeixinAutoRespondEntity> getRespondMenu();
 
