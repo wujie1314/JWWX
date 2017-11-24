@@ -59,6 +59,9 @@ body {
 	Text-decoration: none;
 	Text-align: center;
 }
+.words1{
+    height:50px;
+}
 </style>
 </head>
 <body class="easyui-layout">
@@ -1945,6 +1948,7 @@ function showZmessage() {
 			csId:admin.id
 		},
 		success : function(data) {
+		
 			if(data.length>0){
 				var wordTypeNames=new Array();
 				var wordTypeIds=new Array();
@@ -1952,11 +1956,11 @@ function showZmessage() {
 					wordTypeNames=wordTypeName.split(",");
 					wordTypeIds=wordTypeId.split(",");
 				}
-				var _span="<span class='tip4' style='background-color:#aaaaaa' onclick='showWordsTitle(this,0);'>常用语</span>";
-				var _div="<div class='tip5' id='words0'></div>";
+				var _span="<span class='tip4' style='background-color:#aaaaaa' onclick='showWordsTitle(this,0);'>系统常用语</span>";
+				var _div="<div class='tip5' id='words0' style='position:absolute;height:75px;overflow-y:auto;width:100%;'></div>";
 				for(var i=0;i<wordTypeNames.length-1;i++){
 					_span+="<span class='tip4' style='background-color:#fafafa' onclick='showWordsTitle(this,"+wordTypeIds[i]+");'>"+wordTypeNames[i]+"</span>";
-					_div+="<div class='tip5' id='words"+wordTypeIds[i]+"' style='display:none'></div>";			
+					_div+="<div class='tip5' id='words"+wordTypeIds[i]+"' style='position:absolute;display:none;height:75px;overflow-y:auto;width:100%;'></div>";			
 				}
 				$("#message").append(_span);
 				$("#message").append(_div);
