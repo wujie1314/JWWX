@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class WeixinAutoRespondServiceImpl extends CommonServiceImpl implements WeixinAutoRespondService{
 
 	@Override
-	public List<WeixinAutoRespondEntity> getRespondMes(String content) {
+	public List<WeixinAutoRespondEntity> getRespondMes(String content,Integer deptId) {
 		
 //		List<WeixinAutoRespondEntity> result = findByHql(" FROM WeixinAutoRespondEntity a WHERE a.contentCode = 0 AND a.content LIKE '%"+content+"%'");
 		List<WeixinAutoRespondEntity> result = findBySQL("SELECT * FROM AUTO_RESPOND WHERE AUTO_RESPOND.CONTENT_CODE IN("
@@ -26,7 +26,7 @@ public class WeixinAutoRespondServiceImpl extends CommonServiceImpl implements W
 				+ "			  FROM "
 				+ "					AUTO_RESPOND A "
 				+ "			  WHERE "
-				+ " 				A .CONTENT_CODE = 0 "
+				+ " 				A .CONTENT_CODE = 0 AND A .DEPT_ID =" + deptId
 				+ "			  GROUP BY "
 				+ "					A .JUNIOR_ID "
 				+ "			) b "
