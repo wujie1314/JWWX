@@ -223,6 +223,14 @@ public class PersonalDesignController {
     	 message = "http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     	}else if(section.equals("G50沪渝高速")){
     		message="http://www.cq96096.cn/videoImg/nextList?parentId=1008&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";	
+    	}else if(section.equals("G85成渝段")){
+    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1001&type=2&parentName=G85&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    	}else if(section.equals("G93渝遂段")){
+    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1008&type=2&parentName=G93&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    	}else if(section.equals("G75渝武段")){
+    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1007&type=2&parentName=G75&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    	}else if(section.equals("G65渝湘段")){
+    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&parentName=G65&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     	}else {
 			message="http://www.cq96096.cn/videoImg/list?code=003DrKMk1I9lzl0jeYNk1GmyMk1DrKMX&state=123";
 		}

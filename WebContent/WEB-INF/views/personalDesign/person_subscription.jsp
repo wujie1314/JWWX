@@ -239,6 +239,11 @@
 														<option value="0" >G50沪渝高速</option>
 														<option value="1" >G65渝湘段</option>
 														<option value="3" >G75渝黔段</option>
+														<option value="4" >G85成渝段</option>
+														<option value="5" >G93渝遂段</option>
+														<option value="6" >G75渝武段</option>
+														<option value="7" >G65渝湘段</option>
+														
 
 													</select>
 												</div>
