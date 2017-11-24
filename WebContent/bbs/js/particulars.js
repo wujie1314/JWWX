@@ -1,10 +1,11 @@
 function getURLName(name) {
-		    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-		    var r = window.location.search.substr(1).match(reg);
-		    if (r != null) {
-		        return unescape(r[2]);
-		    }
-		    return null;
+		var url = location.search; //获取url中"?"符后的字串 
+		url=url.replace("%26","&"); 
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+	    var r = url.substr(1).match(reg);
+	    if(r!=null)
+	    	return  unescape(r[2]); 
+	    return null;
 }
 //var tellID = "1510140742222";
 //var openID = "oNwnMv75CAORzVhzjt-7J8lWSQtA";
@@ -16,7 +17,6 @@ $(function(){
 	init();
 })
 function init(){
-	//alert(tellID);
 	 $.ajax({
 			type :"post",
 			url : "/particularsController/init",
@@ -112,7 +112,7 @@ function review(){
 			},
 			success : function(data){
 				//$("#review").attr("disabled", false); 
-				window.location.href="bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID+"&id="+10000*Math.random();
+				window.location.href="/bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID+"&id="+10000*Math.random();
 				//window.location.href = "bbs/jsp/particulars.jsp?tellID=" + tellID + "&openID=" + openID;
 				// alert(data.result);
 				//addContent(data)

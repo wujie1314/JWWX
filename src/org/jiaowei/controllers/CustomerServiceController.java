@@ -919,7 +919,9 @@ public class CustomerServiceController {
         Map<String, Object> map = new HashMap<String, Object>();
 //        WxStatusTmpTEntity wstEntity = WeiXinConst.servicingMap.get(openId);
         WxStatusTmpTEntity wstEntity = NavMenuInitUtils.getInstance().getServiceEntity(openId);
+        
         if (null != wstEntity&&csId.equals(wstEntity.getCsId())) {
+        	System.out.println("ok");
         	map.put("status", "OK");
         } else {
             map.put("status", "END");
@@ -1559,7 +1561,7 @@ public class CustomerServiceController {
             entity.setLastChatTime(System.currentTimeMillis()/1000);
 //            WeiXinConst.waitingMap.remove(wxOpenId);
             NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
-            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
+//            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
             if(entity.getIsInitiative() == 1){
             	//主动拉人不发送消息
             } else {

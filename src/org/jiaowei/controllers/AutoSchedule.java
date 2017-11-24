@@ -156,7 +156,7 @@ public class AutoSchedule {
 	        for (String key : deletedKeys) {
 	        	try {
 	        		entity = removeMap.get(key);
-	        		if ((currentTime - entity.getLastChatTime()) >= 400) {
+	        		if ((currentTime - entity.getLastChatTime()) >= 20) {
 	        			removeMap.remove(key);
 	        			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
 	    	            sendMsgWx(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。", entity.getWxOpenid());

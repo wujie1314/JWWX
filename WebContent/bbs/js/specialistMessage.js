@@ -35,14 +35,14 @@ function announce(){
         	specialistOppenID:expert_ID,   //"专家的ID" 
         	name: expert_name, //专家的名字
         	title:expert_title, //标题
-        	userOpenID:userOpenID //用户的openID
+        	userOpenID:nowOpenid //用户的openID
         	},  
         dataType: "json",  
         timeout: 1000,  
         contentType : 'application/x-www-form-urlencoded; charset=utf-8',  
         url: "/WriteAboutController/specialist",  
         success: function(result){
-        	console.log("tellID 为 ========  "+ result);
+        	//console.log("tellID 为 ========  "+ result);
         	send_link(expert_ID,result,phone); //推送论坛链接
         	// 关闭窗口
         	closeWindow("bbs-window");
@@ -68,7 +68,7 @@ function bbs_click_selected(dd){
 	$(dd).find("li").addClass("export_selected");
 	var span = $(dd).find("span");
 	var input = $(dd).find("input").val();
-	console.log(span);
+	//console.log(span);
 	$('#expert_ID').val($(span).attr("ID"));
 	$('#expert_phone').val(input);
 	$('#expert_name').val($(span).text());

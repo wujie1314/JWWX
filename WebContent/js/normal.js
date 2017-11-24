@@ -26,7 +26,7 @@ function showHisMsgToday(openid,time){
 	if(time != 0){
 		bTime = timetrans(time);
 	}
-	console.log(timetrans(time));
+	//console.log(timetrans(time));
 	var date2=new Date();
 	var eTime=date2.Format("yyyy-MM-dd hh:mm:ss");
     $.ajax({
@@ -149,6 +149,9 @@ function leftMessage(data,i){
 		html += '<div class="bj">';
 		//html += "<embed src=" + data.videoUrl + " windowlessVideo=1 autoplay=false hidden=no units='pixels' width=300 height=300></embed>";
 		html += '<div id="ck'+data.msgId+'"></div>';
+	}
+	else if("location" == data.msgType){
+		//console.log(data);
 	}
 	html += '</div>';
 	html += '</td>';
