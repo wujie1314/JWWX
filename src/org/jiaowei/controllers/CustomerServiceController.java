@@ -1361,10 +1361,10 @@ public class CustomerServiceController {
     public List<UsuallyWordEntity> selectUsuallyWords(int csId) {
     	List<UsuallyWordEntity> uwList=new ArrayList<UsuallyWordEntity>();
     	//查询出系统管理员定义常用语
-    	uwList=sysUserService.findByProperty(UsuallyWordEntity.class, "creator", "1");
+    	uwList=sysUserService.findByProperty(UsuallyWordEntity.class, "creator", "1");//系统的管理员
     	if(csId!=1){
     		//查询出分中心管理员定义常用语
-    		List<SysUserEntity> sysUserList = sysUserService.findByProperty(SysUserEntity.class, "id", csId);
+    		List<SysUserEntity> sysUserList = sysUserService.findByProperty(SysUserEntity.class, "id", csId); //部门管理员
     		int userId=0;
     		if(sysUserList!=null){
     			SysUserEntity s=sysUserList.get(0);
@@ -1381,7 +1381,7 @@ public class CustomerServiceController {
     	        	}
     			}
     		}
-    		if(userId!=csId){
+    		if(userId==csId){
         		//查询出自己定义常用语
             	List<UsuallyWordEntity> uwList3=new ArrayList<UsuallyWordEntity>();
             	uwList3=sysUserService.findByProperty(UsuallyWordEntity.class, "creator", csId+"");

@@ -200,7 +200,7 @@ public class PersonalDesignController {
     		message="  6月12日17时24分，G50沪渝高速垫忠段下行方向谭家寨隧道封闭施工，"
     				+ "上行方向单洞双通，双向长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计12月31日施工结束。";
     	}else{
-    		message="道路通畅可以放心通行";
+    		message="道路通畅可以放心通行,一路顺风";
     	}
     	System.out.println("道路信息文字");
     	if(delayTimeNUM>=0){
@@ -281,7 +281,7 @@ public class PersonalDesignController {
         }
  
     }
-    public static String uploadMedia(String accessToken, String type, String mediaFileUrl) {
+    /*public static String uploadMedia(String accessToken, String type, String mediaFileUrl) {
     	String MEDIA_URL = "http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
         StringBuffer resultStr = null;
         //拼装url地址
@@ -355,11 +355,11 @@ public class PersonalDesignController {
 
         return resultStr.toString();
     }
-    /**
+    *//**
      * 通过传过来的contentType判断是哪一种类型
      * @param contentType 获取来自连接的contentType
      * @return
-     */
+     *//*
     public static String judgeType(String contentType) {
         String fileExt = "";
         if("image/jpeg".equals(contentType)) {
@@ -375,7 +375,7 @@ public class PersonalDesignController {
         }
         return fileExt;
     }
-
+*/
     
     
     
