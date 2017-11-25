@@ -167,12 +167,12 @@ public class PersonalDesignController {
     @RequestMapping(value = "/getViolationInformation")
     @ResponseBody
     public void getViolationInformation(String openId,String lookType,String DATE,String TIME,String license,String color,String delayTime){
-    	String message = null;
+    	String message="-违章信息:";
     	int delayTimeNUM=Integer.valueOf(delayTime);
     	if(license.equals("123")){
-    		message="你闯了红灯，罚款500";
+    		message+="你闯了红灯，罚款500";
     	}else{
-    		message="你的表现很好，无违章";
+    		message+="你的表现很好，无违章";
     	}
     	System.out.println("小朋友你违章"+openId);
     	if(delayTimeNUM>=0){
@@ -191,16 +191,16 @@ public class PersonalDesignController {
     @ResponseBody
     public void getTraffic(String openId,String lookType,String DATE,
     		String TIME,String lxfd,String htlj_begin,String htlj_end,String dlfx,String delayTime){
-    	String message = null;
+    	String message="-路况信息:";
     	int delayTimeNUM=Integer.valueOf(delayTime);
     	if(lxfd.equals("G42沪蓉高速")){
-    		message="10月26日9时21分，G42沪蓉高速垫忠段上行方向明月山隧道因施工养护，上行方向正线封闭，下行方向单道双通。"
+    		message+="10月26日9时21分，G42沪蓉高速垫忠段上行方向明月山隧道因施工养护，上行方向正线封闭，下行方向单道双通。"
     				+ "长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计11月25日结束。";
     	}else if(lxfd.equals("G50沪渝高手")){
-    		message="  6月12日17时24分，G50沪渝高速垫忠段下行方向谭家寨隧道封闭施工，"
+    		message+="  6月12日17时24分，G50沪渝高速垫忠段下行方向谭家寨隧道封闭施工，"
     				+ "上行方向单洞双通，双向长20米、宽3.2米、高4.2米以上超限车辆禁止通行。预计12月31日施工结束。";
     	}else{
-    		message="道路通畅可以放心通行,一路顺风";
+    		message+="道路通畅可以放心通行,一路顺风";
     	}
     	System.out.println("道路信息文字");
     	if(delayTimeNUM>=0){
@@ -214,25 +214,25 @@ public class PersonalDesignController {
     @ResponseBody
     public void getTrafficByPicture(String openId,String lookType,String DATE,
     		String TIME,String ph,String section,String delayTime){
-    	String message=null;
+    	String message="-路况图片:";
     	int delayTimeNUM=Integer.valueOf(delayTime);
     	if(section.equals("G75渝黔段")){
-    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1002&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    		message+="http://www.cq96096.cn/videoImg/nextList?parentId=1002&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     		
     	}else if(section.equals("G65渝湘段")){
-    	 message = "http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    	 message+= "http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     	}else if(section.equals("G50沪渝高速")){
-    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1008&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";	
+    		message+="http://www.cq96096.cn/videoImg/nextList?parentId=1008&type=2&openId=oPxXujqkhacHTudxFlVug9QIt_4s";	
     	}else if(section.equals("G85成渝段")){
-    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1001&type=2&parentName=G85&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    		message+="http://www.cq96096.cn/videoImg/nextList?parentId=1001&type=2&parentName=G85&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     	}else if(section.equals("G93渝遂段")){
-    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1008&type=2&parentName=G93&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    		message+="http://www.cq96096.cn/videoImg/nextList?parentId=1008&type=2&parentName=G93&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     	}else if(section.equals("G75渝武段")){
-    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1007&type=2&parentName=G75&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    		message+="http://www.cq96096.cn/videoImg/nextList?parentId=1007&type=2&parentName=G75&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     	}else if(section.equals("G65渝湘段")){
-    		message="http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&parentName=G65&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
+    		message+="http://www.cq96096.cn/videoImg/nextList?parentId=1003&type=2&parentName=G65&openId=oPxXujqkhacHTudxFlVug9QIt_4s";
     	}else {
-			message="http://www.cq96096.cn/videoImg/list?code=003DrKMk1I9lzl0jeYNk1GmyMk1DrKMX&state=123";
+			message+="http://www.cq96096.cn/videoImg/list?code=003DrKMk1I9lzl0jeYNk1GmyMk1DrKMX&state=123";
 		}
     	System.out.println("道路信息截图");
     	if(delayTimeNUM>=0){
@@ -246,9 +246,9 @@ public class PersonalDesignController {
     @ResponseBody
     public void getBus(String openId,String lookType,String DATE,
     		String TIME,String delayTime){
-    	String message=null;
+    	String message="-公交信息:";
     	int delayTimeNUM=Integer.valueOf(delayTime);
-    	message="http://web.chelaile.net.cn/wwd/index?src=webapp_weixin_chongqing";
+    	message+="http://web.chelaile.net.cn/wwd/index?src=webapp_weixin_chongqing";
     	System.out.println("公交信息");
     	if(delayTimeNUM>=0){
         	Timer timer = new Timer();
@@ -271,7 +271,7 @@ public class PersonalDesignController {
         public void run() {
         	System.out.println(".........."+openId);
         	 String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-      			   openId, String.format("私人定制消息："+message));
+      			   openId, String.format("私人定制消息"+message));
       	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
   		//发送給用户
   		// 这里有点问题 获取不到对应的公众号accessToken
