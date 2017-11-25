@@ -77,9 +77,9 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 		JSONObject jsonObject = getWxNickname(openID);
 		//System.out.println(jsonObject.get("nickname") + jsonObject.getString("headimgurl"));
 		if(jsonObject.get("nickname") != null){
-			String id = isExistUser(openID);
-			if (id != null && id.length() != 0) {
-				return updateUser(request,jsonObject,id);
+			BbsUserEntity bbs = isExistUser(openID);
+			if (bbs != null) {
+				return updateUser(request,jsonObject,bbs);
 			}
 			else {
 				return SaveUser(request,jsonObject);
@@ -146,15 +146,14 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	}
 
 	//判断用户是否存在
-	public String isExistUser(String openID){
+	public BbsUserEntity isExistUser(String openID){
 		String sql = "SELECT * FROM BBS_USER WHERE OPPENID = '" + openID + "'";
 		System.out.println(sql);
 		List<BbsUserEntity> bu = findBySQL(sql, BbsUserEntity.class);
 		if(bu == null || bu.size() == 0){
 			return null;
 		}
-		BbsUserEntity bbsUserEntity = (BbsUserEntity)bu.get(0);
-		return bbsUserEntity.getId();
+		return (BbsUserEntity)bu.get(0);
 	}
 	
 	//保存用户
@@ -172,14 +171,12 @@ public class mineServiceImpl extends CommonServiceImpl implements mineService{
 	}
 	
 	//更新用户信息
-	public String updateUser(HttpServletRequest request,JSONObject jsonObject,String id){
-		BbsUserEntity bus = new BbsUserEntity();
-		bus.setId(id);
+	public String updateUser(HttpServletRequest request,JSONObject jsonObject,BbsUserEntity bus){
 		bus.setOppenid(jsonObject.getString("openid"));
 		bus.setWechatName(jsonObject.getString("nickname"));
 		String headImageData =getImageByUrl(request,jsonObject.getString("headimgurl"),"/uploads/",jsonObject.getString("openid"));
 		bus.setHeadImage(headImageData);
-		updateEntity(bus);
+		saveOrUpdate(bus);	
 		return "success";
 	}
 	

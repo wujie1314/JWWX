@@ -13,8 +13,8 @@ public interface mineService extends CommonService{
 
 	List<Object> initSpecialist(int begin, int end);
 
-	String initUser(HttpServletRequest request, String openID);
-
 	List<Object> init(String openID, int begin, int end);
+
+	String initUser(HttpServletRequest request, String openID);
 	
 }

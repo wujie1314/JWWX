@@ -119,10 +119,10 @@ public class WriteAboutController {
     	
         String basePath = rb.getString("basePath");
         //拼接url链接
-        String baseUrl = basePath +"/bbs/jsp/particulars.jsp?tellID="+tellID+"%26openID=";
+        String baseUrl = basePath +"/bbs/jsp/particulars.jsp?tellID="+tellID;
         
         // 微信url
-        String wxUrl = baseUrl + openId;
+        String wxUrl = baseUrl +"&openID="+ openId;
         System.out.println(wxUrl);
         //获取对应的公众号
 		String publicID =  NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
@@ -137,7 +137,7 @@ public class WriteAboutController {
 	        }
 		}
 		//发短信给专家
-        String message = baseUrl + expertId;
+        String message = baseUrl +"%26openID="+ expertId;
         System.out.println(message);
         String url = rb.getString("notePath");
     	url = url.replace("telephone",phone);

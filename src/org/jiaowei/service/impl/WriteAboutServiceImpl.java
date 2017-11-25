@@ -131,8 +131,8 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	public String specialist(HttpServletRequest request,List<String> imgFile,String oppennID,String content,
 			String name,String title,String userOpenID){
 		initSpecialist(oppennID,name); //初始化专家数据
-		String userID = mineService.initUser(request, userOpenID);//初始化用户
-		
+		mineService.initUser(request, userOpenID);//初始化用户
+		String userID = getUserID(userOpenID);
 		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
 
 		if (saveWriteAbout(BbsTellEntityID,userID,content,title,"1")) {
@@ -182,4 +182,6 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 		save(bus);
 		return id;
 	}
+	
+	
 }

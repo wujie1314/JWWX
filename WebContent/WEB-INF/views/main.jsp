@@ -2115,6 +2115,10 @@ var basePath = '<%=basePath%>';
 					//html += "<embed src=" + data.MediaUrl + " windowlessVideo=1 autoplay=false hidden=no units='pixels' width=300 height=240></embed>";
 					html += '<div id="ck'+data.MsgId+'"></div>';
 					//html += $("#media-html").html();
+				} else if("location" == data.MsgType){
+					var content = data.Label+"(" + data.Location_X +","+ data.Location_Y+")";
+					html += '<div class="bj" onmousedown="workContent(this,1,1)"><input type="hidden" name="msgId" value="'+data.MsgId+'"/>';
+					html += "<a target='_blank' href='http://10.224.9.116:8180/jtbst/main.html?loader=gongdan&lon="+data.Location_Y+"&lat="+data.Location_X+"&type=&desc=&createTime='><span class='msgtext'><font size='2'>"+replaceQQFace(content)+"</font></span></a><input type='hidden' name='workId' value=''/>"
 				}
 				html += '</div>';
 				html += '</td>';

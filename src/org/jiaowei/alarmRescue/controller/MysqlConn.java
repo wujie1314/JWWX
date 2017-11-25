@@ -43,7 +43,7 @@ public class MysqlConn {
 	     ResultSet result = null;// 创建一个结果集对象
 	     
 	     // 要执行的SQL语句
-	     String sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,GETDATE,STATE,REMARK,DLJD,DLWD,UDID,MYID)"
+	     String sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,REMARK,DLJD,DLWD,UDID,MYID)"
 	     		+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?) ";
 	     PreparedStatement pre =  conn.prepareStatement(sql);
 	     pre.setString(1,"SSJ"+map.get("create_time"));
@@ -54,13 +54,11 @@ public class MysqlConn {
 	     pre.setString(6,map.get("contact_way").toString());
 	     pre.setString(7,"位置");
 	     pre.setString(8,"153154687");
-	     pre.setString(9,map.get("create_time").toString());
-	     pre.setString(10,"1");
-	     pre.setString(11,"备注");
-	     pre.setString(12,map.get("longitude").toString());
-	     pre.setString(13,map.get("latitude").toString());
-	     pre.setString(14,"123456444");
-	     pre.setString(15,map.get("ID").toString());
+	     pre.setString(9,"备注");
+	     pre.setString(10,map.get("longitude").toString());
+	     pre.setString(11,map.get("latitude").toString());
+	     pre.setString(12,"123456444");
+	     pre.setString(13,map.get("ID").toString());
 	     
 	     System.out.println(pre.toString());
 	     result = pre.executeQuery();// 执行查询，注意括号中不需要再加参数
