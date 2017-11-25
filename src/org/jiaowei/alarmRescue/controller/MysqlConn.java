@@ -46,14 +46,14 @@ public class MysqlConn {
 	     String sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,REMARK,DLJD,DLWD,UDID,MYID)"
 	     		+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?) ";
 	     PreparedStatement pre =  conn.prepareStatement(sql);
-	     pre.setString(1,"SSJ"+map.get("create_time"));
+	     pre.setString(1,"wx"+System.currentTimeMillis());
 	     pre.setString(2,map.get("create_time").toString());
 	     pre.setString(3,"51123132");
 	     pre.setString(4,map.get("type").toString());
 	     pre.setString(5,map.get("content_desc").toString());
 	     pre.setString(6,map.get("contact_way").toString());
 	     pre.setString(7,"位置");
-	     pre.setString(8,"153154687");
+	     pre.setString(8,"101");
 	     pre.setString(9,"备注");
 	     pre.setString(10,map.get("longitude").toString());
 	     pre.setString(11,map.get("latitude").toString());

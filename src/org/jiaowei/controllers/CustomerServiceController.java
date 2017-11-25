@@ -1560,8 +1560,12 @@ public class CustomerServiceController {
 
             entity.setLastChatTime(System.currentTimeMillis()/1000);
 //            WeiXinConst.waitingMap.remove(wxOpenId);
-            NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
-//            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
+            //????????????????????//
+            ConcurrentMap<String, Integer> userD = NavMenuInitUtils.getInstance().userDeptMap;
+            Integer deptId = userD.get(csId+"");
+            
+            NavMenuInitUtils.getInstance().removeWaitMap(deptId,wxOpenId);
+            NavMenuInitUtils.getInstance().removeServiceMap(deptId,wxOpenId);
             if(entity.getIsInitiative() == 1){
             	//主动拉人不发送消息
             } else {

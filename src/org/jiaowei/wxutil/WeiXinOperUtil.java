@@ -1278,9 +1278,9 @@ public class WeiXinOperUtil {
 		}
     }
     
-    public static void main(String[] args) {
-    	
-    	/*String menuString = " {\n" +
+    
+    public static String menu1(){
+    	String menuString = " {\n" +
                 "     \"button\":[\n" +
                 "      {\n" +
                 "           \"name\":\"出行服务\",\n" +
@@ -1340,11 +1340,6 @@ public class WeiXinOperUtil {
                 "      {\n" +
                 "           \"name\":\"路况及活动\",\n" +
                 "           \"sub_button\":[\n" +
-//                "            {\n" +
-//                "               \"type\":\"view\",\n" +
-//                "               \"name\":\"曝光台\",\n" +
-//                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx915ad295909bf037&redirect_uri=http%3a%2f%2fwww.cq96096.cn%2fcsc%2fgetViolationReportInit&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect\"\n" +
-//                "            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"实时路况\",\n" +
@@ -1353,7 +1348,7 @@ public class WeiXinOperUtil {
 				"            {\t\n" +
 				"               \"type\":\"view\",\n" +
 				"               \"name\":\"失物招领\",\n" +
-				"               \"url\":\"http://203.93.109.52:10844/jwwx2/weixin/jsp/goodsList.jsp\"\n" +
+				"               \"url\":\"http://203.93.109.52/jwwx2/weixin/jsp/goodsList.jsp\"\n" +
 				"            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
@@ -1373,7 +1368,40 @@ public class WeiXinOperUtil {
                 "       }]\n" +
                 " }";
     	System.err.println(menuString);
-    	WeiXinOperUtil.createWxMenu(menuString,WeiXinOperUtil.getAccessToken(publicId));*/
+    			
+    	return menuString;
+    }
+    
+    public static String menu2(){
+    	String menuString = " {\n" +
+                "     \"button\":[\n" +
+                "      {\n" +
+                "  			\"type\":\"click\",\n"+
+                "           \"name\":\"重庆高速ETC\",\n" +
+                "			\"key\":\"VSDOSHDOIASD"+
+                "       },\n" +
+                "      {\n" +
+                "  			\"type\":\"click\",\n"+
+                "           \"name\":\"人工服务\",\n" +
+                "			\"key\":\"MAN_SERVICE\""+
+                "       }]\n" +
+                " }";
+    	return menuString;
+    }
+    
+    public static void main(String[] args) {
+    	
+    	// 6 lnh测试号  gh_efa6b831b90e 交委  
+//    	String menuString =menu1(); // 交委  
+    	
+    	
+    	// 5 jackeroo测试号 gh_fd05ad37f4d0  重庆高速ETC 
+    	String menuString = menu2();  // 重庆高速ETC 
+    	
+    	
+    	String publicID = "gh_fd05ad37f4d0";
+    	
+    	WeiXinOperUtil.createWxMenu(menuString,WeiXinOperUtil.getAccessToken(publicID));
 //    	File file = new File("E:\\123456.png");
 //    	String result;
 //		try {

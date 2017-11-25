@@ -40,26 +40,34 @@ public class FlashPolicyServer {
                                 public void run() {
                                     try {
                                         if (logger.isDebugEnabled()) {
-                                            logger.debug("FlashPolicyServer: Handling Request...");
+                                            logger.info("FlashPolicyServer: Handling Request...");
                                         }
+                                        logger.info("找不到啊，找不到啊9");
                                         socket.setSoTimeout(10000);
                                         InputStream in = socket.getInputStream();
                                         byte[] buffer = new byte[23];
-                                        if (in.read(buffer) != -1 && (new String(buffer, "ISO-8859-1")).startsWith("<policy-file-request/>")) {
+                                        in.read(buffer,0,23);
+                                        String s = new String(buffer);
+                                        System.out.println(s);
+                                        if(s.equals("<policy-file-request/>\0")){
+//                                        if (in.read(buffer) != -1 && (new String(buffer, "ISO-8859-1")).startsWith("<policy-file-request/>")) {
+                                        	logger.info("进来了 ");
                                             if (logger.isDebugEnabled()) {
-                                                logger.debug("PolicyServerServlet: Serving Policy File...");
+                                                logger.info("PolicyServerServlet: Serving Policy File...");
                                             }
                                             OutputStream out = socket.getOutputStream();
-                                            byte[] bytes = ("<?xml version=\"1.0\"?>\n" +
-                                                    "<!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">\n" +
+                                            byte[] bytes = ("<?xml version=\"1.0\"? encoding = \"utf-8\">\n" +
+                                                    "<!DOCTYPE cross-domain-policy SYSTEM \"http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd\">\n" +
                                                     "<cross-domain-policy> \n" +
+//                                                    "	<site-control permitted-cross-domain-policies=\"all\"/>\n"+
                                                     "   <site-control permitted-cross-domain-policies=\"master-only\"/>\n" +
-                                                    "   <allow-access-from domain=\"*\" to-ports=\"*\" />\n" +
-                                                    "</cross-domain-policy>").getBytes("ISO-8859-1");
+                                                    "   <allow-access-from domain=\"*\" to-ports=\"*\" secure=\"false\" />\n" +
+                                                    "</cross-domain-policy>0").getBytes("UTF-8");
                                             out.write(bytes);
-                                            out.write(0x00);
                                             out.flush();
+                                            in.close();
                                             out.close();
+                                            logger.info( "完成认证");
                                         } else {
                                             logger.warn("FlashPolicyServer: Ignoring Invalid Request");
                                             logger.warn("  " + (new String(buffer)));

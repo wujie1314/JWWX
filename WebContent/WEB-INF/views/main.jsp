@@ -650,9 +650,9 @@ body {
 <link type="text/css" rel="stylesheet" href="alarmRescue/css/seatAlarmRescue.css" />
 <script type="text/javascript" src="alarmRescue/js/seatAlarmRescue.js"></script>
 <!-- JS引入 -->
-<link type="text/css" rel="stylesheet" href="bbs/css/main_bbs_window.css" />
+<!-- <link type="text/css" rel="stylesheet" href="bbs/css/main_bbs_window.css" />
 <script type="text/javascript" src="bbs/js/dist/lrz.all.bundle.js"></script>
-<script type="text/javascript" src="bbs/js/specialistMessage.js"></script>
+<script type="text/javascript" src="bbs/js/specialistMessage.js"></script> -->
 
 <script src="/js/sockjs-0.3.min.js"></script>
 <script type="text/javascript" src='/js/websocket/swfobject.js'></script>
@@ -1242,12 +1242,25 @@ function removeAdmin(obj,id){
 	//取消邀请其他座席
 	userAdmin[userIndex]["id"+id]=0;
 }
+
+//websocket标记
+var host = window.location.host.split(":")[0];
+WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMain.swf";
+WEB_SOCKET_DEBUG = true;
+var basePath = '<%=basePath%>';
+	try {
+		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
+	} catch (e) {
+		alert(e);
+	}
+//websocket标记
 function openRoad(index,type){
 	//if(typeof(ws[index])=="undefined"||ws[index]==null){
     var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
-    console.log(tmp);
+    //console.log(tmp);
     tmp = tmp.replace("http","ws");
 	ws[index]= new WebSocket(encodeURI(tmp));
+	alert(encodeURI(tmp));
 	connect(ws[index]);
 	//}
 }
@@ -1344,8 +1357,7 @@ function connUser(obj,index){
 	
 	var bgc = $(obj).css("background-color");
 	
-	bgc = rgb2hex(bgc);
-	console.log(bgc);
+ 	bgc = rgb2hex(bgc);
 	if(bgc=="#ffa500"){//第一次点击，自动发送消息
     	$.ajax({
     		type : "post",
@@ -2006,15 +2018,6 @@ function choseQQFace(id){
         }
 	});
 }
-var host = window.location.host.split(":")[0];
-WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMain.swf";
-WEB_SOCKET_DEBUG = true;
-var basePath = '<%=basePath%>';
-	try {
-		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
-	} catch (e) {
-
-	}
 	/*获取微信用户信息*/
 	function getUserData(FromUserName) {
 		for (var i = 0; i < userData.length; i++) {
@@ -2044,10 +2047,13 @@ var basePath = '<%=basePath%>';
 		ws.onopen = function() {
 			//alert("open");
 		};
+		ws.onerror = function(e){
+			alert(e);
+		};
 		ws.onmessage = function(event) {
 			var data = $.parseJSON(event.data);
 			if(data.Flag=="CsToCs"&&data.data.fromUser!=admin.id){
-				console.log(data);
+				//console.log(data);
 				connInit(data.data.toUser);
 				var html="";
 				var msgType=data.data.msgType;
@@ -2534,9 +2540,6 @@ var basePath = '<%=basePath%>';
 						//绑定文件添加进队列事件
 						uploader.bind('BeforeUpload', function (uploader, files) {  
 			                uploader.settings.url = "/fileUpload/save?openid=" +nowOpenid;
-			                alert(nowOpenid);
-			                console.log(uploader);  
-			                console.log(files);  
          				});  
 						uploader.bind('FilesAdded', function(uploader, files) {
 							for (var i = 0, len = files.length; i < len; i++) {

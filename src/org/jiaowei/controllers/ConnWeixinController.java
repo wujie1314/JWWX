@@ -477,7 +477,7 @@ public class ConnWeixinController {
         String openId = map.get("FromUserName");
 
         String publicId = map.get("ToUserName");
-        createMenu(publicId);
+//        createMenu(publicId);
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
         if (null == list || 0 == list.size()) {
             String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(map.get("ToUserName")), openId);
