@@ -44,7 +44,7 @@ public class MysqlConn {
 	     
 	     // 要执行的SQL语句
 	     String sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,REMARK,DLJD,DLWD,UDID,MYID)"
-	     		+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?) ";
+	     		+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,?,?,?,?,?) ";
 	     PreparedStatement pre =  conn.prepareStatement(sql);
 	     pre.setString(1,"wx"+System.currentTimeMillis());
 	     pre.setString(2,map.get("create_time").toString());

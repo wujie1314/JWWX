@@ -230,7 +230,7 @@ body {
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
 						iconCls="icon-help" title="专家服务" plain="true">专家</a>
 						<a href="#" onclick="openCallPolice();" class="easyui-linkbutton"
-						iconCls="icon-email" title="报警救援" plain="true">报警救援短信</a>
+						iconCls="icon-help" title="报警救援" plain="true">报警救援短信</a>
 					</span>
 					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
@@ -650,9 +650,9 @@ body {
 <link type="text/css" rel="stylesheet" href="alarmRescue/css/seatAlarmRescue.css" />
 <script type="text/javascript" src="alarmRescue/js/seatAlarmRescue.js"></script>
 <!-- JS引入 -->
-<!-- <link type="text/css" rel="stylesheet" href="bbs/css/main_bbs_window.css" />
+<link type="text/css" rel="stylesheet" href="bbs/css/main_bbs_window.css" />
 <script type="text/javascript" src="bbs/js/dist/lrz.all.bundle.js"></script>
-<script type="text/javascript" src="bbs/js/specialistMessage.js"></script> -->
+<script type="text/javascript" src="bbs/js/specialistMessage.js"></script>
 
 <script src="/js/sockjs-0.3.min.js"></script>
 <script type="text/javascript" src='/js/websocket/swfobject.js'></script>
@@ -1251,18 +1251,13 @@ var basePath = '<%=basePath%>';
 	try {
 		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
 	} catch (e) {
-		alert(e);
 	}
 //websocket标记
 function openRoad(index,type){
-	//if(typeof(ws[index])=="undefined"||ws[index]==null){
-    var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
-    //console.log(tmp);
+	var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
     tmp = tmp.replace("http","ws");
 	ws[index]= new WebSocket(encodeURI(tmp));
-	alert(encodeURI(tmp));
 	connect(ws[index]);
-	//}
 }
 function openMsgRoad(index){ //废弃方法
 	if(typeof(ws[index])=="undefined"||ws[index]==null){
@@ -1350,14 +1345,27 @@ function connUser(obj,index){
 	nowOpenid=userData[index].openid;
 	var tempColor=$(".user-item-online");
 	$.each(tempColor,function(){
-		var n2=rgb2hex($(this).css("background-color"));
+		var n2 = "";
+		if(isIE()){
+			n2=$(this).css("background");
+		}
+		else{
+			n2=rgb2hex($(this).css("background-color"));
+		}
+		
 		if(n2!="#ffa500"&&n2!="#ffa501"&&n2!="#ffa502"&&n2!="#f5f5f5"&&n2!="#ed5565")$(this).css("background","#cde9f5");
 	});
 	//alert(obj.style.backgroundColor);
-	
 	var bgc = $(obj).css("background-color");
+	if(isIE()){
+		bgc = $(obj).css("background");
+	}
+	else{
+		bgc = rgb2hex(bgc);
+	}
 	
- 	bgc = rgb2hex(bgc);
+	
+ 	
 	if(bgc=="#ffa500"){//第一次点击，自动发送消息
     	$.ajax({
     		type : "post",
@@ -2064,9 +2072,7 @@ function choseQQFace(id){
 					html=getImageHtml(data.data.id,data.data.imageUrl,adminD.fromUser);
 				} else if (msgType == "voice") {
 					html=getVoiceHtml(data.data.id,data.data.voiceUrl,adminD.fromUser);
-				} else if (msgType == "location"){
-					html=getLocationHtml(data.data.id,data.data.label,adminD.userId);
-				}
+				} 
 				$("#console" + data.data.toUser).append(html);
 				$("#msgbox").scrollTop(9999999);
 			}else{
@@ -2852,6 +2858,12 @@ function choseQQFace(id){
 		} 
 		return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 	}
+	function isIE() { //ie?
+		 if (!!window.ActiveXObject || "ActiveXObject" in window)
+		  return true;
+		  else
+		  return false;
+ 	}
 </script>
 </html>
 

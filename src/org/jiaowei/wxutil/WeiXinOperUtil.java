@@ -1376,9 +1376,9 @@ public class WeiXinOperUtil {
     	String menuString = " {\n" +
                 "     \"button\":[\n" +
                 "      {\n" +
-                "  			\"type\":\"click\",\n"+
+                "  			\"type\":\"view\",\n"+
                 "           \"name\":\"重庆高速ETC\",\n" +
-                "			\"key\":\"VSDOSHDOIASD"+
+                "			\"url\":\"https://weixin.gs12122.com/CQETCWechatAPIServer/html/secondversion/index.html?code=081pYh9e15rtqs0AhUbe1Em99e1pYh9l&state=123"+
                 "       },\n" +
                 "      {\n" +
                 "  			\"type\":\"click\",\n"+

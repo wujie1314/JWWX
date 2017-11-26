@@ -62,8 +62,10 @@ public class FlashPolicyServer {
 //                                                    "	<site-control permitted-cross-domain-policies=\"all\"/>\n"+
                                                     "   <site-control permitted-cross-domain-policies=\"master-only\"/>\n" +
                                                     "   <allow-access-from domain=\"*\" to-ports=\"*\" secure=\"false\" />\n" +
-                                                    "</cross-domain-policy>0").getBytes("UTF-8");
+                                                    "</cross-domain-policy>\0").getBytes("UTF-8");
                                             out.write(bytes);
+                                            String s2 = new String(bytes);
+                                            System.out.println(s2);
                                             out.flush();
                                             in.close();
                                             out.close();

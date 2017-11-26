@@ -31,7 +31,7 @@ function init(){
 				 
 	        },
 	        error:function(e){
-	        	alert("error");
+	        	//alert("error");
 	        	//console.log(e);
 	        }
 		});
