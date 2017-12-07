@@ -595,7 +595,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 						// 继续返回这级菜单,
 						result = menu;
 						// 加句提示信息
-						returnString += "请确认输入序号，重新输入: \n";
+						returnString += "请输入序列号获取服务 \n";
 					}
 			}
 		if(result == null || result.size() == 0){

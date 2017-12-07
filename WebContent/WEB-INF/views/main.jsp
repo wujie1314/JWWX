@@ -1245,18 +1245,22 @@ function removeAdmin(obj,id){
 
 //websocket标记
 var host = window.location.host.split(":")[0];
-WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMain.swf";
+WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMainInsecure.swf";
+WEB_SOCKET_SUPPRESS_CROSS_DOMAIN_SWF_ERROR = true;
 WEB_SOCKET_DEBUG = true;
 var basePath = '<%=basePath%>';
-	try {
+/* basePath+"/crossdomain.xml" */
+/* "xmlsocket://" + host + ":10844" */
+	 try {
 		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
 	} catch (e) {
-	}
+	} 
 //websocket标记
 function openRoad(index,type){
 	var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
     tmp = tmp.replace("http","ws");
 	ws[index]= new WebSocket(encodeURI(tmp));
+	alert(tmp);
 	connect(ws[index]);
 }
 function openMsgRoad(index){ //废弃方法
@@ -2130,7 +2134,7 @@ function choseQQFace(id){
 				} else if("location" == data.MsgType){
 					var content = data.Label+"(" + data.Location_X +","+ data.Location_Y+")";
 					html += '<div class="bj" onmousedown="workContent(this,1,1)"><input type="hidden" name="msgId" value="'+data.MsgId+'"/>';
-					html += "<a target='_blank' href='http://10.224.9.116:8180/jtbst/main.html?loader=gongdan&lon="+data.Location_Y+"&lat="+data.Location_X+"&type=&desc=&createTime='><span class='msgtext'><font size='2'>"+replaceQQFace(content)+"</font></span></a><input type='hidden' name='workId' value=''/>"
+					html += "<a target='_blank' href='http://10.224.9.116:8180/jtbst/main.html?loader=gongdan&lon="+data.Location_Y+"&lat="+data.Location_X+"&type=&desc="+data.Label+"&createTime='><span class='msgtext'><font size='2'>"+replaceQQFace(content)+"</font></span></a><input type='hidden' name='workId' value=''/>"
 				}
 				html += '</div>';
 				html += '</td>';

@@ -2135,6 +2135,7 @@ public class CustomerServiceController {
     	return result;
     }
 	public List<String> headImgUrlInList(HttpServletRequest request,List<String> list){
+		//头像标记
 		List<String> rList=new ArrayList<String>();
 		if(list != null && list.size() > 0){
 			System.out.println(list.get(0));

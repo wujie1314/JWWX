@@ -1392,14 +1392,17 @@ public class WeiXinOperUtil {
     public static void main(String[] args) {
     	
     	// 6 lnh测试号  gh_efa6b831b90e 交委  
+    	// 6 wj 测试号 gh_1ba95266f60c 
 //    	String menuString =menu1(); // 交委  
     	
     	
     	// 5 jackeroo测试号 gh_fd05ad37f4d0  重庆高速ETC 
+    	// 5 hzz测试号 gh_7b5337a2e39f 
     	String menuString = menu2();  // 重庆高速ETC 
     	
     	
-    	String publicID = "gh_fd05ad37f4d0";
+    	String publicID = "gh_7b5337a2e39f";
+    	
     	
     	WeiXinOperUtil.createWxMenu(menuString,WeiXinOperUtil.getAccessToken(publicID));
 //    	File file = new File("E:\\123456.png");
@@ -1414,7 +1417,7 @@ public class WeiXinOperUtil {
 //                    "oHMgqxIFpc9zoGQQbBsrI9KcWJrk", "路况订阅");
 //			//发送給用户
 //			WeiXinOperUtil.sendMsgToWx(getAccessToken(), userJsonContent);
-////			System.out.println("---->"+result);
+//			System.out.println("---->"+result);
 //			userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"image\",\"image\":{\"media_id\":\"%s\"}}",
 //                    "oHMgqxIFpc9zoGQQbBsrI9KcWJrk", "KzjbShpbrf-VR_xLSQ2i77zk8Nw7s7865_yw64dN5Mp7bH6vV8eGejKlEJon2CeZ");
 //			String userJsonContent =String.format("{\"touser\":\"%s\",\"msgtype\":\"image\",\"image\":[{\"media_id\":\"%s\"},{\"media_id\":\"%s\"}]}",
