@@ -1936,7 +1936,7 @@ function showMessage(str){
 }
 /*显示常用语*/
 function showZmessage() {
-	$("#message").html("");
+	$("#message").empty();
 	closeZmessage();
 	getWordTypeList();
 	$.ajax({
@@ -1948,7 +1948,7 @@ function showZmessage() {
 			csId:admin.id
 		},
 		success : function(data) {
-		
+			$("#message").empty();
 			if(data.length>0){
 				var wordTypeNames=new Array();
 				var wordTypeIds=new Array();
