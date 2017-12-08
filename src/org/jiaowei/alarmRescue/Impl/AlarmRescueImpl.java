@@ -27,10 +27,12 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		String date = dateFormat.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-		if(ID != null && !ID.isEmpty())
+		/*if(ID != null && !ID.isEmpty())
 			map.put("update_time", date);			
 		else
-			map.put("create_time", date);
+			map.put("create_time", date);*/
+		map.put("create_time", date);
+		System.out.println(map);
 		System.out.println("==========="+date);
 		MysqlConn.dataManipulation(map);
 		return null;

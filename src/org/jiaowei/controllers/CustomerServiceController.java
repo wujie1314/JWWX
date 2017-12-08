@@ -1560,8 +1560,12 @@ public class CustomerServiceController {
 
             entity.setLastChatTime(System.currentTimeMillis()/1000);
 //            WeiXinConst.waitingMap.remove(wxOpenId);
-            NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
-//            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
+            //????????????????????//
+            ConcurrentMap<String, Integer> userD = NavMenuInitUtils.getInstance().userDeptMap;
+            Integer deptId = userD.get(csId+"");
+            
+            NavMenuInitUtils.getInstance().removeWaitMap(deptId,wxOpenId);
+            NavMenuInitUtils.getInstance().removeServiceMap(deptId,wxOpenId);
             if(entity.getIsInitiative() == 1){
             	//主动拉人不发送消息
             } else {
@@ -2131,6 +2135,7 @@ public class CustomerServiceController {
     	return result;
     }
 	public List<String> headImgUrlInList(HttpServletRequest request,List<String> list){
+		//头像标记
 		List<String> rList=new ArrayList<String>();
 		if(list != null && list.size() > 0){
 			System.out.println(list.get(0));

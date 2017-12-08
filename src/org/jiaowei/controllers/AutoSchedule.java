@@ -157,7 +157,7 @@ public class AutoSchedule {
 	        	try {
 	        		entity = removeMap.get(key);
 	        		if ((currentTime - entity.getLastChatTime()) >= 20) {
-	        			removeMap.remove(key);
+	        			NavMenuInitUtils.getInstance().removeRemoveMap(deptId,key);
 	        			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
 	    	            sendMsgWx(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。", entity.getWxOpenid());
 	    	            wxStatusTmpService.saveMsgDatebase(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。",  entity.getWxOpenid());
@@ -771,10 +771,15 @@ public class AutoSchedule {
 	            	String wxOpenId = entity.getWxOpenid();
 	            	if(1==entity.getServiceStatus().intValue()){
 	            		long tempTimes = currentTime - entity.getIntoWaitingMapTime();
-	            		checkServiceState1(tempTimes, entity, wxOpenId, key);//等待队列
+	            		checkServiceState1(tempTimes, entity, wxOpenId, key,deptId);//等待队列
 	            	} else if (2 == entity.getServiceStatus().intValue()) {
 	            		long tempTimes = currentTime - entity.getChatOvertime();
-	            		checkServiceState2(tempTimes, entity, wxOpenId, key);//服务队列
+	            		checkServiceState2(tempTimes, entity, wxOpenId, key,deptId);//服务队列
+	            	}
+	            	//新加的逻辑
+	            	else if (3 == entity.getServiceStatus().intValue()){
+	            		NavMenuInitUtils.getInstance().removeServiceMap(deptId, key);
+//	            		NavMenuInitUtils.getInstance().removeMap.put(deptId, serviceMap);
 	            	}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -793,7 +798,7 @@ public class AutoSchedule {
      * @param wxOpenId
      * @param key
      */
-    private void checkServiceState1(long tempTimes, WxStatusTmpTEntity entity, String wxOpenId, String key){
+    private void checkServiceState1(long tempTimes, WxStatusTmpTEntity entity, String wxOpenId, String key,Integer deptId){
     	if(tempTimes >= CommonConstantUtils.serviceState11Times() && tempTimes < CommonConstantUtils.serviceState12Times()){
     			SeatW seatW=new SeatW();
     			seatW.startProcessInstance();
@@ -811,7 +816,7 @@ public class AutoSchedule {
     	} else if(tempTimes >= CommonConstantUtils.serviceState13Times()){
     		
 //    		WeiXinConst.servicingMap.remove(key);
-    		NavMenuInitUtils.getInstance().removeServiceMap(key);
+    		NavMenuInitUtils.getInstance().removeServiceMap(deptId,key);
     		NavMenuInitUtils.getInstance().userDeptMap.remove(key);
     		SeatW seatW=new SeatW();
     		seatW.completetask();
@@ -823,12 +828,12 @@ public class AutoSchedule {
     }
    /* 超时判断*/
     
-    private void checkServiceState2(long tempTimes, WxStatusTmpTEntity entity, String wxOpenId, String key){
+    private void checkServiceState2(long tempTimes, WxStatusTmpTEntity entity, String wxOpenId, String key,Integer deptId){
     	//判断是用户超时，还是座席超时  0 用户超时，1座席超时
     	if(entity.getIsInitiative() == 1){
     		if(tempTimes >=CommonConstantUtils.serviceInitiativeFinishTimes()){
 //    			WeiXinConst.servicingMap.remove(key);
-    			NavMenuInitUtils.getInstance().removeServiceMap(key);
+    			NavMenuInitUtils.getInstance().removeServiceMap(deptId, key);
     			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
     			PeopleServic peopleServic= new PeopleServic();
     			peopleServic.completetask("P2");
@@ -847,7 +852,7 @@ public class AutoSchedule {
     			}
     		} else if(tempTimes >= CommonConstantUtils.serviceState2UserTimes()){
 //    			WeiXinConst.servicingMap.remove(key);
-    			NavMenuInitUtils.getInstance().removeServiceMap(key);
+    			NavMenuInitUtils.getInstance().removeServiceMap(deptId,key);
     			PeopleServic peopleServic= new PeopleServic();
     			peopleServic.completetask("P2");
     			sendMsgWxService(entity, CommonConstantUtils.serviceState2UserHint(), wxOpenId, false);
@@ -882,7 +887,7 @@ public class AutoSchedule {
     			if(entity.getServiceHintNum() == 2){
 //    				WeiXinConst.servicingMap.remove(key);
     				System.out.println("坐席第三次超时，从服务队列删除");
-    				NavMenuInitUtils.getInstance().removeServiceMap(key);
+    				NavMenuInitUtils.getInstance().removeServiceMap(deptId,key);
     				NavMenuInitUtils.getInstance().userDeptMap.remove(key);
     				PeopleServic peopleServic= new PeopleServic();
         			peopleServic.completetask("P2");

@@ -62,6 +62,13 @@ public class OthersController {
     @Autowired
     private WeixinUserInfoService weixinUserInfoService;
 	
+    
+    @RequestMapping("/others/websocket")
+	public String othersList(){
+		
+		return "others/websocket";
+	}
+    
 	@RequestMapping("/others/home")
 	public String othersList(String openId,HttpServletRequest request,  HttpServletResponse response){
 		System.out.println(openId);

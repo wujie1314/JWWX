@@ -44,14 +44,16 @@ public class FlashPolicyServer {
                                         }
                                         socket.setSoTimeout(10000);
                                         InputStream in = socket.getInputStream();
+                                        System.out.println("在外面呢");
                                         byte[] buffer = new byte[23];
                                         if (in.read(buffer) != -1 && (new String(buffer, "ISO-8859-1")).startsWith("<policy-file-request/>")) {
+                                        	System.out.println("进来了");
                                             if (logger.isDebugEnabled()) {
                                                 logger.debug("PolicyServerServlet: Serving Policy File...");
                                             }
                                             OutputStream out = socket.getOutputStream();
                                             byte[] bytes = ("<?xml version=\"1.0\"?>\n" +
-                                                    "<!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">\n" +
+//                                                    "<!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">\n" +
                                                     "<cross-domain-policy> \n" +
                                                     "   <site-control permitted-cross-domain-policies=\"master-only\"/>\n" +
                                                     "   <allow-access-from domain=\"*\" to-ports=\"*\" />\n" +
@@ -60,9 +62,11 @@ public class FlashPolicyServer {
                                             out.write(0x00);
                                             out.flush();
                                             out.close();
+                                            System.out.println("完成了");
                                         } else {
                                             logger.warn("FlashPolicyServer: Ignoring Invalid Request");
                                             logger.warn("  " + (new String(buffer)));
+                                            System.out.println("未完成");
                                         }
 
                                     } catch (SocketException e) {
@@ -73,6 +77,7 @@ public class FlashPolicyServer {
                                         try {
                                             socket.close();
                                         } catch (Exception ex2) {
+                                        	ex2.printStackTrace();
                                         }
                                     }
                                 }

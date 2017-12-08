@@ -159,10 +159,18 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                     	}
                     }else if("FROMMESSAGE".equals(pamars.get("type"))){// 留言
                     	System.out.println("---------------------------------------------话务前台接入，开始回答留言");
-                         //发送座席
+                        //发送给用户
+                        String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+                        		this.wxOpenId, String.format("您好，我是"+userId+"号座席，帮你解答留言？", this.userId));
+                        String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
+//                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
+                    	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
+							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+						}
+                    	 //发送座席
                          try {
                          	String msg = "{\"Content\":\"" + "您好，我是"+userId+"号座席，帮你解答留言？" + "\",\"CreateTime\":\"" + System.currentTimeMillis() / 1000 + "\",\"ToUserName\":\"gh_45216f693385\",\"FromUserName\":\"" + wxOpenId+ "\",\"MsgType\":\"autotext\",\"MsgId\":\"12345678900\"}";
-                             session.sendMessage(new TextMessage(msg));
+                         	session.sendMessage(new TextMessage(msg));
                          } catch (IOException e) {
                          	e.printStackTrace();
                              logger.info("发送系统消息超时异常.", e);

@@ -41,7 +41,7 @@ public class XmlUtil {
         InputStream inputStream = request.getInputStream();
         // 读取输入流
         SAXReader reader = new SAXReader();
-        reader.setEncoding("GB2312");
+        reader.setEncoding("UTF-8");
         Document document = reader.read(inputStream);
         // 得到xml根元素
         Element root = document.getRootElement();
