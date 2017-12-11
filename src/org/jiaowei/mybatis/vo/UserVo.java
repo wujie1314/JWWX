@@ -3,7 +3,7 @@ package org.jiaowei.mybatis.vo;
 public class UserVo {
 	
 	private Integer id;
-	private long userId;
+	private String userId;
 	private String userName;
 	private int deptId;
 	private String deptName;
@@ -12,10 +12,10 @@ public class UserVo {
 	private String roleId;
 	private String roleName;
 	
-	public long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
-	public void setUserId(long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	public String getUserName() {
