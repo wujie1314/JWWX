@@ -230,7 +230,7 @@ body {
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
 						iconCls="icon-help" title="专家服务" plain="true">专家</a>
 						<a href="#" onclick="openCallPolice();" class="easyui-linkbutton"
-						iconCls="icon-help" title="报警救援" plain="true">报警救援短信</a>
+						iconCls="icon-email" title="报警救援" plain="true">报警救援短信</a>
 					</span>
 					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
@@ -1242,26 +1242,14 @@ function removeAdmin(obj,id){
 	//取消邀请其他座席
 	userAdmin[userIndex]["id"+id]=0;
 }
-
-//websocket标记
-var host = window.location.host.split(":")[0];
-WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMainInsecure.swf";
-WEB_SOCKET_SUPPRESS_CROSS_DOMAIN_SWF_ERROR = true;
-WEB_SOCKET_DEBUG = true;
-var basePath = '<%=basePath%>';
-/* basePath+"/crossdomain.xml" */
-/* "xmlsocket://" + host + ":10844" */
-	 try {
-		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
-	} catch (e) {
-	} 
-//websocket标记
 function openRoad(index,type){
-	var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
+	//if(typeof(ws[index])=="undefined"||ws[index]==null){
+    var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
+    console.log(tmp);
     tmp = tmp.replace("http","ws");
 	ws[index]= new WebSocket(encodeURI(tmp));
-	alert(tmp);
 	connect(ws[index]);
+	//}
 }
 function openMsgRoad(index){ //废弃方法
 	if(typeof(ws[index])=="undefined"||ws[index]==null){
@@ -1349,27 +1337,15 @@ function connUser(obj,index){
 	nowOpenid=userData[index].openid;
 	var tempColor=$(".user-item-online");
 	$.each(tempColor,function(){
-		var n2 = "";
-		if(isIE()){
-			n2=$(this).css("background");
-		}
-		else{
-			n2=rgb2hex($(this).css("background-color"));
-		}
-		
+		var n2=rgb2hex($(this).css("background-color"));
 		if(n2!="#ffa500"&&n2!="#ffa501"&&n2!="#ffa502"&&n2!="#f5f5f5"&&n2!="#ed5565")$(this).css("background","#cde9f5");
 	});
 	//alert(obj.style.backgroundColor);
+	
 	var bgc = $(obj).css("background-color");
-	if(isIE()){
-		bgc = $(obj).css("background");
-	}
-	else{
-		bgc = rgb2hex(bgc);
-	}
 	
-	
- 	
+	bgc = rgb2hex(bgc);
+	console.log(bgc);
 	if(bgc=="#ffa500"){//第一次点击，自动发送消息
     	$.ajax({
     		type : "post",
@@ -1557,6 +1533,8 @@ function connAdmins(user,userName){
 }
 function sendMsgText(){
 	var message = $.trim($("#msgCSTOCSALL").val());
+	message = removeHtmlTab(message);
+	alert(message);
 	if (message == "") {
 		$.messager.alert("发送消息", "发送的信息不能为空！", "warning");
 		return;
@@ -1960,7 +1938,7 @@ function showMessage(str){
 }
 /*显示常用语*/
 function showZmessage() {
-	$("#message").html("");
+	$("#message").empty();
 	closeZmessage();
 	getWordTypeList();
 	$.ajax({
@@ -1972,7 +1950,7 @@ function showZmessage() {
 			csId:admin.id
 		},
 		success : function(data) {
-		
+			$("#message").empty();
 			if(data.length>0){
 				var wordTypeNames=new Array();
 				var wordTypeIds=new Array();
@@ -2030,6 +2008,15 @@ function choseQQFace(id){
         }
 	});
 }
+var host = window.location.host.split(":")[0];
+WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMain.swf";
+WEB_SOCKET_DEBUG = true;
+var basePath = '<%=basePath%>';
+	try {
+		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
+	} catch (e) {
+
+	}
 	/*获取微信用户信息*/
 	function getUserData(FromUserName) {
 		for (var i = 0; i < userData.length; i++) {
@@ -2059,13 +2046,10 @@ function choseQQFace(id){
 		ws.onopen = function() {
 			//alert("open");
 		};
-		ws.onerror = function(e){
-			alert(e);
-		};
 		ws.onmessage = function(event) {
 			var data = $.parseJSON(event.data);
 			if(data.Flag=="CsToCs"&&data.data.fromUser!=admin.id){
-				//console.log(data);
+				console.log(data);
 				connInit(data.data.toUser);
 				var html="";
 				var msgType=data.data.msgType;
@@ -2076,7 +2060,9 @@ function choseQQFace(id){
 					html=getImageHtml(data.data.id,data.data.imageUrl,adminD.fromUser);
 				} else if (msgType == "voice") {
 					html=getVoiceHtml(data.data.id,data.data.voiceUrl,adminD.fromUser);
-				} 
+				} else if (msgType == "location"){
+					html=getLocationHtml(data.data.id,data.data.label,adminD.userId);
+				}
 				$("#console" + data.data.toUser).append(html);
 				$("#msgbox").scrollTop(9999999);
 			}else{
@@ -2134,7 +2120,7 @@ function choseQQFace(id){
 				} else if("location" == data.MsgType){
 					var content = data.Label+"(" + data.Location_X +","+ data.Location_Y+")";
 					html += '<div class="bj" onmousedown="workContent(this,1,1)"><input type="hidden" name="msgId" value="'+data.MsgId+'"/>';
-					html += "<a target='_blank' href='http://10.224.9.116:8180/jtbst/main.html?loader=gongdan&lon="+data.Location_Y+"&lat="+data.Location_X+"&type=&desc="+data.Label+"&createTime='><span class='msgtext'><font size='2'>"+replaceQQFace(content)+"</font></span></a><input type='hidden' name='workId' value=''/>"
+					html += "<a target='_blank' href='http://10.224.9.116:8180/jtbst/main.html?loader=gongdan&lon="+data.Location_Y+"&lat="+data.Location_X+"&type=&desc=&createTime='><span class='msgtext'><font size='2'>"+replaceQQFace(content)+"</font></span></a><input type='hidden' name='workId' value=''/>"
 				}
 				html += '</div>';
 				html += '</td>';
@@ -2296,6 +2282,7 @@ function choseQQFace(id){
 				return;
 			}
 			var message = $.trim($("#msg" + nowOpenid).val());
+			message = removeHtmlTab(message);
 			if (message == "") {
 				$.messager.alert("发送消息", "发送的信息不能为空！", "warning");
 				return;
@@ -2544,12 +2531,20 @@ function choseQQFace(id){
 							browse_button : 'browse',
 							url : '/fileUpload/save',
 							flash_swf_url : '/js/plupload/Moxie.swf',
-							silverlight_xap_url : '/js/plupload/Moxie.xap'
+							silverlight_xap_url : '/js/plupload/Moxie.xap',
+						    filters: {
+									  mime_types : [ //只允许上传图片
+									    { title : "图片文件", extensions : "jpg,gif,png,jpeg,bmp,tiff,pcx,eps" }
+									  ],
+									}
 						});
 						uploader.init(); //初始化
 						//绑定文件添加进队列事件
 						uploader.bind('BeforeUpload', function (uploader, files) {  
 			                uploader.settings.url = "/fileUpload/save?openid=" +nowOpenid;
+			                alert(nowOpenid);
+			                console.log(uploader);  
+			                console.log(files);  
          				});  
 						uploader.bind('FilesAdded', function(uploader, files) {
 							for (var i = 0, len = files.length; i < len; i++) {
@@ -2868,6 +2863,27 @@ function choseQQFace(id){
 		  else
 		  return false;
  	}
+	
+	//去掉html标签
+	function removeHtmlTab(tab) {
+		 return tab.replace(/<[^<>]+?>/g,'');//删除所有HTML标签
+	}
+	//普通字符转换成转意符
+	function html2Escape(sHtml) {
+		 return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+	}
+	//转意符换成普通字符
+	function escape2Html(str) {
+		 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+		 return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+	}
+	//去除开头结尾换行,并将连续3次以上换行转换成2次换行
+	function trimBr(str) {
+		 str=str.replace(/((\s|&nbsp;)*\r?\n){3,}/g,"\r\n\r\n");//限制最多2次换行
+		 str=str.replace(/^((\s|&nbsp;)*\r?\n)+/g,'');//清除开头换行
+		 str=str.replace(/((\s|&nbsp;)*\r?\n)+$/g,'');//清除结尾换行
+		 return str;
+	}
 </script>
 </html>
 

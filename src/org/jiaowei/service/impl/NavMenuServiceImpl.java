@@ -583,6 +583,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 							// 获取下级菜单信息,如果有的话
 							if(autoMenu.getJuniorID() != null && !autoMenu.getJuniorID().isEmpty()){
 								result = autoRespondService.getJuniorMenu(autoMenu.getJuniorID());
+								returnString += "请输入序列号获取服务 \n";
 							}
 							else{ // 已是最下层信息，返回信息，或者返回链接，目前只考虑url 链接
 								result = new ArrayList<WeixinAutoRespondEntity>();
