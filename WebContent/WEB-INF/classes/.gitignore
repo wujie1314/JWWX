@@ -7,4 +7,7 @@
 /log4j.properties
 /mybatis
 /org
+/spring-context.xml
+/spring-mvc.xml
 /test
+/weixin.properties

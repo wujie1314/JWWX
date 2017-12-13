@@ -1533,6 +1533,8 @@ function connAdmins(user,userName){
 }
 function sendMsgText(){
 	var message = $.trim($("#msgCSTOCSALL").val());
+	message = removeHtmlTab(message);
+	alert(message);
 	if (message == "") {
 		$.messager.alert("发送消息", "发送的信息不能为空！", "warning");
 		return;
@@ -2280,6 +2282,7 @@ var basePath = '<%=basePath%>';
 				return;
 			}
 			var message = $.trim($("#msg" + nowOpenid).val());
+			message = removeHtmlTab(message);
 			if (message == "") {
 				$.messager.alert("发送消息", "发送的信息不能为空！", "warning");
 				return;
@@ -2853,6 +2856,33 @@ var basePath = '<%=basePath%>';
 		return ("0" + parseInt(x).toString(16)).slice(-2); 
 		} 
 		return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+	}
+	function isIE() { //ie?
+		 if (!!window.ActiveXObject || "ActiveXObject" in window)
+		  return true;
+		  else
+		  return false;
+ 	}
+	
+	//去掉html标签
+	function removeHtmlTab(tab) {
+		 return tab.replace(/<[^<>]+?>/g,'');//删除所有HTML标签
+	}
+	//普通字符转换成转意符
+	function html2Escape(sHtml) {
+		 return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+	}
+	//转意符换成普通字符
+	function escape2Html(str) {
+		 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+		 return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+	}
+	//去除开头结尾换行,并将连续3次以上换行转换成2次换行
+	function trimBr(str) {
+		 str=str.replace(/((\s|&nbsp;)*\r?\n){3,}/g,"\r\n\r\n");//限制最多2次换行
+		 str=str.replace(/^((\s|&nbsp;)*\r?\n)+/g,'');//清除开头换行
+		 str=str.replace(/((\s|&nbsp;)*\r?\n)+$/g,'');//清除结尾换行
+		 return str;
 	}
 </script>
 </html>

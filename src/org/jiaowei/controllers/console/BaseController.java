@@ -29,7 +29,7 @@ public class BaseController {
      *
      * @return
      */
-    public Long getUserId(HttpServletRequest request) {
+    public String getUserId(HttpServletRequest request) {
     	UserVo user = getUser(request);
         return null != user ? user.getUserId() : null;
     }

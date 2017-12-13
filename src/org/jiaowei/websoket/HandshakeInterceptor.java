@@ -20,7 +20,6 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 			Map<String, Object> attributes) throws Exception {
 //		attributes.put("response",response);
 //		attributes.put("request",request);
-		System.out.println("waht");
 		return super.beforeHandshake(request, response, wsHandler, attributes);
 	}
 
