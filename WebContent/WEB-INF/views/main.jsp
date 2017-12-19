@@ -1165,7 +1165,7 @@ function connAdmin(obj,id){
         return false;
     });
 }
-/*转交其他座席*/
+/*转交其他座席*/  //标记
 function transferAdmin(id){
 	var num=connCloseFlag();
 	if(num==0){
@@ -1310,7 +1310,7 @@ function leaveFlag(index){
 	$("#console" + userData[index].openId).append(html);
 	$("#msgbox").scrollTop(9999999);
 }
-function transferFlag(index){
+function transferFlag(index){//标记
 	var h=$("#user-list").find("li");
 	$(h[userData[index].seat]).css("background","#f5f5f5");
 	var xxx=$(h[userData[index].seat]).find("img");
@@ -1323,6 +1323,8 @@ function transferFlag(index){
 	userData[index].status=false;
 	//关闭聊天通道
 	ws[index]=null;
+	//关闭聊天界面
+	connClose();
 	var random=(Math.random()+"").substring(2,12);
 	var html=getAutotextHtml(random,"用户转交成功。");
 	$("#console" + nowOpenid).append(html);
