@@ -272,8 +272,7 @@ function initDatagraid() {
 			title : '微信标识',
 			width : 270,
 			formatter: function(value, row, index) {//隐藏微信标识符，只显示前十位
-				return value.substring(0, 10) + "...";
-				
+				return value.substring(0, 10) + "...";				
 			}
 		}, {
 			field : 'phone',
