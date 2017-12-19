@@ -1880,6 +1880,10 @@ public class CustomerServiceController {
     @ResponseBody
     public List<String> reAllocateWxUser(HttpServletRequest request,int csId, String openId,String typeName) throws Exception{
         List<String> returnList = new ArrayList<String>();
+        if(openId.length()!=28){
+        	return null;
+        }
+        openId=openId.replaceAll("\"","\'");
 //        WxStatusTmpTEntity entity =  WeiXinConst.servicingMap.get(openId);
         WxStatusTmpTEntity entity =  NavMenuInitUtils.getInstance().getServiceEntity(openId);
 

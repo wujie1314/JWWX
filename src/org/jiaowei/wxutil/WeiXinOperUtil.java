@@ -794,10 +794,10 @@ public class WeiXinOperUtil {
                 fileout.close();
 
                 //转换文件格式
-//                String cmd =String.format("ffmpeg -i %s %s",path +File.separator + imagePath, path+File.separator+mediaId+".mp3");
+               String cmd =String.format("ffmpeg -i %s %s",path +File.separator + imagePath, path+File.separator+mediaId+".mp3");
                 System.out.println(path+ File.separator+ mediaId+".mp3");
-                //这个地方需要ffmpeg的可运行exe来转化语音格式
-                String cmd =String.format("E:\\Program Files\\ffmpeg\\bin\\ffmpeg -i %s %s",path + imagePath, path+ File.separator+ mediaId+".mp3");
+                //这个地方需要ffmpeg的可运行exe来转化语音格式 windows
+//                String cmd =String.format("E:\\Program Files\\ffmpeg\\bin\\ffmpeg -i %s %s",path + imagePath, path+ File.separator+ mediaId+".mp3");
                 System.out.println(cmd);
                 try {
                 	Process process = Runtime.getRuntime().exec(cmd);
@@ -1389,6 +1389,63 @@ public class WeiXinOperUtil {
     	return menuString;
     }
     
+    public static String menu3(){
+    	
+    	String menuString = " {\n" +
+                "     \"button\":[\n" +
+                "      {\n" +
+                "           \"name\":\"出行服务\",\n" +
+                "           \"sub_button\":[\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"公交查询\",\n" +
+                "               \"url\":\"http://mobile.12306.cn/weixin/wxcore/init\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"班车查询\",\n" +
+                "               \"url\":\"http://m.veryzhun.com/flight/?token=5cf2036c3db9fe08a7ee0c9b2077d37d\"\n" +
+                "            }]\n" +
+                "       },\n" +
+                "      {\n" +
+                "           \"name\":\"路况信息\",\n" +
+                "           \"sub_button\":[\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"高速公路\",\n" +
+                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5f87341a9a4c9a1a&redirect_uri=http://cqjtzf.cn/wx/ViolationQueries/Index?para=44*gh_8c194f2bc799&response_type=code&scope=snsapi_base&state=1&from=groupmessage&connect_redirect=1#wechat_redirect\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"普通公路\",\n" +
+                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx698f18eaeb3c7a6e&redirect_uri=http://cqetcweixin.u-road.com/CQETCWechatAPIServer/index.php/cqetcserver/etcbind&response_type=code&scope=snsapi_base&state=123#wechat_redirect\"\n" +
+                "            }]\n" +
+                "       },\n" +
+                
+                "      {\n" +
+                "           \"name\":\"出行咨询\",\n" +
+                "           \"sub_button\":[\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"咨询信息\",\n" +
+                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx915ad295909bf037&redirect_uri=http%3a%2f%2fwww.cq96096.cn%2fvideoImg%2flist&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"失物招领\",\n" +
+                "               \"url\":\"http://203.93.109.52/jwwx2/weixin/jsp/goodsList.jsp\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"click\",\n" +
+                "               \"name\":\"人口服务\",\n" +
+                "               \"key\":\"MAN_SERVICE\"\n" +
+                "            }]\n" +
+                "       }]\n" +
+                " }";
+    	System.err.println(menuString);
+    	return menuString;
+    }
+    
     public static void main(String[] args) {
     	
     	// 6 lnh测试号  gh_efa6b831b90e 交委  
@@ -1397,9 +1454,12 @@ public class WeiXinOperUtil {
     	
     	
     	// 5 jackeroo测试号 gh_fd05ad37f4d0  重庆高速ETC 
-    	// 5 hzz测试号 gh_7b5337a2e39f 
-    	String menuString = menu2();  // 重庆高速ETC 
     	
+//    	String menuString = menu2();  // 重庆高速ETC 
+    	
+    	
+    	// 3 hzz测试号 gh_7b5337a2e39f  合川交委
+    	String menuString = menu3();
     	
     	String publicID = "gh_7b5337a2e39f";
     	

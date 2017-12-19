@@ -1165,7 +1165,7 @@ function connAdmin(obj,id){
         return false;
     });
 }
-/*转交其他座席*/
+/*转交其他座席*/  //标记
 function transferAdmin(id){
 	var num=connCloseFlag();
 	if(num==0){
@@ -1242,7 +1242,6 @@ function removeAdmin(obj,id){
 	//取消邀请其他座席
 	userAdmin[userIndex]["id"+id]=0;
 }
-
 //websocket标记
 var host = window.location.host.split(":")[0];
 WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMainInsecure.swf";
@@ -1256,12 +1255,14 @@ var basePath = '<%=basePath%>';
 	} catch (e) {
 	} 
 //websocket标记
+
 function openRoad(index,type){
-	var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
+	//if(typeof(ws[index])=="undefined"||ws[index]==null){
+    var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
     tmp = tmp.replace("http","ws");
 	ws[index]= new WebSocket(encodeURI(tmp));
-	alert(tmp);
 	connect(ws[index]);
+	//}
 }
 function openMsgRoad(index){ //废弃方法
 	if(typeof(ws[index])=="undefined"||ws[index]==null){
@@ -1309,7 +1310,7 @@ function leaveFlag(index){
 	$("#console" + userData[index].openId).append(html);
 	$("#msgbox").scrollTop(9999999);
 }
-function transferFlag(index){
+function transferFlag(index){//标记
 	var h=$("#user-list").find("li");
 	$(h[userData[index].seat]).css("background","#f5f5f5");
 	var xxx=$(h[userData[index].seat]).find("img");
@@ -1322,6 +1323,8 @@ function transferFlag(index){
 	userData[index].status=false;
 	//关闭聊天通道
 	ws[index]=null;
+	//关闭聊天界面
+	connClose();
 	var random=(Math.random()+"").substring(2,12);
 	var html=getAutotextHtml(random,"用户转交成功。");
 	$("#console" + nowOpenid).append(html);
@@ -1356,10 +1359,8 @@ function connUser(obj,index){
 		else{
 			n2=rgb2hex($(this).css("background-color"));
 		}
-		
 		if(n2!="#ffa500"&&n2!="#ffa501"&&n2!="#ffa502"&&n2!="#f5f5f5"&&n2!="#ed5565")$(this).css("background","#cde9f5");
 	});
-	//alert(obj.style.backgroundColor);
 	var bgc = $(obj).css("background-color");
 	if(isIE()){
 		bgc = $(obj).css("background");
@@ -1367,9 +1368,6 @@ function connUser(obj,index){
 	else{
 		bgc = rgb2hex(bgc);
 	}
-	
-	
- 	
 	if(bgc=="#ffa500"){//第一次点击，自动发送消息
     	$.ajax({
     		type : "post",
@@ -1557,6 +1555,8 @@ function connAdmins(user,userName){
 }
 function sendMsgText(){
 	var message = $.trim($("#msgCSTOCSALL").val());
+	message = removeHtmlTab(message);
+	alert(message);
 	if (message == "") {
 		$.messager.alert("发送消息", "发送的信息不能为空！", "warning");
 		return;
@@ -1893,7 +1893,7 @@ function addWorkTab(nickName,serviceId) {
 	userData[index]["workNum"]++;
 	var random="0"+userData[index]["workNum"];
 	var id=serviceId+random.substring(random.length-2,random.length);
-	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
+	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj_t.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
 	$('#tabs').tabs('add', {
 		title : nickName,
 		content : content,
@@ -1960,7 +1960,7 @@ function showMessage(str){
 }
 /*显示常用语*/
 function showZmessage() {
-	$("#message").html("");
+	$("#message").empty();
 	closeZmessage();
 	getWordTypeList();
 	$.ajax({
@@ -1972,7 +1972,7 @@ function showZmessage() {
 			csId:admin.id
 		},
 		success : function(data) {
-		
+			$("#message").empty();
 			if(data.length>0){
 				var wordTypeNames=new Array();
 				var wordTypeIds=new Array();
@@ -2059,13 +2059,9 @@ function choseQQFace(id){
 		ws.onopen = function() {
 			//alert("open");
 		};
-		ws.onerror = function(e){
-			alert(e);
-		};
 		ws.onmessage = function(event) {
 			var data = $.parseJSON(event.data);
 			if(data.Flag=="CsToCs"&&data.data.fromUser!=admin.id){
-				//console.log(data);
 				connInit(data.data.toUser);
 				var html="";
 				var msgType=data.data.msgType;
@@ -2076,7 +2072,7 @@ function choseQQFace(id){
 					html=getImageHtml(data.data.id,data.data.imageUrl,adminD.fromUser);
 				} else if (msgType == "voice") {
 					html=getVoiceHtml(data.data.id,data.data.voiceUrl,adminD.fromUser);
-				} 
+				}
 				$("#console" + data.data.toUser).append(html);
 				$("#msgbox").scrollTop(9999999);
 			}else{
@@ -2296,6 +2292,7 @@ function choseQQFace(id){
 				return;
 			}
 			var message = $.trim($("#msg" + nowOpenid).val());
+			message = removeHtmlTab(message);
 			if (message == "") {
 				$.messager.alert("发送消息", "发送的信息不能为空！", "warning");
 				return;
@@ -2544,7 +2541,12 @@ function choseQQFace(id){
 							browse_button : 'browse',
 							url : '/fileUpload/save',
 							flash_swf_url : '/js/plupload/Moxie.swf',
-							silverlight_xap_url : '/js/plupload/Moxie.xap'
+							silverlight_xap_url : '/js/plupload/Moxie.xap',
+						    filters: {
+									  mime_types : [ //只允许上传图片
+									    { title : "图片文件", extensions : "jpg,gif,png,jpeg,bmp,tiff,pcx,eps" }
+									  ]
+									}
 						});
 						uploader.init(); //初始化
 						//绑定文件添加进队列事件
@@ -2868,6 +2870,27 @@ function choseQQFace(id){
 		  else
 		  return false;
  	}
+	
+	//去掉html标签
+	function removeHtmlTab(tab) {
+		 return tab.replace(/<[^<>]+?>/g,'');//删除所有HTML标签
+	}
+	//普通字符转换成转意符
+	function html2Escape(sHtml) {
+		 return sHtml.replace(/[<>&"]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c];});
+	}
+	//转意符换成普通字符
+	function escape2Html(str) {
+		 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+		 return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+	}
+	//去除开头结尾换行,并将连续3次以上换行转换成2次换行
+	function trimBr(str) {
+		 str=str.replace(/((\s|&nbsp;)*\r?\n){3,}/g,"\r\n\r\n");//限制最多2次换行
+		 str=str.replace(/^((\s|&nbsp;)*\r?\n)+/g,'');//清除开头换行
+		 str=str.replace(/((\s|&nbsp;)*\r?\n)+$/g,'');//清除结尾换行
+		 return str;
+	}
 </script>
 </html>
 
