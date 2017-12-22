@@ -1,8 +1,8 @@
-var imgFile = new Array();
+/*var imgFile = new Array();
 
 //压缩图片进行显示
 $("#bbsImg_file").change(function () {
-	/* 压缩图片 */
+	 压缩图片 
 	lrz(this.files[0], {
 		width: 300 //设置压缩参数
 	}).then(function (rst) {
@@ -13,7 +13,7 @@ $("#bbsImg_file").change(function () {
 	}).catch(function (err) {
 		
 	}).always(function () {
-		/* 必然执行 */
+		 必然执行 
 	})
 })
 
@@ -53,7 +53,77 @@ function announce(){
         	console.log(result)       
         }  
     });  
-}
+}*/
+var count = 1;  
+/** 
+ * 生成多附件上传框 
+ */  
+function createInput(parentId){  
+	count++;  
+	var str = '<div name="div" ><font style="font-size:12px;">附件</font>'+  
+	'   '+ '<input type="file" contentEditable="false" id="uploads' + count + '' +  
+	'" name="uploads'+ count +'" value="" style="width: 220px"/><input type="button"  value="删除" onclick="removeInput(event)" />'+'</div>';  
+	document.getElementById(parentId).insertAdjacentHTML("beforeEnd",str);  
+}  
+/** 
+ * 删除多附件删除框 
+ */  
+function removeInput(evt, parentId){  
+	var el = evt.target == null ? evt.srcElement : evt.target;  
+	var div = el.parentNode;  
+	var cont = document.getElementById(parentId);         
+	if(cont.removeChild(div) == null){  
+		return false;  
+	}  
+	return true;  
+}  
+function addOldFile(data){  
+    var str = '<div name="div' + data.name + '" ><a href="#" style="text-decoration:none;font-size:12px;color:red;" onclick="removeOldFile(event,' + data.id + ')">删除</a>'+  
+    '   ' + data.name +   
+    '</div>';  
+    document.getElementById('oldImg').innerHTML += str;  
+}  
+  
+function removeOldFile(evt, id){  
+    //前端隐藏域，用来确定哪些file被删除，这里需要前端有个隐藏域  
+    $("#imgIds").val($("#imgIds").val()=="" ? id :($("#imgIds").val() + "," + id));  
+    var el = evt.target == null ? evt.srcElement : evt.target;  
+    var div = el.parentNode;  
+    var cont = document.getElementById('oldImg');      
+    if(cont.removeChild(div) == null){  
+        return false;  
+    }  
+    return true;  
+}  
+
+function ajaxFileUploadImg(){  
+    //获取file的全部id  
+    var uplist = $("input[name^=uploads]");  
+	var arrId = [];  
+	for (var i=0; i< uplist.length; i++){  
+	    if(uplist[i].value){  
+	        arrId[i] = uplist[i].id;  
+	    }  
+	}  
+	$.ajaxFileUpload({  
+	    url:'/WriteAboutController/upload',  
+	    secureuri:false,  
+	    fileElementId: arrId,  //这里不在是以前的id了，要写成数组的形式哦！  
+	    dataType: 'json',  
+	    data: {
+	    	//需要传输的数据  
+        	content:$("#content").val(),//内容
+        	specialistOppenID:expert_ID,   //"专家的ID" 
+        	name: expert_name, //专家的名字
+        	title:$("#title").val(), //标题
+        	userOpenID:nowOpenid //用户的openID
+	            },  
+	    success: function (data){  
+	    },  
+	    error: function(data){  
+	    }  
+	});  
+}  
 /*请空bbs-window*/
 function clear_bbs_window(){
 	cancel_selected();
