@@ -270,11 +270,14 @@ function initDatagraid() {
 		}, {
 			field : 'openid',
 			title : '微信标识',
-			width : 270
+			width : 270,
+			formatter: function(value, row, index) {//隐藏微信标识符，只显示前十位
+				return value.substring(0, 10) + "...";				
+			}
 		}, {
 			field : 'phone',
 			title : '手机号码',
-			width : 80
+			width : 80			
 		}, {
 			field : 'redBlack',
 			title : '红黑名单',
@@ -328,6 +331,7 @@ function initDatagraid() {
 		}
 	});
 }
+
 function selectUser(openid,nickname,pageNumber,pageSize) {
 	openWindow('users-window',880,440);
 	$.ajax({

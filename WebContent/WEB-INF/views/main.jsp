@@ -230,7 +230,7 @@ body {
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
 						iconCls="icon-help" title="专家服务" plain="true">专家</a>
 						<a href="#" onclick="openCallPolice();" class="easyui-linkbutton"
-						iconCls="icon-email" title="报警救援" plain="true">报警救援短信</a>
+						iconCls="icon-help" title="报警救援" plain="true">报警救援短信</a>
 					</span>
 					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
@@ -1165,7 +1165,7 @@ function connAdmin(obj,id){
         return false;
     });
 }
-/*转交其他座席*/
+/*转交其他座席*/  //标记
 function transferAdmin(id){
 	var num=connCloseFlag();
 	if(num==0){
@@ -1242,10 +1242,23 @@ function removeAdmin(obj,id){
 	//取消邀请其他座席
 	userAdmin[userIndex]["id"+id]=0;
 }
+//websocket标记
+var host = window.location.host.split(":")[0];
+WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMainInsecure.swf";
+WEB_SOCKET_SUPPRESS_CROSS_DOMAIN_SWF_ERROR = true;
+WEB_SOCKET_DEBUG = true;
+var basePath = '<%=basePath%>';
+/* basePath+"/crossdomain.xml" */
+/* "xmlsocket://" + host + ":10844" */
+	 try {
+		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
+	} catch (e) {
+	} 
+//websocket标记
+
 function openRoad(index,type){
 	//if(typeof(ws[index])=="undefined"||ws[index]==null){
     var  tmp = basePath + "/chatSocket?type="+type+"&user="+admin.userId+"&openId="+userData[index].openid+"&serviceId="+userData[index].serviceId;
-    console.log(tmp);
     tmp = tmp.replace("http","ws");
 	ws[index]= new WebSocket(encodeURI(tmp));
 	connect(ws[index]);
@@ -1297,7 +1310,7 @@ function leaveFlag(index){
 	$("#console" + userData[index].openId).append(html);
 	$("#msgbox").scrollTop(9999999);
 }
-function transferFlag(index){
+function transferFlag(index){//标记
 	var h=$("#user-list").find("li");
 	$(h[userData[index].seat]).css("background","#f5f5f5");
 	var xxx=$(h[userData[index].seat]).find("img");
@@ -1310,6 +1323,8 @@ function transferFlag(index){
 	userData[index].status=false;
 	//关闭聊天通道
 	ws[index]=null;
+	//关闭聊天界面
+	connClose();
 	var random=(Math.random()+"").substring(2,12);
 	var html=getAutotextHtml(random,"用户转交成功。");
 	$("#console" + nowOpenid).append(html);
@@ -1337,15 +1352,22 @@ function connUser(obj,index){
 	nowOpenid=userData[index].openid;
 	var tempColor=$(".user-item-online");
 	$.each(tempColor,function(){
-		var n2=rgb2hex($(this).css("background-color"));
+		var n2 = "";
+		if(isIE()){
+			n2=$(this).css("background");
+		}
+		else{
+			n2=rgb2hex($(this).css("background-color"));
+		}
 		if(n2!="#ffa500"&&n2!="#ffa501"&&n2!="#ffa502"&&n2!="#f5f5f5"&&n2!="#ed5565")$(this).css("background","#cde9f5");
 	});
-	//alert(obj.style.backgroundColor);
-	
 	var bgc = $(obj).css("background-color");
-	
-	bgc = rgb2hex(bgc);
-	console.log(bgc);
+	if(isIE()){
+		bgc = $(obj).css("background");
+	}
+	else{
+		bgc = rgb2hex(bgc);
+	}
 	if(bgc=="#ffa500"){//第一次点击，自动发送消息
     	$.ajax({
     		type : "post",
@@ -1871,7 +1893,7 @@ function addWorkTab(nickName,serviceId) {
 	userData[index]["workNum"]++;
 	var random="0"+userData[index]["workNum"];
 	var id=serviceId+random.substring(random.length-2,random.length);
-	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
+	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj_t.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
 	$('#tabs').tabs('add', {
 		title : nickName,
 		content : content,
@@ -2008,15 +2030,6 @@ function choseQQFace(id){
         }
 	});
 }
-var host = window.location.host.split(":")[0];
-WEB_SOCKET_SWF_LOCATION = "/js/websocket/WebSocketMain.swf";
-WEB_SOCKET_DEBUG = true;
-var basePath = '<%=basePath%>';
-	try {
-		WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10844");
-	} catch (e) {
-
-	}
 	/*获取微信用户信息*/
 	function getUserData(FromUserName) {
 		for (var i = 0; i < userData.length; i++) {
@@ -2049,7 +2062,6 @@ var basePath = '<%=basePath%>';
 		ws.onmessage = function(event) {
 			var data = $.parseJSON(event.data);
 			if(data.Flag=="CsToCs"&&data.data.fromUser!=admin.id){
-				console.log(data);
 				connInit(data.data.toUser);
 				var html="";
 				var msgType=data.data.msgType;
@@ -2060,8 +2072,6 @@ var basePath = '<%=basePath%>';
 					html=getImageHtml(data.data.id,data.data.imageUrl,adminD.fromUser);
 				} else if (msgType == "voice") {
 					html=getVoiceHtml(data.data.id,data.data.voiceUrl,adminD.fromUser);
-				} else if (msgType == "location"){
-					html=getLocationHtml(data.data.id,data.data.label,adminD.userId);
 				}
 				$("#console" + data.data.toUser).append(html);
 				$("#msgbox").scrollTop(9999999);
@@ -2120,7 +2130,7 @@ var basePath = '<%=basePath%>';
 				} else if("location" == data.MsgType){
 					var content = data.Label+"(" + data.Location_X +","+ data.Location_Y+")";
 					html += '<div class="bj" onmousedown="workContent(this,1,1)"><input type="hidden" name="msgId" value="'+data.MsgId+'"/>';
-					html += "<a target='_blank' href='http://10.224.9.116:8180/jtbst/main.html?loader=gongdan&lon="+data.Location_Y+"&lat="+data.Location_X+"&type=&desc=&createTime='><span class='msgtext'><font size='2'>"+replaceQQFace(content)+"</font></span></a><input type='hidden' name='workId' value=''/>"
+					html += "<a target='_blank' href='http://10.224.9.116:8180/jtbst/main.html?loader=gongdan&lon="+data.Location_Y+"&lat="+data.Location_X+"&type=&desc="+data.Label+"&createTime='><span class='msgtext'><font size='2'>"+replaceQQFace(content)+"</font></span></a><input type='hidden' name='workId' value=''/>"
 				}
 				html += '</div>';
 				html += '</td>';
@@ -2535,16 +2545,13 @@ var basePath = '<%=basePath%>';
 						    filters: {
 									  mime_types : [ //只允许上传图片
 									    { title : "图片文件", extensions : "jpg,gif,png,jpeg,bmp,tiff,pcx,eps" }
-									  ],
+									  ]
 									}
 						});
 						uploader.init(); //初始化
 						//绑定文件添加进队列事件
 						uploader.bind('BeforeUpload', function (uploader, files) {  
 			                uploader.settings.url = "/fileUpload/save?openid=" +nowOpenid;
-			                alert(nowOpenid);
-			                console.log(uploader);  
-			                console.log(files);  
          				});  
 						uploader.bind('FilesAdded', function(uploader, files) {
 							for (var i = 0, len = files.length; i < len; i++) {
