@@ -1311,7 +1311,7 @@ function transferFlag(index){//标记
 	//关闭聊天通道
 	ws[index]=null;
 	//关闭聊天界面
-	connClose();
+	connToClose();
 	var random=(Math.random()+"").substring(2,12);
 	var html=getAutotextHtml(random,"用户转交成功。");
 	$("#console" + nowOpenid).append(html);
@@ -1873,7 +1873,7 @@ function addWorkTab(nickName,serviceId) {
 	userData[index]["workNum"]++;
 	var random="0"+userData[index]["workNum"];
 	var id=serviceId+random.substring(random.length-2,random.length);
-	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
+	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj_t.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
 	$('#tabs').tabs('add', {
 		title : nickName,
 		content : content,
@@ -2537,16 +2537,13 @@ var basePath = '<%=basePath%>';
 						    filters: {
 									  mime_types : [ //只允许上传图片
 									    { title : "图片文件", extensions : "jpg,gif,png,jpeg,bmp,tiff,pcx,eps" }
-									  ],
+									  ]
 									}
 						});
 						uploader.init(); //初始化
 						//绑定文件添加进队列事件
 						uploader.bind('BeforeUpload', function (uploader, files) {  
 			                uploader.settings.url = "/fileUpload/save?openid=" +nowOpenid;
-			                alert(nowOpenid);
-			                console.log(uploader);  
-			                console.log(files);  
          				});  
 						uploader.bind('FilesAdded', function(uploader, files) {
 							for (var i = 0, len = files.length; i < len; i++) {

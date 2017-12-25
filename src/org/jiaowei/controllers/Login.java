@@ -173,6 +173,6 @@ public class Login {
      */
     @RequestMapping("/work")
     public  String work(@RequestParam String phone,@RequestParam String agentId){
-        return "redirect:http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj.jsp?callSeq=12345&callNum="+phone+"&Agentid="+agentId+"&Type=wx&org=5010";//重定向
+        return "redirect:http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj_t.jsp?callSeq=12345&callNum="+phone+"&Agentid="+agentId+"&Type=wx&org=5010";//重定向
     }
 }
