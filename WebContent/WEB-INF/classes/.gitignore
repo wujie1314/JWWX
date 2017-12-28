@@ -1,12 +1,13 @@
-<<<<<<< HEAD
 /activiti
 /activiti.cfg.xml
-=======
-/diagrams
-/mybatis
-/activiti.cfg.xml
-/activiti
->>>>>>> e4cd7a21e756518a113d88164bdb2c09597fdf58
 /com
+/dbconfig.properties
+/diagrams
+/hibernate.cfg.xml
+/log4j.properties
+/mybatis
 /org
+/spring-context.xml
+/spring-mvc.xml
 /test
+/weixin.properties
