@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
+
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -13,12 +14,14 @@ import org.jiaowei.util.FastJsonUtil;
 import org.jiaowei.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Created by alex on 15-11-27.
@@ -26,7 +29,10 @@ import java.util.Map;
 public class XmlUtil {
 
     private static Logger logger = Logger.getLogger(XmlUtil.class);
-
+    private static ResourceBundle rb;
+	static {
+		rb = ResourceBundle.getBundle("weixin");
+	}
     /**
      * 解析微信发来的请求（XML）
      * @param request
@@ -41,8 +47,8 @@ public class XmlUtil {
         InputStream inputStream = request.getInputStream();
         // 读取输入流
         SAXReader reader = new SAXReader();
-//        reader.setEncoding("UTF-8"); //Linux 系统
-        reader.setEncoding("GB2312"); // windows系统
+        
+        reader.setEncoding(rb.getString("code")); 
 
         Document document = reader.read(inputStream);
         // 得到xml根元素
