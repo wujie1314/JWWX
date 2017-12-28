@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 /activiti
 /activiti.cfg.xml
+=======
+/diagrams
+/mybatis
+/activiti.cfg.xml
+/activiti
+>>>>>>> e4cd7a21e756518a113d88164bdb2c09597fdf58
 /com
 /org
 /test
