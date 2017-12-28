@@ -1459,10 +1459,12 @@ public class WeiXinOperUtil {
     	
     	
     	// 3 hzz测试号 gh_7b5337a2e39f  合川交委
-    	String menuString = menu3();
     	
-    	String publicID = "gh_7b5337a2e39f";
+    	// 3 gh_f689874cef4f	wx67deab6f932b1573	ac10ad4be495c8703d1fc78702103a3f	jiaoweiwx	合川交通	3
+    	// 合川交通	生成交委的菜单
+    	String menuString = menu1();
     	
+    	String publicID = "gh_f689874cef4f";
     	
     	WeiXinOperUtil.createWxMenu(menuString,WeiXinOperUtil.getAccessToken(publicID));
 //    	File file = new File("E:\\123456.png");
