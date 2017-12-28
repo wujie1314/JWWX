@@ -257,4 +257,10 @@ public class OthersController {
 
         return sb.toString();
     }
+    
+    @RequestMapping("/others/main")
+	public String otherMain(){
+		
+		return "othersmain";
+	}
 }
