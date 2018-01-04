@@ -551,6 +551,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 		if("text".equals(msgType)){ //正常的文本信息
 			//			判断是否第一次自动返回菜单信息
 			if(menu == null ){
+				if(content.trim().equals("0")){ // 直接进入人工服务
+					manualService(response, map, openId, null);
+				}
 				returnString+="请选择以下服务项： \n";
 				if("#".equals(content)){//是否返回上一级 返回顶级初始状态
 					// 清空该用户自动回复状态信息
@@ -600,7 +603,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 					}
 			}
 		if(result == null || result.size() == 0){
-			returnString += "未查询到相关\n-----"+content+"-----\n输入错误,请重新输入: \n";
+			returnString += "未找到对应指令\n-----"+content+"-----\n请重新输入相应服务选项: \n";
 			result = autoRespondService.getRespondMes("",deptId);
 			
 		}
