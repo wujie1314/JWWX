@@ -309,7 +309,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             this.wxOpenId = pamars.get("openId");
             //通知微信用户
             String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-                    this.wxOpenId, "您已经断开与96069座席的连接.");
+                    this.wxOpenId, "您已经断开与96096座席的连接.");
 
             String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
 //            Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);
@@ -321,7 +321,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 //            WxStatusTmpTEntity entity = WeiXinConst.servicingMap.get(wxOpenId);
             WxStatusTmpTEntity entity = NavMenuInitUtils.getInstance().getServiceEntity(wxOpenId);
 //            entity.setServiceStatus(3);
-            wxStatusTmpService.saveMsgDatebase(entity, "您已经断开与96069座席的连接.", wxOpenId);
+            wxStatusTmpService.saveMsgDatebase(entity, "您已经断开与96096座席的连接.", wxOpenId);
             NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
             NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
             NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);

@@ -102,7 +102,6 @@ public class AutoSchedule {
 	
 						String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(temp.getWxOpenid()); //通过微信openid获取对应的公众号
 						//发送給用户
-						// 这里有点问题 获取不到对应的公众号accessToken
 						if(!temp.getWxOpenid().subSequence(0, 3).equals("app")){
 							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
 						}

@@ -39,7 +39,7 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 		if (saveWriteAbout(BbsTellEntityID,userID,content,title,"0")) {
 			for (int i = 0; i < imgFile.size(); i++) {
 				String fileName = savePicture(request,imgFile.get(i));
-				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));
+				savePictrueEntity(BbsTellEntityID,fileName,oppennID);
 			}
 		}
 		return "0";
@@ -70,7 +70,7 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
  		return null;
 	}
 	//保存图片信息
-	public boolean savePictrueEntity(String BbsTellEntityID,String fileName,String userID,String imgData){
+	public boolean savePictrueEntity(String BbsTellEntityID,String fileName,String userID){
 		BbsPictureEntity bp = new BbsPictureEntity();
 		String BbsPictureEntityID= Calendar.getInstance().getTimeInMillis()+ ""; //图片的主键
 		String imgPath = "/uploads/" + fileName;
@@ -128,7 +128,7 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 	
 	//保存专家发布的说说
 	@Override
-	public String specialist(HttpServletRequest request,List<String> imgFile,String oppennID,String content,
+	public String specialist(HttpServletRequest request,List<String> fileNames,String oppennID,String content,
 			String name,String title,String userOpenID){
 		initSpecialist(oppennID,name); //初始化专家数据
 		mineService.initUser(request, userOpenID);//初始化用户
@@ -136,9 +136,8 @@ public class WriteAboutServiceImpl extends CommonServiceImpl implements WriteAbo
 		String BbsTellEntityID = Calendar.getInstance().getTimeInMillis() +""; //说说的主键
 
 		if (saveWriteAbout(BbsTellEntityID,userID,content,title,"1")) {
-			for (int i = 0; i < imgFile.size(); i++) {
-				String fileName = savePicture(request,imgFile.get(i));
-				savePictrueEntity(BbsTellEntityID,fileName,oppennID,imgFile.get(i));
+			for (int i = 0; i < fileNames.size(); i++) {
+				savePictrueEntity(BbsTellEntityID,fileNames.get(i),oppennID);
 			}
 		}
 		return BbsTellEntityID;

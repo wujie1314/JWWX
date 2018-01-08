@@ -290,6 +290,7 @@ public class ConnWeixinController {
                 "            }]\n" +
                 "       }]\n" +
                 " }";
+    	menuString = WeiXinOperUtil.menu1();
     	System.err.println(menuString);
 
         WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken(publicId)); // 菜单 这里不需要更改
@@ -478,6 +479,9 @@ public class ConnWeixinController {
 
         String publicId = map.get("ToUserName");
 //        createMenu(publicId);
+        if(publicId.equals("gh_f689874cef4f")){
+        	 createMenu(publicId);
+        }
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
         if (null == list || 0 == list.size()) {
             String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(map.get("ToUserName")), openId);

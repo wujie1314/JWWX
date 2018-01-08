@@ -1,23 +1,31 @@
 package org.jiaowei.controllers;
 
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
-import org.jiaowei.entity.ExpertEntity;
-import org.jiaowei.entity.MsgFromCustomerServiceEntity;
-import org.jiaowei.entity.WxStatusTmpTEntity;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.jiaowei.service.ExpertService;
 import org.jiaowei.service.WriteAboutService;
 import org.jiaowei.wxutil.NavMenuInitUtils;
-import org.jiaowei.wxutil.WeiXinConst;
 import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +33,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -90,6 +98,55 @@ public class WriteAboutController {
 		return writeAboutService.specialist(request,list, specialistOppenID, content,name,title,userOpenID);
 	}
     
+	/*
+	 *说说上传*
+	 */
+    @RequestMapping(value = "/upload")
+    @ResponseBody
+    public String imgUpload(MultipartHttpServletRequest multipartRequest,HttpServletResponse response) throws Exception {  
+    	response.setContentType("text/html;charset=UTF-8");
+    	String specialistOppenID = multipartRequest.getParameter("specialistOppenID"); 
+    	String userOpenID = multipartRequest.getParameter("userOpenID");
+    	String content = multipartRequest.getParameter("content").toString();  
+    	String title  = multipartRequest.getParameter("title"); 
+    	String name = multipartRequest.getParameter("name"); 
+    	ArrayList<String> fileNames = new ArrayList<>();
+    	//获取多个file  
+    	for (Iterator it = multipartRequest.getFileNames(); it.hasNext();) {  
+    		String key = (String) it.next();  
+    		MultipartFile imgFile = multipartRequest.getFile(key);  
+    		if (imgFile.getOriginalFilename().length() > 0) {  
+    			String fileName = imgFile.getOriginalFilename();  
+    			try {  
+    				String uploadFileUrl = multipartRequest.getServletContext().getRealPath("/uploads");
+    			    String prefix=fileName.substring(fileName.lastIndexOf(".")+1);
+    			    String newFileName =  "IMAGE_" + String.valueOf(Calendar.getInstance().getTime().getTime()) + "." + prefix;
+    				saveFileFromInputStream(imgFile.getInputStream(), uploadFileUrl, newFileName);
+    				fileNames.add(newFileName);
+    			} catch (Exception e) {  
+    				e.printStackTrace();  
+    			}  
+    		}  
+    	}  
+    	return writeAboutService.specialist(multipartRequest,fileNames, specialistOppenID, content,name,title,userOpenID);
+}  
+    	  
+    //保存文件  
+    private void saveFileFromInputStream(InputStream stream, String path,  
+    		String filename) throws IOException {  
+    	File file = new File(path + "/" + filename);  
+    	FileOutputStream fs = new FileOutputStream(file);  
+    	byte[] buffer = new byte[1024 * 1024];  
+    	int bytesum = 0;  
+    	int byteread = 0;  
+    	while ((byteread = stream.read(buffer)) != -1) {  
+    		bytesum += byteread;  
+    		fs.write(buffer, 0, byteread);  
+    		fs.flush();  
+    	}  
+    	fs.close();  
+    	stream.close();  
+    }  
     /**
      * 推送链接给微信用户和给专家发短信
      * 
