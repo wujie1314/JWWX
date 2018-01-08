@@ -37,6 +37,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import activiti.PeopleServic;
 import activiti.WaitQ;
+import activiti.totalP;
 
 @Service
 public class NavMenuServiceImpl implements NavMenuService {
@@ -196,10 +197,12 @@ public class NavMenuServiceImpl implements NavMenuService {
 			entity.setIntoWaitingMapTime(times / 1000);
 			entity.setIntoWaitingTime(times);
 			// 工作流
-			System.out.println("启动实例");
+			System.out.println("启动开始");
 			WaitQ waitQ=new WaitQ();
 	    	waitQ.startProcessInstance();
-	    	System.out.println("等待队列实例启动");
+	    	totalP totalPs=new totalP();
+	    	totalPs.startProcessInstance();
+	    	System.out.println("启动完成");
 			
 
 
@@ -258,6 +261,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 			// 从等待队列删除
 			NavMenuInitUtils.getInstance().removeWaitMap(openId);
 			NavMenuInitUtils.getInstance().removeServiceMap(openId);
+			totalP totalPtP=new totalP();
+			totalPtP.completetaskU1end();
+			totalPtP.completetaskS1end();
 			// 加入导航队列
 			tmp.setMessage(true);
 			tmp.setBeginTimestamp(System.currentTimeMillis());
@@ -273,6 +279,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 			
 			NavMenuInitUtils.getInstance().removeWaitMap(openId);
 			NavMenuInitUtils.getInstance().removeServiceMap(openId);
+			totalP totalPtP=new totalP();
+			totalPtP.completetaskU1end();
+			totalPtP.completetaskS1end();
 
 			// 是否关闭通道
 			if (isOffSocket) {
@@ -401,6 +410,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 				wxStatusTmpService.saveMsgDatebase(tmp, "感谢您对我们服务的评分。", openId);
 				PeopleServic peopleServic= new PeopleServic();
 				peopleServic.completetask("P2");
+				totalP totalPpP=new totalP();
+				totalPpP.completetaskP1();
 
 			}
 		}

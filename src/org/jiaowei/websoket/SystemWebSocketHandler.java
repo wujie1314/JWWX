@@ -34,6 +34,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import activiti.PeopleServic;
 import activiti.SeatW;
+import activiti.totalP;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -122,6 +123,8 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 //                                this.wxOpenId, String.format("您好，我是%s号座席，请问有什么可以帮您？", sysUserEntity.getUserId()));
                     	SeatW seatW=new SeatW();
                 		seatW.completetask();
+                		totalP totalPs=new totalP();
+                		totalPs.completetaskU1();
                         String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
                         		this.wxOpenId, String.format("您好，我是%s号座席，请问有什么可以帮您？", this.userId));
                         PeopleServic peopleServic=new PeopleServic();
@@ -326,6 +329,8 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 
             PeopleServic peopleServic= new PeopleServic();
 			peopleServic.completetask("P2");
+			totalP totalPpP=new totalP();
+			totalPpP.completetaskP1();
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);

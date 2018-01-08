@@ -49,6 +49,7 @@ import activiti.PeopleServic;
 import activiti.SeatW;
 import activiti.WaitQ;
 import activiti.helloword;
+import activiti.totalP;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -120,6 +121,8 @@ public class AutoSchedule {
       seatW.deploymentProcessDefinition();
       PeopleServic peopleServic=new PeopleServic();
       peopleServic.deploymentProcessDefinition();*/
+    	/*totalP totalP=new totalP();
+    	totalP.deploymentProcessDefinition();*/
     	
     	
 //    	logger.error("--------------->autoAllotTask end:"+(System.currentTimeMillis()-one));
@@ -163,6 +166,8 @@ public class AutoSchedule {
 	    	            wxStatusTmpService.saveMsgDatebase(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。",  entity.getWxOpenid());
 	    	            PeopleServic peopleServic= new PeopleServic();
 	    				peopleServic.completetask("P2");
+	    				totalP totalPpP=new totalP();
+	    				totalPpP.completetaskP1();
 	            	}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -733,6 +738,8 @@ public class AutoSchedule {
                     	 NavMenuInitUtils.getInstance().userDeptMap.remove(key);
                     	 WaitQ waitQ=new WaitQ();
              			 waitQ.completetask();
+             			 totalP totalPw=new totalP();
+             			 totalPw.completetaskU1end();
                     	 
                      }
     			} catch (Exception e) {
@@ -820,6 +827,8 @@ public class AutoSchedule {
     		NavMenuInitUtils.getInstance().userDeptMap.remove(key);
     		SeatW seatW=new SeatW();
     		seatW.completetask();
+    		totalP totalPs=new totalP();
+    		totalPs.completetaskS1end();
        	 	if(entity.getWaitingHintNum() == 2){
        	 		sendMsgWx(entity, CommonConstantUtils.serviceState13SysHint(), wxOpenId);
        	 		wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.serviceState13SysHint(), wxOpenId);
@@ -837,6 +846,8 @@ public class AutoSchedule {
     			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
     			PeopleServic peopleServic= new PeopleServic();
     			peopleServic.completetask("P2");
+    			totalP totalPpP=new totalP();
+				totalPpP.completetaskP1();
         		sendMsgToService(entity.getSessionId(), CommonConstantUtils.sessionFinishSysHint(), wxOpenId, true);
         		wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.sessionFinishSysHint(), wxOpenId);
     		}
@@ -855,6 +866,8 @@ public class AutoSchedule {
     			NavMenuInitUtils.getInstance().removeServiceMap(deptId,key);
     			PeopleServic peopleServic= new PeopleServic();
     			peopleServic.completetask("P2");
+    			totalP totalPpP=new totalP();
+				totalPpP.completetaskP1();
     			sendMsgWxService(entity, CommonConstantUtils.serviceState2UserHint(), wxOpenId, false);
     			sendMsgToService(entity.getSessionId(), CommonConstantUtils.sessionFinishSysHint(), wxOpenId, true);
     			wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.sessionFinishSysHint(), wxOpenId);
@@ -891,6 +904,8 @@ public class AutoSchedule {
     				NavMenuInitUtils.getInstance().userDeptMap.remove(key);
     				PeopleServic peopleServic= new PeopleServic();
         			peopleServic.completetask("P2");
+        			totalP totalPpP=new totalP();
+    				totalPpP.completetaskP1();
     				sendMsgWxService(entity, CommonConstantUtils.serviceState23SysHint(), wxOpenId, false);
     				sendMsgToService(entity.getSessionId(), CommonConstantUtils.sessionFinishSysHint(), wxOpenId, true);
     				wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.sessionFinishSysHint(), wxOpenId);
