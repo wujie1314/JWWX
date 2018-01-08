@@ -579,16 +579,24 @@ body {
 					</li> 
 				</ul>
 			</div>
-			<div class="bbs_right_content" style="width:450px;height: 400px;float: right; ">
-				<label>标题</label>
-				<input type="text" id = "expert_title" name="expert_title" value="" />
-				<label>内容</label>
-				<textarea class="form-control" id="divText"></textarea>
+			<div class="bbs_right_content" style="width:450px;height: 400px;float: right;text-align:center;">
+				<div style="width:430px;height: 30px; margin-top:10px;text-align:center;">
+					<label style="text-align: center;">标题</label>
+					<input type="text" id = "expert_title" name="expert_title" value="" />
+				</div>
+				<div style="width:430px;height: 220px; margin-top:10px;">
+					<label>内容</label>
+					<textarea class="form-control" style="width:430px;height: 200px;" id="divText"></textarea>
+				</div>
+				<div style="width:430px; margin-top:10px; text-align: left;">
 					<label>上传图片</label>
-		  			<input type="file" id="bbsImg_file"/>  
-		  			<div class="bbs_imageDiv" id="bbs_imageDiv">
-		  		</div>
-		  		<button onclick="announce()">发表</button>
+		  			<input type="file" id="bbsImg_file"/>
+		  			<div class="bbs_imageDiv" id="bbs_imageDiv"></div>
+				</div>					
+		  			
+		  		<div style="width:430px;height: 100px; text-align: right;">
+		  			<button style="width:60px;height: 30px; margin-top:20px;" onclick="announce()">发表</button>
+		  		</div>		  		
 			</div>
 			<form>
 				<input name="expert_name" id="expert_name"value="xxx" type="hidden">
