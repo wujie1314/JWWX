@@ -850,6 +850,11 @@ function sysCheck(){
 	}
 	setTimeout("sysCheck()", 1000);
 }
+
+function getQuondamSeat(){
+	
+}
+
 function getNullSeat(){
 	var temp=$("input[name='userState']");
 	for(var i=0;i<temp.length;i++){
@@ -877,16 +882,38 @@ function getUser(){
 				    /*微信用户信息*/
 					var temp=$.parseJSON(data[0]);
 				    if(isSeat(temp.openid)){
+				    	
 						//找出通道位置
 						var xth;
-						for(var i=0;i<=userData.length;i++){
-							if(typeof(userData[i])=="undefined"||userData[i]==null){
-								xth=i;
-								break;
+						
+						//空位置
+						var nth;
+						
+						// 如果已经在列表里
+						var uData = getUserData(temp.openid);
+						if(typeof(uData)!="undefined"){
+							xth= uData.index;
+							nth= uData.index;
+						  	//清除历史记录
+						  	$("#history"+nowOpenid).remove();
+						  	//清除输入文本信息
+						  	$("#msg"+nowOpenid).remove();
+						  	$("#msgSendBtn").css("display","none");
+						}
+						
+						if(typeof(xth)=="undefined"){
+							for(var i=0;i<=userData.length;i++){
+								if(typeof(userData[i])=="undefined"||userData[i]==null){
+									xth=i;
+									break;
+								}
 							}
 						}
+						
 						//找出空位置
-						var nth=getNullSeat();
+						if(typeof(nth)=="undefined" ){
+							nth=getNullSeat();
+						}
 				    	userData[xth]=temp;
 						userData[xth]["index"]=xth;
 						userData[xth]["seat"]=nth;
@@ -900,8 +927,8 @@ function getUser(){
 					    //找出可交换的位置
 					    var dth=sysNum;
 					    var dindex=sysNum;
-						for(var i=0;i<=userData.length;i++){
-							if(typeof(userData[i])!="undefined"&&userData[i]!=null&&!userData[i].status){
+						for(var i=0;i<=userData.length;i++){// ？？？
+							if(typeof(userData[i])!="undefined"&&userData[i]!=null&& !userData[i].status){
 								if(userData[i].seat<dth){
 									dth=userData[i].seat;//取最小的座位号
 									dindex=i;
@@ -1310,7 +1337,10 @@ function leaveFlag(index){
 	for(var i=0;i<fff.length;i++){
 		$(fff[i]).css("color","#ccc");
 	}
-	userData[index].status=false;
+	/* var temp=$("input[name='userState']");
+	$(temp[index]).val(0);*/
+	
+	userData[index].status=false; 
 	//关闭聊天通道
 	ws[index]=null;
 	var random=(Math.random()+"").substring(2,12);
@@ -1417,7 +1447,7 @@ function connUser(obj,index){
         });
 	}else if(bgc=="#ffa502"){//第一次点击，自动发送消息
     	openRoad(index,"FROMCSYQ");//邀请
-	}else if(bgc=="#ed5565"){	// 标记
+	}else if(bgc=="#ed5565"){	// 标记 留言
 		$.ajax({
     		type : "post",
     		url : "/csc/getUserStatus",
@@ -1472,7 +1502,7 @@ function connUser(obj,index){
 	// 标记 这里可以先注释，这里有关工单的东西， 因为没有连不到内网 所以这里比较慢
 	/* if(!$("#history"+nowOpenid).length){
 		historyTab(nowOpenid);
-	} */
+	}  */
 	$("#history"+nowOpenid).css("display","block");
 	//显示指定文本框
 	$("textarea[name=msgtext]").each(function(){
@@ -1664,6 +1694,7 @@ function connToClose(){
 	nowOpenid="";
 	$.messager.alert("提示消息","已成功与微信用户断开服务！","info");
 }
+
 /*添加其他邀请者*/
 function connInit(openId){
   	//通知后台
@@ -2041,17 +2072,18 @@ function choseQQFace(id){
 	/*获取微信用户信息*/
 	function getUserData(FromUserName) {
 		for (var i = 0; i < userData.length; i++) {
-			if (FromUserName == userData[i].openid)
+			if (userData[i] != null && FromUserName == userData[i].openid )
 				return userData[i];
 		}
 	}
 	function isSeat(FromUserName) {
 		for (var i = 0; i < userData.length; i++) {
-			if (userData[i] != null && FromUserName == userData[i].openid)
+			if (userData[i] != null && FromUserName == userData[i].openid && userData[i].status)
 				return false;
 		}
 		return true;
 	}
+	
 	/*获取微信用户座位信息*/
 	function getUserDataIndex() {
 		if(nowOpenid=="CSTOCSALL"){
@@ -2349,6 +2381,7 @@ function choseQQFace(id){
 		$("#uploadForm").find("input[name='openid']").val(nowOpenid);
 		openWindow("record-window", 360, 250);
 	}
+	// 论坛
 	function newbbs(){
 	/* 	if (nowOpenid == "") {
 			$.messager.alert("论坛提示", "请选择微信用户后录音！", "warning");
