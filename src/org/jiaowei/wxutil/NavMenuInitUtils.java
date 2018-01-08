@@ -17,6 +17,7 @@ import org.jiaowei.entity.WxStatusTmpTEntity;
 
 import activiti.SeatW;
 import activiti.WaitQ;
+import activiti.totalP;
 
 public class NavMenuInitUtils {
 	
@@ -885,6 +886,8 @@ public class NavMenuInitUtils {
 		        result = true;
 		        WaitQ waitQ=new WaitQ();
 		        waitQ.completetask();
+		        totalP totalPs=new totalP();
+		        totalPs.completetaskU1();
 		        SeatW seatW=new SeatW();
 		        seatW.startProcessInstance();
 			}

@@ -87,6 +87,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import activiti.totalP;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -1915,6 +1917,8 @@ public class CustomerServiceController {
 //            	WeiXinConst.deletedMap.remove(openId);
             	NavMenuInitUtils.getInstance().removeWaitMap(openId);
             	NavMenuInitUtils.getInstance().removeRemoveMap(openId);
+            	totalP totalPxP=new totalP();
+            	totalPxP.completetaskU1();
             	returnList.add(userInfo);
         	}       	
         }
