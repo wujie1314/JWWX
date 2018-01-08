@@ -28,6 +28,7 @@ public class AlarmRescueController {
 	   @RequestMapping(value="/alarmRescue",method=RequestMethod.GET,produces="application/json;charset=UTF-8")
 		@ResponseBody
 		public Map<String, Object> alarmRescue(@RequestParam(value = "ID") String ID,
+				@RequestParam(value="currentLocation") String currentLocation,
 				@RequestParam(value="longitude") String longitude,
 				@RequestParam(value="latitude") String latitude,
 				@RequestParam(value="startPosition",required=false) String startPosition,
@@ -37,6 +38,8 @@ public class AlarmRescueController {
 			
 		   if(phoneNum != null && !phoneNum.isEmpty())
 			   phoneNum=URLDecoder.decode(phoneNum,"utf-8");
+		   if(currentLocation != null && !currentLocation.isEmpty())
+			   currentLocation=URLDecoder.decode(currentLocation,"utf-8");
 		   if(repairReason != null && !repairReason.isEmpty())
 				repairReason=URLDecoder.decode(repairReason,"utf-8");
 		   if(startPosition != null && !startPosition.isEmpty())
@@ -44,7 +47,7 @@ public class AlarmRescueController {
 		   if(endPosition != null && !endPosition.isEmpty())
 			   endPosition=URLDecoder.decode(endPosition,"utf-8");
 		
-			Map<String, Object> result = service.getAlarmInfo(ID, longitude, latitude, startPosition, endPosition, phoneNum, repairReason);
+			Map<String, Object> result = service.getAlarmInfo(ID, currentLocation, longitude, latitude, startPosition, endPosition, phoneNum, repairReason);
 			return result;
 		}
 }
