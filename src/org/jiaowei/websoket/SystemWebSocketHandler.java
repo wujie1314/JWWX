@@ -322,10 +322,15 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             WxStatusTmpTEntity entity = NavMenuInitUtils.getInstance().getServiceEntity(wxOpenId);
 //            entity.setServiceStatus(3);
             wxStatusTmpService.saveMsgDatebase(entity, "您已经断开与96096座席的连接.", wxOpenId);
-            NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
-            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
-            NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);
-            NavMenuInitUtils.getInstance().messageMap.remove(wxOpenId);
+            if(NavMenuInitUtils.getInstance().userDeptMap.containsKey(wxOpenId)){
+            	  NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
+                  NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
+                  NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);
+                  if(NavMenuInitUtils.getInstance().messageMap.containsKey(wxOpenId)){
+                	  NavMenuInitUtils.getInstance().messageMap.remove(wxOpenId);
+                  }
+            }
+          
 
            /* PeopleServic peopleServic= new PeopleServic();
 			peopleServic.completetask("P2");
