@@ -121,14 +121,14 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                     if("FROMWX".equals(pamars.get("type"))){//微信请求人工服务
 //                        String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
 //                                this.wxOpenId, String.format("您好，我是%s号座席，请问有什么可以帮您？", sysUserEntity.getUserId()));
-                    	SeatW seatW=new SeatW();
+                    	/*SeatW seatW=new SeatW();
                 		seatW.completetask();
                 		totalP totalPs=new totalP();
-                		totalPs.completetaskU1();
+                		totalPs.completetaskU1();*/
                         String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
                         		this.wxOpenId, String.format("您好，我是%s号座席，请问有什么可以帮您？", this.userId));
-                        PeopleServic peopleServic=new PeopleServic();
-                   	 	peopleServic.startProcessInstance();
+                       /* PeopleServic peopleServic=new PeopleServic();
+                   	 	peopleServic.startProcessInstance();*/
                         String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
 //                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
                     	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
@@ -139,7 +139,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                         try {
                         	String msg = "{\"Content\":\"" + "您好，我是"+userId+"号座席，请问有什么可以帮您？" + "\",\"CreateTime\":\"" + System.currentTimeMillis() / 1000 + "\",\"ToUserName\":\"gh_45216f693385\",\"FromUserName\":\"" + wxOpenId+ "\",\"MsgType\":\"autotext\",\"MsgId\":\"12345678900\"}";
                             session.sendMessage(new TextMessage(msg));
-                            peopleServic.completetask("P1");
+                           /* peopleServic.completetask("P1");*/
                         } catch (IOException e) {
                         	e.printStackTrace();
                             logger.info("发送系统消息超时异常.", e);
@@ -327,10 +327,10 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);
             NavMenuInitUtils.getInstance().messageMap.remove(wxOpenId);
 
-            PeopleServic peopleServic= new PeopleServic();
+           /* PeopleServic peopleServic= new PeopleServic();
 			peopleServic.completetask("P2");
 			totalP totalPpP=new totalP();
-			totalPpP.completetaskP1();
+			totalPpP.completetaskP1();*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);

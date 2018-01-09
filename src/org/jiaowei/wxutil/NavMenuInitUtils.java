@@ -281,16 +281,16 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = waitMap.get(deptId);
 		if(openMap != null){
 			openMap.remove(openId);
-			WaitQ waitQ=new WaitQ();
-			waitQ.completetask();
+			/*WaitQ waitQ=new WaitQ();
+			waitQ.completetask();*/
 		}
 	}
 	public  void removeWaitMap(String openId){
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = waitMap.get(userDeptMap.get(openId));
 		if(openMap != null){
 			openMap.remove(openId);
-			WaitQ waitQ=new WaitQ();
-			waitQ.completetask();
+			/*WaitQ waitQ=new WaitQ();
+			waitQ.completetask();*/
 		}
 	}
 	
@@ -325,8 +325,8 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = serviceMap.get(deptId);
 		if(openMap != null){
 			openMap.remove(openId);
-			SeatW seatW=new SeatW();
-			seatW.completetask();
+			/*SeatW seatW=new SeatW();
+			seatW.completetask();*/
 		}
 	}
 	/**
@@ -337,8 +337,8 @@ public class NavMenuInitUtils {
 		ConcurrentMap<String, WxStatusTmpTEntity> openMap = serviceMap.get(userDeptMap.get(openId));
 		if(openMap != null){
 			openMap.remove(openId);
-			SeatW seatW=new SeatW();
-			seatW.completetask();
+			/*SeatW seatW=new SeatW();
+			seatW.completetask();*/
 		}
 	}
 	/**
@@ -884,12 +884,12 @@ public class NavMenuInitUtils {
 		        //添加服务队列
 		        putServiceMap(openId, entity);
 		        result = true;
-		        WaitQ waitQ=new WaitQ();
+		       /* WaitQ waitQ=new WaitQ();
 		        waitQ.completetask();
 		        totalP totalPs=new totalP();
 		        totalPs.completetaskU1();
 		        SeatW seatW=new SeatW();
-		        seatW.startProcessInstance();
+		        seatW.startProcessInstance();*/
 			}
 		}
 		return result;

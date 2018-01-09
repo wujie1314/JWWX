@@ -1917,8 +1917,8 @@ public class CustomerServiceController {
 //            	WeiXinConst.deletedMap.remove(openId);
             	NavMenuInitUtils.getInstance().removeWaitMap(openId);
             	NavMenuInitUtils.getInstance().removeRemoveMap(openId);
-            	totalP totalPxP=new totalP();
-            	totalPxP.completetaskU1();
+            	/*totalP totalPxP=new totalP();
+            	totalPxP.completetaskU1();*/
             	returnList.add(userInfo);
         	}       	
         }
