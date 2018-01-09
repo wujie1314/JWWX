@@ -1,6 +1,7 @@
 var latitude = "";
 var longitude = "";
 var id = getUrlParam("ID");
+//var id = "wx1515418892633";
 var phone =getUrlParam("phone");
 
 $(function() {
@@ -114,6 +115,7 @@ function submit() {
     else{
 	    var parame = {};
 	    parame.ID = id;
+	    parame.currentLocation = encodeURI($('#currentLocation').html());
 	    parame.longitude = longitude;
 	    parame.latitude = latitude;
 	    parame.startPosition = encodeURI($('#startPosition').val());

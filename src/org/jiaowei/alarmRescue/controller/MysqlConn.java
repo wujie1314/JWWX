@@ -24,13 +24,13 @@ public class MysqlConn {
 	    // MySQL配置时的密码
 	    String password = "wssj";
 			
-//			String driver = "com.mysql.jdbc.Driver";
+//			String driver = "oracle.jdbc.driver.OracleDriver";
 //		    // URL指向要访问的数据库名
-//		    String url = "jdbc:mysql://10.224.5.53:3306/xdcloud?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+//		    String url = "jdbc:oracle:thin:@superc102.vicp.cc:1522:jwwx";
 //		    // MySQL配置时的用户名
-//		    String user = "bstdbuser"; 
+//		    String user = "jwwx"; 
 //		    // MySQL配置时的密码
-//		    String password = "bstdbuser";
+//		    String password = "All4Icode";
 
 	    try { 
 	     // 加载驱动程序
@@ -40,11 +40,14 @@ public class MysqlConn {
 	     if(!conn.isClosed()) 
 	      System.out.println("连接成功!");
 	     // statement用来执行SQL语句
-	     ResultSet result = null;// 创建一个结果集对象
+	    int result =0;// 创建一个结果集对象
+	     String sql = "";
 	     
+	     
+	     if (map.get("ID") == "") {
 	     // 要执行的SQL语句
-	     String sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,REMARK,DLJD,DLWD,UDID,MYID)"
-	     		+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,?,?,?,?,?) ";
+	     sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,REMARK,DLJD,DLWD,UDID,MYID)"
+	     		+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,?,?,?,?,?)";
 	     PreparedStatement pre =  conn.prepareStatement(sql);
 	     pre.setString(1,"wx"+System.currentTimeMillis());
 	     pre.setString(2,map.get("create_time").toString());
@@ -52,16 +55,38 @@ public class MysqlConn {
 	     pre.setString(4,map.get("type").toString());
 	     pre.setString(5,map.get("content_desc").toString());
 	     pre.setString(6,map.get("contact_way").toString());
-	     pre.setString(7,"位置");
+	     pre.setString(7,map.get("currentLocation").toString());
 	     pre.setString(8,"101");
-	     pre.setString(9,"备注");
+	     pre.setString(9,map.get("content_desc").toString());
 	     pre.setString(10,map.get("longitude").toString());
 	     pre.setString(11,map.get("latitude").toString());
 	     pre.setString(12,"123456444");
 	     pre.setString(13,map.get("ID").toString());
 	     
 	     System.out.println(pre.toString());
-	     result = pre.executeQuery();// 执行查询，注意括号中不需要再加参数
+	     result = pre.executeUpdate();// 执行查询，注意括号中不需要再加参数
+	     System.out.println();
+	     }
+	     else {
+	    	  sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,REMARK,DLJD,DLWD,MYID)"
+	  	     		+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,?,?,?,?)";
+	  	     PreparedStatement pre =  conn.prepareStatement(sql);
+	  	     pre.setString(1,"wx"+System.currentTimeMillis());
+	  	     pre.setString(2,map.get("create_time").toString());
+	  	     pre.setString(3,"51123132");
+	  	     pre.setString(4,map.get("type").toString());
+	  	     pre.setString(5,map.get("content_desc").toString());
+	  	     pre.setString(6,map.get("contact_way").toString());
+	  	     pre.setString(7,map.get("currentLocation").toString());
+	  	     pre.setString(8,"101");
+	  	     pre.setString(9,map.get("content_desc").toString());
+	  	     pre.setString(10,map.get("longitude").toString());
+	  	     pre.setString(11,map.get("latitude").toString());
+	  	     pre.setString(12,map.get("ID").toString());
+	  	     
+	  	     System.out.println(pre.toString());
+		     int num = pre.executeUpdate();// 执行查询，注意括号中不需要再加参数
+	     }
 //			if (true) {
 //				sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,GETDATE,STATE,REMARK,DLJD,DLWD,UDID,MYID) "
 //						+ " values('"
@@ -125,13 +150,13 @@ public class MysqlConn {
 	}
 	public static void main(String[] args) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("ID", "asd");
-		map.put("create_time","2012-05-01 01:01:00");
+		map.put("ID", "wx1515417650490");
+		map.put("create_time","2018-05-01 01:01:00");
 		map.put("content_desc", "asd");
 		map.put("contact_way", "15223786299");
 		map.put("longitude", "20.314");
 		map.put("latitude", "20.1564");
-		map.put("type", "报警");
+		map.put("type", "求助");
 		dataManipulation(map);
 	}
 }

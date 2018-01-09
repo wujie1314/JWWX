@@ -76,7 +76,7 @@ public class AutoSchedule {
     @Autowired
     private VideoImgService videoImgService;
     
-    @Scheduled(cron = "0/5 * *  * * ? ")   //每5秒执行一次
+    @Scheduled(cron = "0/1 * *  * * ? ")   //每1秒执行一次
     public void autoAllotTask() {
     	long one = System.currentTimeMillis();
 //    	logger.error("--------------->autoAllotTask start:"+one);
