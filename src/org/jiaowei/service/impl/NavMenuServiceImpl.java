@@ -197,12 +197,10 @@ public class NavMenuServiceImpl implements NavMenuService {
 			entity.setIntoWaitingMapTime(times / 1000);
 			entity.setIntoWaitingTime(times);
 			// 工作流
-			System.out.println("启动开始");
 			/*WaitQ waitQ=new WaitQ();
 	    	waitQ.startProcessInstance();*/
 	    	/*totalP totalPs=new totalP();
 	    	totalPs.startProcessInstance();*/
-	    	System.out.println("启动完成");
 			
 
 
