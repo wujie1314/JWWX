@@ -210,12 +210,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 				WeixinPublicInfoEntity publicInfo =  weixinPublicInfoService.getPublicInfoById(publicID);;
 				deptId = Integer.parseInt(publicInfo.getDeptId().toString());
 				
-				// 在进入人工服务是存入用户与部门
-				NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
-
 			}
-			// WeiXinConst.waitingMap.put(openId, entity);
-//			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId); 改到接收信息接口去了
+			
 			if(!NavMenuInitUtils.getInstance().userPublicIdMap.containsKey(openId)){
 				NavMenuInitUtils.getInstance().userPublicIdMap.put(openId,publicID);// 试试
 			}
@@ -226,6 +222,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 				System.err.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 				System.err.println(openId + " :  " + NavMenuInitUtils.getInstance().userPublicIdMap.get(openId));
 			}
+			// 在进入人工服务是存入用户与部门
+			NavMenuInitUtils.getInstance().userDeptMap.put(openId, deptId);
 			NavMenuInitUtils.getInstance().putWaitMap(deptId, openId, entity);
 			wxStatusTmpService.saveMsgDatebase(null,
 					CommonConstantUtils.input0SysHint(), openId);
@@ -559,41 +557,51 @@ public class NavMenuServiceImpl implements NavMenuService {
 		List<WeixinAutoRespondEntity> result = null;
 		if("text".equals(msgType)){ //正常的文本信息
 			//			判断是否第一次自动返回菜单信息
+			if("#".equals(content)){//是否返回上一级 返回顶级初始状态
+				// 清空该用户自动回复状态信息
+				WeiXinConst.navAutoMenu.remove(openId);
+				menu = null;
+//				String returnStr = XmlUtil.genTextResponseMsg(map, "已退出菜单信息");
+//				WeiXinOperUtil.sendMsgToWX(response, returnStr);
+//				wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
+			}
 			if(menu == null ){
-				if(content.trim().equals("0")){ // 直接进入人工服务
-					manualService(response, map, openId, null);
-				}
+				
 				returnString+="请选择以下服务项： \n";
-				if("#".equals(content)){//是否返回上一级 返回顶级初始状态
-					// 清空该用户自动回复状态信息
-					WeiXinConst.navAutoMenu.remove(openId);
-					
-					String returnStr = XmlUtil.genTextResponseMsg(map, "已清除菜单信息");
-					WeiXinOperUtil.sendMsgToWX(response, returnStr);
-					wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
-					return;
-				}
 				result = autoRespondService.getRespondMes(content,deptId);
+				
+				if(content.trim().equals("0")){ // 直接进入人工服务
+					result = autoRespondService.getManualService("ManualService"); // 0096096表示人工服务
+				}
 			}
 			else if(Character.isDigit(content.charAt(0))){// 已有菜单信息
 						int n = Integer.parseInt(content);//判断内容是否按菜单里来
 						if( n == 0){
 							//进入人工服务
 							System.out.println("从自动回复进入人工服务-----------------");
-							if(menu.size() == 1 && menu.get(0).getDeptID() != null){// 最低级菜单进入人工服务 根据该菜单的部门id来
+							returnString+="请选择以下服务项进入人工服务： \n";
+							result = autoRespondService.getManualService("ManualService"); // 0096096表示人工服务
+						/*	if(menu.get(4).getDeptID() != null && menu.get(0).equals(0)){
+								// 其他服务进交委热线总中心人工服务
 								manualService(response, map, openId, menu.get(0).getDeptID());
 							}
-							else{ //否则根据该公众号的部门id来进行分配部门
-								manualService(response, map, openId, null);
-							}
 							// 删掉导航菜单
-							WeiXinConst.navAutoMenu.remove(openId);
+							WeiXinConst.navAutoMenu.remove(openId);*/
 						}
-						if( n >= 1 &&  n<= menu.size()){
+						else if( n >= 1 &&  n<= menu.size()){
 							// 在菜单内
 							WeixinAutoRespondEntity autoMenu = menu.get(n-1);
 							// 获取下级菜单信息,如果有的话
 							if(autoMenu.getJuniorID() != null && !autoMenu.getJuniorID().isEmpty()){
+								
+								// 如果是人工服务直接不获取菜单自己进入人工服务了
+								if(autoMenu.getJuniorID().equals("ManualService")){
+									manualService(response, map, openId, autoMenu.getDeptID());
+									
+									// 删掉导航菜单
+									WeiXinConst.navAutoMenu.remove(openId);
+									return;
+								}
 								result = autoRespondService.getJuniorMenu(autoMenu.getJuniorID());
 								returnString += "请输入序列号获取服务 \n";
 							}
@@ -601,6 +609,13 @@ public class NavMenuServiceImpl implements NavMenuService {
 								result = new ArrayList<WeixinAutoRespondEntity>();
 								result.add(autoMenu);
 							}
+						}
+						else{
+							// 不在菜单内
+							// 继续返回这级菜单,
+							result = menu;
+							// 加句提示信息
+							returnString += "请输入序列号获取服务 \n";
 						}
 					}
 					else{
@@ -622,7 +637,11 @@ public class NavMenuServiceImpl implements NavMenuService {
 		for (int i = 0; i < result.size(); i++) {
 			returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
 		}
-		returnString += "【0】人工服务 \n";
+		
+		if(result.get(0).getJuniorID() == null || !result.get(0).getJuniorID().equals("ManualService")){ // 如果是人工服务，就不加人工服务
+			returnString += "【0】人工服务 \n";
+		}
+		
 		returnString += "【#】退出自动回复";
 		
 		// 判断是否是最后一级，是返回一个链接图文信息

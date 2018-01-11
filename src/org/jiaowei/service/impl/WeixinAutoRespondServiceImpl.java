@@ -26,7 +26,7 @@ public class WeixinAutoRespondServiceImpl extends CommonServiceImpl implements W
 				+ "			  FROM "
 				+ "					AUTO_RESPOND A "
 				+ "			  WHERE "
-				+ " 				A .CONTENT_CODE = 0 AND A .DEPT_ID =" + deptId
+				+ " 				A .CONTENT_CODE = '0' AND A .DEPT_ID ='" + deptId+"'"
 				+ "			  GROUP BY "
 				+ "					A .JUNIOR_ID "
 				+ "			) b "
@@ -45,6 +45,12 @@ public class WeixinAutoRespondServiceImpl extends CommonServiceImpl implements W
 	@Override
 	public List<WeixinAutoRespondEntity> getJuniorMenu(String juniorID) {
 		List<WeixinAutoRespondEntity> result = findByHql(" FROM WeixinAutoRespondEntity a WHERE a.contentCode = '"+juniorID+"'");
+		return result;
+	}
+
+	@Override
+	public List<WeixinAutoRespondEntity> getManualService(String contentCode) {
+		List<WeixinAutoRespondEntity> result = findByHql(" FROM WeixinAutoRespondEntity a WHERE a.contentCode = '"+contentCode+"'" );
 		return result;
 	}
 	
