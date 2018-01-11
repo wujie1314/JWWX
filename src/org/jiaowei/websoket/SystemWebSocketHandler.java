@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.type.descriptor.sql.NVarcharTypeDescriptor;
 import org.jiaowei.entity.CustomerServiceHisEntity;
 import org.jiaowei.entity.MsgFromCustomerServiceEntity;
 import org.jiaowei.entity.WxStatusTmpTEntity;
@@ -307,15 +308,18 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 
             Map<String, String> pamars = parseQueryString(queryString);
             this.wxOpenId = pamars.get("openId");
-            //通知微信用户
-            String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-                    this.wxOpenId, "您已经断开与96096座席的连接.");
-
-            String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
+           
+          
 //            Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);
             
-        	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
-				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+        	if(!this.wxOpenId.subSequence(0, 3).equals("app")){ //不是app用户的话不用发送消息
+        		if(NavMenuInitUtils.getInstance().serviceMap.containsKey(this.wxOpenId)){//只有在服务队列里的才通知
+        			 //通知微信用户
+                    String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+                            this.wxOpenId, "您已经断开与96096座席的连接.");
+        			String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
+    				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+        		}
 			}
 
 //            WxStatusTmpTEntity entity = WeiXinConst.servicingMap.get(wxOpenId);
@@ -384,6 +388,6 @@ public class SystemWebSocketHandler implements WebSocketHandler {
         }
         return map;
     }
-
+    
 
 }
