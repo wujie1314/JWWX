@@ -38,12 +38,12 @@ public class Login {
     //////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping(value="/")
     public String index(){
-        return "index";
+        return "login";
     }
-    @RequestMapping("/login")
-    public  String login(String userName, /*String password,*/Map<String,Object> map,HttpServletRequest request) throws Exception {
+    /*@RequestMapping("/login")
+    public  String login(String ACCOUNT,String PASSWORD,Map<String,Object> map,HttpServletRequest request) throws Exception {
     	//更新华南用户名称
-        SysUserEntity sysEntity=getHNIIUserInfo(userName);
+        SysUserEntity sysEntity=getHNIIUserInfo(ACCOUNT);
         InetAddress addr = InetAddress.getLocalHost();
         String ip = request.getHeader("x-forwarded-for");
         if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
@@ -64,7 +64,7 @@ public class Login {
 //             map.put("erorrInfo","IP限制.");
 //             return "error";
 //        }
-    	if(sysEntity==null /*|| StringUtil.isEmpty(password)*/){
+    	if(sysEntity==null || StringUtil.isEmpty(password)){
             logger.info("用户名不能为空");
             map.put("erorrInfo","用户名不能为空");
             return "userError";
@@ -73,7 +73,7 @@ public class Login {
              map.put("erorrInfo","用户登录失败");
              return "dataError";
         }else{
-            List<SysUserEntity> list =sysUserService.findByProperty(SysUserEntity.class,"userId",userName);
+            List<SysUserEntity> list =sysUserService.findByProperty(SysUserEntity.class,"userId",ACCOUNT);
             SysUserEntity entity=new SysUserEntity();
             if(null == list || list.size()<1){//新用户
             	entity.setDeptId(new Integer(-1));
@@ -83,7 +83,7 @@ public class Login {
             		entity.setDeptId(de.getId());
             	}
             	entity.setUserName(sysEntity.getUserName());
-            	entity.setUserId(userName);
+            	entity.setUserId(ACCOUNT);
             	entity.setChangeNum(5);
             	entity.setCustomerNum(5);
             	entity.setDeptIdHn(sysEntity.getDeptId().toString());
@@ -124,7 +124,123 @@ public class Login {
                 return "main";
             }
         }
+    }*/
+    
+    @RequestMapping("/login")
+    public  String login(String ACCOUNT,String PASSWORD,HttpServletRequest request) throws Exception{
+    	if(ACCOUNT==null||ACCOUNT.isEmpty()||PASSWORD.isEmpty() || PASSWORD==null){
+            logger.info("输入不能为空");
+            return "userError";
+        }
+    	else{
+    		Map<String,String> userMap=getUserInfor(ACCOUNT);
+    		if(PASSWORD.equals(userMap.get("PASSWORD"))){
+    			InetAddress addr = InetAddress.getLocalHost();
+    	        String ip = request.getHeader("x-forwarded-for");
+    	        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+    	        	ip = request.getHeader("Proxy-Client-IP");
+    	        }
+    	        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+    	        	ip = request.getHeader("WL-Proxy-Client-IP");
+    	        }
+    	        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+    	        	ip = request.getRemoteAddr();
+    	        }
+    	        
+    	        String address=addr.getHostName();//获得本机名称
+//    	        
+    	            List<SysUserEntity> list =sysUserService.findByProperty(SysUserEntity.class,"userId",ACCOUNT);
+    	            SysUserEntity entity=new SysUserEntity();
+    	            if(null == list || list.size()<1){//新用户
+    	            	entity.setDeptId(new Integer(-1));
+    	            	List<DepartEntity> deList=sysUserService.findByProperty(DepartEntity.class, "jgdm", userMap.get("DEPT"));
+    	            	if(deList!=null&&deList.size()>0){
+    	            		DepartEntity de=deList.get(0);
+    	            		entity.setDeptId(de.getId());
+    	            	}
+    	            	entity.setUserName(userMap.get("USERNAME"));
+    	            	entity.setUserId(ACCOUNT);
+    	            	entity.setChangeNum(5);
+    	            	entity.setCustomerNum(5);
+    	            	entity.setDeptIdHn(userMap.get("DEPT").toString());
+    	            	sysUserService.save(entity);
+    	            }else{//老用户
+    	                entity  = list.get(0);
+    	                //更新用户名称
+    	                if(!"".equals(userMap.get("USERNAME"))&&!userMap.get("USERNAME").equals(entity.getUserName())){
+    	                	entity.setUserName(userMap.get("USERNAME"));
+    	                	sysUserService.saveOrUpdate(entity);
+    	                }
+    	            
+    	            //验证用户是否已登录
+    	            //            SysUserEntity entity2=WeiXinConst.onLineCsMap.get(String.valueOf(entity.getId()));
+    	            NavMenuInitUtils.getInstance().userDeptMap.put(""+entity.getId(), entity.getDeptId());
+    	            SysUserEntity entity2=NavMenuInitUtils.getInstance().getSysUserCsEntity(entity.getId()+"");
+    	            String nowIp=WeiXinConst.ipAndAddressMap.get(String.valueOf(entity.getId()));
+    	            String deptAll=",3,4,5,6,12,";
+    	            if(entity2!=null&&nowIp!=null&&!nowIp.toString().equals(ip)){//已登录
+    	            	//map.put("erorrInfo","此用户已登录");
+    	                return "error";
+    	            }else if(deptAll.indexOf(","+entity.getDeptId().toString()+",")==-1){
+    	            	//map.put("erorrInfo","暂未开通");
+    	                return "deptError";
+    	            }else{//未登录
+    	                WeiXinConst.ipAndAddressMap.put(String.valueOf(entity.getId()), ip);//记录IP
+    	                List<SysUserRoleEntity> sysUserRoleList=sysUserService.findByProperty(SysUserRoleEntity.class,"userId",entity.getId());
+    	                if(sysUserRoleList!=null&&sysUserRoleList.size()>0){
+    	                	entity.setIsAdmin(1);
+    	                }else{
+    	                	entity.setIsAdmin(0);
+    	                }
+    	                //map.put("entity",entity);
+//    	                WeiXinConst.onLineCsMap.put(String.valueOf(entity.getId()),entity);
+    	                NavMenuInitUtils.getInstance().putOnLineDeptCsMap(""+entity.getId(), entity);
+//    	                Map map2=NavMenuInitUtils.getInstance().onLineDeptCsMap;
+//    	                Map map3=NavMenuInitUtils.getInstance().onLineDeptCsMap.get(entity.getDeptId());
+    	                return "main";
+    	            }
+    	        }
+    			
+    			
+    			return "main";
+    		}
+    		else{
+    			return "login";
+    		}
+    	}
+    	
     }
+    
+    public Map<String,String> getUserInfor(String userId){
+    	String password=null;
+    	Map<String,String> map = null;
+    	 Connection conn = null;
+         PreparedStatement pre = null;
+         ResultSet resultSet = null;
+    	try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            String jdbcUrl = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.url");
+            String jdbcUsername = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.username");
+            String jdbcPassword = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.password");
+            conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
+//            String sql = " select t1.USERNAME USERNAME,t1.DEPT DEPT from  HNII_S_USER1@ORCL180.REGRESS.RDBMS.DEV.US.ORACLE.COM  t1 where t1.USERID = ? ";
+            String sql = " SELECT t1.USERID USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT FROM HNII_S_USER1 t1 WHERE t1.USERID = ?  ";
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, userId);
+            resultSet = pre.executeQuery();
+            while(resultSet.next()){
+            	map.put("USERNAME", resultSet.getString("USERNAME"));
+            	map.put("PASSWORD", resultSet.getString("PASSWORD"));
+            	map.put("DEPT", resultSet.getString("DEPT"));
+            }
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
+    	
+    	return map;
+    }
+    
+    
 
     public SysUserEntity getHNIIUserInfo(String userId) throws Exception {
     	SysUserEntity entity=new SysUserEntity();
