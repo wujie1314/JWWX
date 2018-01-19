@@ -199,7 +199,7 @@ function rightMessage(data){
 			html += "<embed src=" + data.voiceUrl + " autostart=false hidden=no units='pixels' width=300 height=44></embed>";
 	    }
 		html += '</div>';
-		if(data.isSuccess==1){
+		if(data.isSuccess==0){
 			html+="<img style='cursor:hand;float:right;' title='发送失败' src='/image/send_again.png'>";
 		}
 		html += '</td>';
