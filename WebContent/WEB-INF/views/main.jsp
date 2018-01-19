@@ -1419,7 +1419,8 @@ function connUser(obj,index){
     		success : function(data) {
     			if(data.status=="OK"){//在服务队列中
     				openRoad(index,"FROMWX");
-    			}else if(data.status=="END"){//用户已断开
+    			}
+    			else if(data.status=="END"){
     				$.messager.alert("提示消息","此微信用户已断开连接！","warning");
     				leaveFlag(index);
     			}
@@ -1932,7 +1933,7 @@ function addWorkTab(nickName,serviceId) {
 	userData[index]["workNum"]++;
 	var random="0"+userData[index]["workNum"];
 	var id=serviceId+random.substring(random.length-2,random.length);
-	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj_t.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
+	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
 	$('#tabs').tabs('add', {
 		title : nickName,
 		content : content,

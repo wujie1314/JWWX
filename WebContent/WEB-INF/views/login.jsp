@@ -121,20 +121,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			parame.PASSWORD = $('#PASSWORD').val();
 			
 			$.ajax({
-			  url:'login',
+			  url:'/loginVerify',
+			  method: 'POST',
 			  data:parame,
 			  success:function(o){
-				 /*  var result = eval("(" + o + ")");
+				  var result = o;
 				  switch (result) {
-					case "1":
-						window.location.href = "index.jsp";
+					case "-9":alert("用户名不能为空"); //userError
+						window.location.href = "/skip/userError";
 						break;
-					case "-1":
-						alert("用户名或密码错误");
-						break;
-					default:
+					case "-6":alert("暂未开通"); //deptError
+						window.location.href = "/skip/dataError";
 						break; 
-				  }*/
+					case "1":alert("登录成功"); //dataError
+						window.location.href = "/login?userName="+parame.ACCOUNT;
+						break; 
+					case "-2":alert("用户登录失败"); //dataError
+						window.location.href = "/skip/login";
+						break; 
+				  }
 			  }
 			});
 		}
