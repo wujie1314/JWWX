@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'login.jsp' starting page</title>
+    <title>用户登录</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -37,8 +37,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     .leftPart{
         width: 50%;
         height: 500px;
-        background-color: #d58512;
         float: left;
+    }
+    .logo{
+    	width: 100%;
+    	height: 20%;
+    	margin-top: 33%;
+    	margin-left: 5%;
+    }
+    .logo_1{
+    	float:left;
+    }
+    .logo_2{
+    	float:left;
     }
 
     .rightPart{
@@ -47,19 +58,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         float: left;
     }
     .inputForm{
-    	width: 50%;
+    	width: 75%;
         height: 200px;
-        margin-top: 30%;
+        margin-top: 28%;
     }
     .btn-default{
         float: left;
     }
     .form-control {
-      margin-bottom: 5%;
+      margin-bottom: 8%;
 	  display: block;
 	  /*width: 100%;*/
-	  height: 34px;
-	  padding: 6px 50px;
+	  height: 40px;
+	  padding: 10px 130px;
 	  font-size: 14px;
 	  line-height: 1.42857143;
 	  color: #555;
@@ -78,7 +89,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  background-color: #23527c;
 	  border-color: #ccc;
 	  display: inline-block;
-	  padding: 5px 124px;
+	  padding: 8px 204px;
 	  margin-bottom: 0;
 	  font-size: 14px;
 	  font-weight: normal;
@@ -97,15 +108,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  border: 1px solid transparent;
 	  border-radius: 4px;
 	}
+	.toPhoneNum{
+		float: left;
+	    font-size: 13px;
+	    color: #23527c;
+	    margin-top: 5px;
+	    margin-left: 41%;
+	}
+	
 
 	</style>
 	<div class ="leftPart">
+		<div class="logo">
+			<div class="logo_1">
+				<img src="/image/loginLogo_1.png" width="267" height="120"/>
+			</div>
+			<div class="logo_2">
+				<img src="/image/loginLogo_2.png" width="330" height="120"/>
+			</div>
+		
+		</div>
 	
 	</div>
 	
 	<div class="rightPart">
 	    <div class="inputForm">
-	    	<h4 style="margin-bottom: 5%;">登录账号</h4>
+	    	<h3 style="margin-bottom: 6%;width:150px;float:left;">登录账号</h3>
+	    	<!-- <p class="toPhoneNum">切换到手机登录</p> -->
 	        <input type="text" class="form-control" id="ACCOUNT" placeholder="请输入账号">
 	        <input type="password" class="form-control" id="PASSWORD" placeholder="请输入密码">
 	        <button type="submit" class="btn btn-default" id="confirmLogin " onclick="enter()">登录</button>
@@ -130,7 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					case "-9":alert("用户名不能为空"); //userError
 						window.location.href = "/skip/userError";
 						break;
-					case "-6":alert("暂未开通"); //deptError
+					case "-6":alert("密码不能为空"); //deptError
 						window.location.href = "/skip/dataError";
 						break; 
 					case "1":alert("登录成功"); //dataError

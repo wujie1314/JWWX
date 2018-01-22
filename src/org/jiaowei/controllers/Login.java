@@ -156,7 +156,7 @@ public class Login {
      */
     @RequestMapping("/loginVerify")
     @ResponseBody
-    public  String login(String ACCOUNT,String PASSWORD){
+    public  String login(String ACCOUNT,String PASSWORD,HttpServletRequest request){
     	if(ACCOUNT==null||ACCOUNT.isEmpty()){
             logger.info("用户名不能为空");
             return "-9";
@@ -168,6 +168,7 @@ public class Login {
     	else{
     		Map<String,String> userMap=getUserInfor(ACCOUNT);
     		if(PASSWORD.equals(userMap.get("PASSWORD"))){
+    			request.getSession().setAttribute(ACCOUNT,ACCOUNT);
     			logger.info("登录成功");
     			return "1";
     		}
@@ -226,7 +227,7 @@ public class Login {
             String jdbcUsername = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.username");
             String jdbcPassword = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.password");
             conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
-//             String sql = " select t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT from  HNII_S_USER1@ORCL180.REGRESS.RDBMS.DEV.US.ORACLE.COM  t1 where t1.USERID = ? ";
+//          String sql = " select t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT from  HNII_S_USER1@ORCL180.REGRESS.RDBMS.DEV.US.ORACLE.COM  t1 where t1.USERID = ? ";
             String sql = " SELECT t1.USER_NAME USERNAME, t1.DEPT_ID DEPT FROM SYS_USER_T t1 WHERE t1.USER_ID = ? ";
             pre = conn.prepareStatement(sql);
             pre.setString(1, userId);
