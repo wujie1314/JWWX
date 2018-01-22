@@ -3,6 +3,8 @@ package org.jiaowei.service.impl;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,6 +56,10 @@ public class NavMenuServiceImpl implements NavMenuService {
 
 	@Autowired
 	private WeixinAutoRespondService autoRespondService;
+	private List<WeixinAutoRespondEntity> mainMenu=null;
+	private Integer time=0;
+	private Map<Integer, List<WeixinAutoRespondEntity>> returnMenu =new  HashMap<Integer, List<WeixinAutoRespondEntity>>();
+	private Map<String, Map<Integer, List<WeixinAutoRespondEntity>>> reMenu =new HashMap<String, Map<Integer, List<WeixinAutoRespondEntity>>>();
 	/**
 	 * 微信用户第一次发送消息，进入导航菜单
 	 */
@@ -530,6 +536,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 		}
 	}
 
+
+
 	
 	/**
 	 * 自动回复消息
@@ -541,13 +549,12 @@ public class NavMenuServiceImpl implements NavMenuService {
 			HttpServletResponse response, String openId) {
 		
 		List<WeixinAutoRespondEntity> menu = WeiXinConst.navAutoMenu.get(openId);
-		
-		
+	
        String publicId = map.get("ToUserName");
 
        WeixinPublicInfoEntity publicInfo =  weixinPublicInfoService.getPublicInfoById(publicId);;
        Integer deptId = publicInfo.getDeptId();
-				
+      		
 				
 		String msgType = map.get("MsgType"), content = map.get("Content");
 		if (StringUtils.isNoneBlank(content)) {
@@ -555,42 +562,47 @@ public class NavMenuServiceImpl implements NavMenuService {
 		}
 		String returnString = "";
 		List<WeixinAutoRespondEntity> result = null;
+		// mainMenu=autoRespondService.getRespondMes(content,deptId);
 		if("text".equals(msgType)){ //正常的文本信息
 			//			判断是否第一次自动返回菜单信息
-			if("#".equals(content)){//是否返回上一级 返回顶级初始状态
-				// 清空该用户自动回复状态信息
-				WeiXinConst.navAutoMenu.remove(openId);
-				menu = null;
-//				String returnStr = XmlUtil.genTextResponseMsg(map, "已退出菜单信息");
-//				WeiXinOperUtil.sendMsgToWX(response, returnStr);
-//				wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
-			}
-			if(menu == null ){
+			
+			if(menu==null){
 				
-				returnString+="请选择以下服务项： \n";
+				
 				result = autoRespondService.getRespondMes(content,deptId);
 				
 				if(content.trim().equals("0")){ // 直接进入人工服务
 					result = autoRespondService.getManualService("ManualService"); // 0096096表示人工服务
 				}
+				if(result!=null&&result.size()!=0){
+					returnString+="请选择以下服务项： \n";
+					for (int i = 0; i < result.size(); i++) {
+						returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
+						}
+				returnString += "【0】人工服务 \n";
+					//returnMenu.put(openId, result);
+				}
+					
 			}
 			else if(Character.isDigit(content.charAt(0))){// 已有菜单信息
 						int n = Integer.parseInt(content);//判断内容是否按菜单里来
+						
 						if( n == 0){
 							//进入人工服务
 							System.out.println("从自动回复进入人工服务-----------------");
 							returnString+="请选择以下服务项进入人工服务： \n";
 							result = autoRespondService.getManualService("ManualService"); // 0096096表示人工服务
-						/*	if(menu.get(4).getDeptID() != null && menu.get(0).equals(0)){
+							if(menu.get(4).getDeptID() != null && menu.get(0).equals(0)){
 								// 其他服务进交委热线总中心人工服务
 								manualService(response, map, openId, menu.get(0).getDeptID());
 							}
 							// 删掉导航菜单
-							WeiXinConst.navAutoMenu.remove(openId);*/
+							WeiXinConst.navAutoMenu.remove(openId);
 						}
 						else if( n >= 1 &&  n<= menu.size()){
 							// 在菜单内
 							WeixinAutoRespondEntity autoMenu = menu.get(n-1);
+							
 							// 获取下级菜单信息,如果有的话
 							if(autoMenu.getJuniorID() != null && !autoMenu.getJuniorID().isEmpty()){
 								
@@ -603,11 +615,14 @@ public class NavMenuServiceImpl implements NavMenuService {
 									return;
 								}
 								result = autoRespondService.getJuniorMenu(autoMenu.getJuniorID());
-								returnString += "请输入序列号获取服务 \n";
+								//returnString += "请输入序列号获取服务 \n";
+								
 							}
+							
 							else{ // 已是最下层信息，返回信息，或者返回链接，目前只考虑url 链接
 								result = new ArrayList<WeixinAutoRespondEntity>();
 								result.add(autoMenu);
+								
 							}
 						}
 						else{
@@ -615,34 +630,56 @@ public class NavMenuServiceImpl implements NavMenuService {
 							// 继续返回这级菜单,
 							result = menu;
 							// 加句提示信息
-							returnString += "请输入序列号获取服务 \n";
+							//returnString += "请输入序列号获取服务 \n";
 						}
-					}
-					else{
-						// 不在菜单内
-						// 继续返回这级菜单,
-						result = menu;
-						// 加句提示信息
 						returnString += "请输入序列号获取服务 \n";
+						for (int i = 0; i < result.size(); i++) {
+							returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
+						}
+						
+						if(result.get(0).getJuniorID() == null || !result.get(0).getJuniorID().equals("ManualService")){ // 如果是人工服务，就不加人工服务
+							returnString += "【0】人工服务 \n";
+							}
+							returnString += "【#】返回上层菜单";
+						}
+			else if("#".equals(content)){//是否返回上一级 
+				
+				result=reMenu.get(openId).get(time-2);
+				returnString += "请输入序列号获取服务 \n";
+				for (int i = 0; i < result.size(); i++) {
+					returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
+				}
+				returnString += "【0】人工服务 \n";
+				if(result.size()!=reMenu.get(openId).get(0).size())
+					returnString += "【#】返回上层菜单";
+				time-=2;
+				
+				}
+			else{
+				// 不在菜单内
+				// 继续返回这级菜单,
+				result =menu;
+				// 加句提示信息
+				returnString += "请输入序列号获取服务 \n";
+				for (int i = 0; i < result.size(); i++) {
+					returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
 					}
+				returnString += "【0】人工服务 \n";
+				//returnMenu.put(openId, result);
+				}
 			}
 		if(result == null || result.size() == 0){
 			returnString += "未找到对应指令\n-----"+content+"-----\n请重新输入相应服务选项: \n";
 			result = autoRespondService.getRespondMes("",deptId);
-			
-		}
+			for (int i = 0; i < result.size(); i++) {
+				returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
+			}
+			returnString += "【0】人工服务 \n";
+			//returnMenu.put(openId, result);
+			}
 		// 存入对应的自动回复信息状态
 		WeiXinConst.navAutoMenu.put(openId, result);
-		
-		for (int i = 0; i < result.size(); i++) {
-			returnString += "【" + (i + 1) + "】"+ result.get(i).getContent() + "\n";
-		}
-		
-		if(result.get(0).getJuniorID() == null || !result.get(0).getJuniorID().equals("ManualService")){ // 如果是人工服务，就不加人工服务
-			returnString += "【0】人工服务 \n";
-		}
-		
-		returnString += "【#】退出自动回复";
+
 		
 		// 判断是否是最后一级，是返回一个链接图文信息
 		if(result.size() == 1 && result.get(0).getUrl() != null){
@@ -657,7 +694,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 		String returnStr = XmlUtil.genTextResponseMsg(map, returnString);
 		WeiXinOperUtil.sendMsgToWX(response, returnStr);
 		wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
+		returnMenu.put(time, result);
+		time++;
+		reMenu.put(openId, returnMenu);
    }
-	
 	
 }
