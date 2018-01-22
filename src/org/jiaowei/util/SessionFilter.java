@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+/*登录过滤，防止用户未经登录通过输入url直接访问界面*/
 public class SessionFilter implements Filter {
 	 @Override
     public void init(FilterConfig filterConfig) throws ServletException {

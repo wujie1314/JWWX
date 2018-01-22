@@ -1225,7 +1225,10 @@ function transferAdmin(id){
 				if(data.status=="OK"){
 					var index=getUserDataIndex();
 					transferFlag2(index);
-					$.messager.alert("提示消息","已转交此坐席，请等待。","info");
+					/* getAdminInfoById(data.csId);
+					+getAdminInfoById(data.csId).userName
+					+getAdminInfoById(data.seatId).userName */
+					$.messager.alert("提示消息","用户 “"+data.nickName+"” 已转交到坐席 “"+getAdminInfoById(data.csId).userName+"” 处，请等待。","info");
 				}
 			}
 		});
