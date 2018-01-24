@@ -775,6 +775,7 @@ a.l-btn span.l-btn-left {
 }
 
 a.l-btn-plain span.l-btn-left {
+	color: #18479b;
 	background: transparent;
 	padding-left: 5px;
 }

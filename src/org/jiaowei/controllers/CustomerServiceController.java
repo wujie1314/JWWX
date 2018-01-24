@@ -79,6 +79,7 @@ import org.jiaowei.wxutil.PastUtil;
 import org.jiaowei.wxutil.WeiXinConst;
 import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.jiaowei.wxutil.WeixinUtils;
+import org.jiaowei.wxutil.sql_inj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -96,6 +97,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foxconn.socket.client.SocketAppPacket;
 import com.foxconn.socket.client.SocketClientHandlerListener;
 import com.foxconn.socket.client.SocketProtocolCodecFactory;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.yzh.cqjw.request.AddViolationReportCommentRequest;
 import com.yzh.cqjw.request.AddViolationReportViewRequest;
 import com.yzh.cqjw.request.GetPagedViolationReportListRequest;
@@ -809,6 +811,7 @@ public class CustomerServiceController {
     @RequestMapping("/getAllUsers")
     @ResponseBody
     public String getAllUsers(int rows,int page,String openid,String nickname,String searchType){
+    	if(sql_inj.sql_inj(openid)){
     	List<Object> list = new ArrayList<Object>();
     	StringBuffer sql=new StringBuffer();
     	sql.append(" FROM (");
@@ -889,6 +892,8 @@ public class CustomerServiceController {
         jsonMap.put("rows", list);
         String result = JSON.toJSONString(jsonMap); 
     	return result;
+    	}else 
+    		return null;
     }
 
     /**

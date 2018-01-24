@@ -67,6 +67,12 @@ public class FileUploadController {
         }
         String sep = System.getProperty("file.separator");
         String fn = file.getOriginalFilename();
+        String type=null;// 文件类型
+        type=fn.indexOf(".")!=-1?fn.substring(fn.lastIndexOf(".")+1, fn.length()):null;
+        if (type!=null) {// 判断文件类型是否为空
+        if ("GIF".equals(type.toUpperCase())||"PNG".equals(type.toUpperCase())||"JPG".equals(type.toUpperCase())
+        		||"JPEG".equals(type.toUpperCase())||"BMP".equals(type.toUpperCase())||"TIFF".equals(type.toUpperCase())
+        		||"PCX".equals(type.toUpperCase())||"EPS".equals(type.toUpperCase())) {	
         String[] suffix = fn.split("\\.");
         String fileName = System.currentTimeMillis() + "." + suffix[suffix.length - 1];
         String fullPath = uploadDir + sep + fileName;
@@ -84,6 +90,8 @@ public class FileUploadController {
         response.setContentType("text/html");
         response.getWriter().print(json.toJSONString());
         //return json.toJSONString();
+        }
+        }
     }
 
     public String saveImage(String path, String fileName, MultipartFile file) throws IOException {
