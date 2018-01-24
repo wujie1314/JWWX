@@ -62,6 +62,9 @@ body {
 .words1{
     height:50px;
 }
+a:hover.l-btn-plain{
+	color:black;
+}
 </style>
 </head>
 <body class="easyui-layout">
@@ -218,13 +221,17 @@ body {
 			</div>
 			<div region="south" split="true" style="height: 160px;">
 				<div style="width: 100%; height: 28px; line-hight: 28px;">
-					<span style="float: left;"> <a href="#"
+					<span style="float: left;"> 
+					<a href="#"
 						onclick="showQQFace();" class="easyui-linkbutton"
-						iconCls="icon-smile" title="选择表情" plain="true">表情</a> <a href="#"
+						iconCls="icon-smile" title="选择表情" plain="true">表情</a> 
+						<a href="#"
 						onclick="showZmessage();" class="easyui-linkbutton"
-						iconCls="icon-text" title="选择常用语" plain="true">常用语</a> <a href="#"
+						iconCls="icon-text" title="选择常用语" plain="true">常用语</a> 
+						<a href="#"
 						id="browse" class="easyui-linkbutton" iconCls="icon-image"
-						title="发送图片" plain="true">图片</a><a href="#"
+						title="发送图片" plain="true">图片</a>
+						<a href="#"
 						onclick="recordInit();" class="easyui-linkbutton"
 						iconCls="icon-record" title="开始录音" plain="true">录音</a>
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
@@ -1218,7 +1225,10 @@ function transferAdmin(id){
 				if(data.status=="OK"){
 					var index=getUserDataIndex();
 					transferFlag2(index);
-					$.messager.alert("提示消息","已转交此坐席，请等待。","info");
+					/* getAdminInfoById(data.csId);
+					+getAdminInfoById(data.csId).userName
+					+getAdminInfoById(data.seatId).userName */
+					$.messager.alert("提示消息","用户 “"+data.nickName+"” 已转交到坐席 “"+getAdminInfoById(data.csId).userName+"” 处，请等待。","info");
 				}
 			}
 		});

@@ -1727,6 +1727,12 @@ public class CustomerServiceController {
         Map<String,String> map=new HashMap<String,String>();
     	WeiXinConst.transferingUserMap.put(openId,seatId);
     	WeiXinConst.transferUserMap.put(csId, openId);
+    	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
+    	String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), openId);
+    	WeixinUserInfoEntity weixinUserInfoEntity = JSON.parseObject(userInfo, WeixinUserInfoEntity.class);
+		map.put("nickName", weixinUserInfoEntity.getNickname());
+		map.put("csId", csId);
+		map.put("seatId", seatId);
 		map.put("status", "OK");
 		return JSON.toJSONString(map);
     }
