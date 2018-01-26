@@ -62,6 +62,9 @@ body {
 .words1{
     height:50px;
 }
+a:hover.l-btn-plain{
+	color:black;
+}
 </style>
 </head>
 <body class="easyui-layout">
@@ -218,13 +221,17 @@ body {
 			</div>
 			<div region="south" split="true" style="height: 160px;">
 				<div style="width: 100%; height: 28px; line-hight: 28px;">
-					<span style="float: left;"> <a href="#"
+					<span style="float: left;"> 
+					<a href="#"
 						onclick="showQQFace();" class="easyui-linkbutton"
-						iconCls="icon-smile" title="选择表情" plain="true">表情</a> <a href="#"
+						iconCls="icon-smile" title="选择表情" plain="true">表情</a> 
+						<a href="#"
 						onclick="showZmessage();" class="easyui-linkbutton"
-						iconCls="icon-text" title="选择常用语" plain="true">常用语</a> <a href="#"
+						iconCls="icon-text" title="选择常用语" plain="true">常用语</a> 
+						<a href="#"
 						id="browse" class="easyui-linkbutton" iconCls="icon-image"
-						title="发送图片" plain="true">图片</a><a href="#"
+						title="发送图片" plain="true">图片</a>
+						<a href="#"
 						onclick="recordInit();" class="easyui-linkbutton"
 						iconCls="icon-record" title="开始录音" plain="true">录音</a>
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
@@ -579,16 +586,24 @@ body {
 					</li> 
 				</ul>
 			</div>
-			<div class="bbs_right_content" style="width:450px;height: 400px;float: right; ">
-				<label>标题</label>
-				<input type="text" id = "expert_title" name="expert_title" value="" />
-				<label>内容</label>
-				<textarea class="form-control" id="divText"></textarea>
+			<div class="bbs_right_content" style="width:450px;height: 400px;float: right;text-align:center;">
+				<div style="width:430px;height: 30px; margin-top:10px;text-align:center;">
+					<label style="text-align: center;">标题</label>
+					<input type="text" id = "expert_title" name="expert_title" value="" />
+				</div>
+				<div style="width:430px;height: 220px; margin-top:10px;">
+					<label>内容</label>
+					<textarea class="form-control" style="width:430px;height: 200px;" id="divText"></textarea>
+				</div>
+				<div style="width:430px; margin-top:10px; text-align: left;">
 					<label>上传图片</label>
-		  			<input type="file" id="bbsImg_file"/>  
-		  			<div class="bbs_imageDiv" id="bbs_imageDiv">
-		  		</div>
-		  		<button onclick="announce()">发表</button>
+		  			<input type="file" id="bbsImg_file"/>
+		  			<div class="bbs_imageDiv" id="bbs_imageDiv"></div>
+				</div>					
+		  			
+		  		<div style="width:430px;height: 100px; text-align: right;">
+		  			<button style="width:60px;height: 30px; margin-top:20px;" onclick="announce()">发表</button>
+		  		</div>		  		
 			</div>
 			<form>
 				<input name="expert_name" id="expert_name"value="xxx" type="hidden">
@@ -1210,7 +1225,10 @@ function transferAdmin(id){
 				if(data.status=="OK"){
 					var index=getUserDataIndex();
 					transferFlag2(index);
-					$.messager.alert("提示消息","已转交此坐席，请等待。","info");
+					/* getAdminInfoById(data.csId);
+					+getAdminInfoById(data.csId).userName
+					+getAdminInfoById(data.seatId).userName */
+					$.messager.alert("提示消息","用户 “"+data.nickName+"” 已转交到坐席 “"+getAdminInfoById(data.csId).userName+"” 处，请等待。","info");
 				}
 			}
 		});
@@ -1411,7 +1429,8 @@ function connUser(obj,index){
     		success : function(data) {
     			if(data.status=="OK"){//在服务队列中
     				openRoad(index,"FROMWX");
-    			}else if(data.status=="END"){//用户已断开
+    			}
+    			else if(data.status=="END"){
     				$.messager.alert("提示消息","此微信用户已断开连接！","warning");
     				leaveFlag(index);
     			}
@@ -1924,7 +1943,7 @@ function addWorkTab(nickName,serviceId) {
 	userData[index]["workNum"]++;
 	var random="0"+userData[index]["workNum"];
 	var id=serviceId+random.substring(random.length-2,random.length);
-	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj_t.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
+	var content = "<div id='tab"+nickName+"'><iframe id='"+id+"' frameborder='0' height='100%' src='http://10.224.2.177:7001/WebRoot/jsp/wx/wxdj.jsp?callSeq="+id+"&callNum=&phone="+userData[index].phone+"&Agentid="+admin.userId+"&Type=wx&org=5010'></iframe></div>";
 	$('#tabs').tabs('add', {
 		title : nickName,
 		content : content,

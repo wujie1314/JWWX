@@ -163,10 +163,10 @@ public class AutoSchedule {
 	        			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
 	    	            sendMsgWx(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。", entity.getWxOpenid());
 	    	            wxStatusTmpService.saveMsgDatebase(entity, "感谢您对重庆交通服务热线96096的支持，本次服务结束。",  entity.getWxOpenid());
-	    	            PeopleServic peopleServic= new PeopleServic();
+	    	           /* PeopleServic peopleServic= new PeopleServic();
 	    				peopleServic.completetask("P2");
 	    				totalP totalPpP=new totalP();
-	    				totalPpP.completetaskP1();
+	    				totalPpP.completetaskP1();*/
 	            	}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -735,10 +735,10 @@ public class AutoSchedule {
                     	 }
                     	 waitingMap.remove(key);
                     	 NavMenuInitUtils.getInstance().userDeptMap.remove(key);
-                    	 WaitQ waitQ=new WaitQ();
+                    	/* WaitQ waitQ=new WaitQ();
              			 waitQ.completetask();
              			 totalP totalPw=new totalP();
-             			 totalPw.completetaskU1end();
+             			 totalPw.completetaskU1end();*/
                     	 
                      }
     			} catch (Exception e) {
@@ -806,8 +806,8 @@ public class AutoSchedule {
      */
     private void checkServiceState1(long tempTimes, WxStatusTmpTEntity entity, String wxOpenId, String key,Integer deptId){
     	if(tempTimes >= CommonConstantUtils.serviceState11Times() && tempTimes < CommonConstantUtils.serviceState12Times()){
-    			SeatW seatW=new SeatW();
-    			seatW.startProcessInstance();
+    		/*	SeatW seatW=new SeatW();
+    			seatW.startProcessInstance();*/
     		if(entity.getWaitingHintNum() == 0){
     			sendMsgWx(entity, CommonConstantUtils.serviceState11SysHint(), wxOpenId);
        		 	entity.setWaitingHintNum(1);
@@ -824,10 +824,10 @@ public class AutoSchedule {
 //    		WeiXinConst.servicingMap.remove(key);
     		NavMenuInitUtils.getInstance().removeServiceMap(deptId,key);
     		NavMenuInitUtils.getInstance().userDeptMap.remove(key);
-    		SeatW seatW=new SeatW();
-    		seatW.completetask();
-    		totalP totalPs=new totalP();
-    		totalPs.completetaskS1end();
+    	/*	SeatW seatW=new SeatW();
+    		seatW.completetask();*/
+    		/*totalP totalPs=new totalP();
+    		totalPs.completetaskS1end();*/
        	 	if(entity.getWaitingHintNum() == 2){
        	 		sendMsgWx(entity, CommonConstantUtils.serviceState13SysHint(), wxOpenId);
        	 		wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.serviceState13SysHint(), wxOpenId);
@@ -843,10 +843,10 @@ public class AutoSchedule {
 //    			WeiXinConst.servicingMap.remove(key);
     			NavMenuInitUtils.getInstance().removeServiceMap(deptId, key);
     			NavMenuInitUtils.getInstance().userDeptMap.remove(key);
-    			PeopleServic peopleServic= new PeopleServic();
+    			/*PeopleServic peopleServic= new PeopleServic();
     			peopleServic.completetask("P2");
     			totalP totalPpP=new totalP();
-				totalPpP.completetaskP1();
+				totalPpP.completetaskP1();*/
         		sendMsgToService(entity.getSessionId(), CommonConstantUtils.sessionFinishSysHint(), wxOpenId, true);
         		wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.sessionFinishSysHint(), wxOpenId);
     		}
@@ -863,10 +863,10 @@ public class AutoSchedule {
     		} else if(tempTimes >= CommonConstantUtils.serviceState2UserTimes()){
 //    			WeiXinConst.servicingMap.remove(key);
     			NavMenuInitUtils.getInstance().removeServiceMap(deptId,key);
-    			PeopleServic peopleServic= new PeopleServic();
+    			/*PeopleServic peopleServic= new PeopleServic();
     			peopleServic.completetask("P2");
     			totalP totalPpP=new totalP();
-				totalPpP.completetaskP1();
+				totalPpP.completetaskP1();*/
     			sendMsgWxService(entity, CommonConstantUtils.serviceState2UserHint(), wxOpenId, false);
     			sendMsgToService(entity.getSessionId(), CommonConstantUtils.sessionFinishSysHint(), wxOpenId, true);
     			wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.sessionFinishSysHint(), wxOpenId);
@@ -901,10 +901,10 @@ public class AutoSchedule {
     				System.out.println("坐席第三次超时，从服务队列删除");
     				NavMenuInitUtils.getInstance().removeServiceMap(deptId,key);
     				NavMenuInitUtils.getInstance().userDeptMap.remove(key);
-    				PeopleServic peopleServic= new PeopleServic();
+    				/*PeopleServic peopleServic= new PeopleServic();
         			peopleServic.completetask("P2");
         			totalP totalPpP=new totalP();
-    				totalPpP.completetaskP1();
+    				totalPpP.completetaskP1();*/
     				sendMsgWxService(entity, CommonConstantUtils.serviceState23SysHint(), wxOpenId, false);
     				sendMsgToService(entity.getSessionId(), CommonConstantUtils.sessionFinishSysHint(), wxOpenId, true);
     				wxStatusTmpService.saveMsgDatebase(entity, CommonConstantUtils.sessionFinishSysHint(), wxOpenId);

@@ -19,6 +19,16 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
+	
+	<filter>
+		<filter-name>SessionFilter</filter-name>
+		<filter-class>org.jiaowei.util.SessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SessionFilter</filter-name>
+		<url-pattern>/login</url-pattern>
+	</filter-mapping>
+	
 	<filter>
 		<filter-name>RepeatedlyReadFilter</filter-name>
 		<filter-class>org.jiaowei.util.RepeatlyReadFilter</filter-class>

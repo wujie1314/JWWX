@@ -137,6 +137,12 @@ public class OthersController {
          }
          return list;
     }
+    /**
+     * 发送短信
+     * @param telephone
+     * @param orderId
+     * @return
+     */
     
     
     @RequestMapping(value = "others/sendNote",method=RequestMethod.POST)

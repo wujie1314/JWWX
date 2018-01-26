@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.type.descriptor.sql.NVarcharTypeDescriptor;
 import org.jiaowei.entity.CustomerServiceHisEntity;
 import org.jiaowei.entity.MsgFromCustomerServiceEntity;
 import org.jiaowei.entity.WxStatusTmpTEntity;
@@ -121,14 +122,14 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                     if("FROMWX".equals(pamars.get("type"))){//微信请求人工服务
 //                        String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
 //                                this.wxOpenId, String.format("您好，我是%s号座席，请问有什么可以帮您？", sysUserEntity.getUserId()));
-                    	SeatW seatW=new SeatW();
+                    	/*SeatW seatW=new SeatW();
                 		seatW.completetask();
                 		totalP totalPs=new totalP();
-                		totalPs.completetaskU1();
+                		totalPs.completetaskU1();*/
                         String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
                         		this.wxOpenId, String.format("您好，我是%s号座席，请问有什么可以帮您？", this.userId));
-                        PeopleServic peopleServic=new PeopleServic();
-                   	 	peopleServic.startProcessInstance();
+                       /* PeopleServic peopleServic=new PeopleServic();
+                   	 	peopleServic.startProcessInstance();*/
                         String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
 //                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
                     	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
@@ -139,7 +140,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                         try {
                         	String msg = "{\"Content\":\"" + "您好，我是"+userId+"号座席，请问有什么可以帮您？" + "\",\"CreateTime\":\"" + System.currentTimeMillis() / 1000 + "\",\"ToUserName\":\"gh_45216f693385\",\"FromUserName\":\"" + wxOpenId+ "\",\"MsgType\":\"autotext\",\"MsgId\":\"12345678900\"}";
                             session.sendMessage(new TextMessage(msg));
-                            peopleServic.completetask("P1");
+                           /* peopleServic.completetask("P1");*/
                         } catch (IOException e) {
                         	e.printStackTrace();
                             logger.info("发送系统消息超时异常.", e);
@@ -307,30 +308,38 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 
             Map<String, String> pamars = parseQueryString(queryString);
             this.wxOpenId = pamars.get("openId");
-            //通知微信用户
-            String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
-                    this.wxOpenId, "您已经断开与96096座席的连接.");
-
-            String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
+           
+          
 //            Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);
             
-        	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
-				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+        	if(!this.wxOpenId.subSequence(0, 3).equals("app")){ //不是app用户的话不用发送消息
+        		if(NavMenuInitUtils.getInstance().serviceMap.containsKey(this.wxOpenId)){//只有在服务队列里的才通知
+        			 //通知微信用户
+                    String jsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+                            this.wxOpenId, "您已经断开与96096座席的连接.");
+        			String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
+    				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+        		}
 			}
 
 //            WxStatusTmpTEntity entity = WeiXinConst.servicingMap.get(wxOpenId);
             WxStatusTmpTEntity entity = NavMenuInitUtils.getInstance().getServiceEntity(wxOpenId);
 //            entity.setServiceStatus(3);
             wxStatusTmpService.saveMsgDatebase(entity, "您已经断开与96096座席的连接.", wxOpenId);
-            NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
-            NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
-            NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);
-            NavMenuInitUtils.getInstance().messageMap.remove(wxOpenId);
+            if(NavMenuInitUtils.getInstance().userDeptMap.containsKey(wxOpenId)){
+            	  NavMenuInitUtils.getInstance().removeWaitMap(wxOpenId);
+                  NavMenuInitUtils.getInstance().removeServiceMap(wxOpenId);
+                  NavMenuInitUtils.getInstance().removeRemoveMap(wxOpenId);
+                  if(NavMenuInitUtils.getInstance().messageMap.containsKey(wxOpenId)){
+                	  NavMenuInitUtils.getInstance().messageMap.remove(wxOpenId);
+                  }
+            }
+          
 
-            PeopleServic peopleServic= new PeopleServic();
+           /* PeopleServic peopleServic= new PeopleServic();
 			peopleServic.completetask("P2");
 			totalP totalPpP=new totalP();
-			totalPpP.completetaskP1();
+			totalPpP.completetaskP1();*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);
@@ -379,6 +388,6 @@ public class SystemWebSocketHandler implements WebSocketHandler {
         }
         return map;
     }
-
+    
 
 }

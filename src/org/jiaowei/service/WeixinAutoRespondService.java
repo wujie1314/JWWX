@@ -13,4 +13,6 @@ public interface WeixinAutoRespondService extends CommonService {
 
 	List<WeixinAutoRespondEntity> getJuniorMenu(String juniorID);
 
+	List<WeixinAutoRespondEntity> getManualService(String contentCode);
+
 }
