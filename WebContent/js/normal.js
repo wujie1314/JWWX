@@ -449,7 +449,10 @@ function reConnUser(openid,typeName){
 					//分配用户后提示信息
 					var _temp=$("input[name='userState']");
 					$(_temp[userData[xth].seat]).next().css("background",color);
+					//声音提示
 					playVoice();
+					playVoice();
+					
 			    }else{
 			    	var _userData=getUserData(temp.openid);
 			    	_userData.status=true;
@@ -462,6 +465,7 @@ function reConnUser(openid,typeName){
 			    	for(var i=0;i<fff.length;i++){
 			    		$(fff[i]).css("color","#000");
 			    	}
+					playVoice();
 					playVoice();
 			    }
 			}else{

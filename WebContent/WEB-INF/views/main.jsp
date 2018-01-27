@@ -959,6 +959,7 @@ function getUser(){
 						}
 						// 标记
 						playVoice();
+						playVoice();
 				    }
 				}
 	        }
