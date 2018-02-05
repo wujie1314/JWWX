@@ -959,7 +959,11 @@ function getUser(){
 						}
 						// 标记
 						playVoice();
-						playVoice();
+						setTimeout(function(){
+							playVoice();
+						},2000 );
+						
+						
 				    }
 				}
 	        }

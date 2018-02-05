@@ -592,12 +592,12 @@ public class NavMenuServiceImpl implements NavMenuService {
 							System.out.println("从自动回复进入人工服务-----------------");
 							returnString+="请选择以下服务项进入人工服务： \n";
 							result = autoRespondService.getManualService("ManualService"); // 0096096表示人工服务
-							if(menu.get(4).getDeptID() != null && menu.get(0).equals(0)){
+						/*	if(menu.get(4).getDeptID() != null && menu.get(0).equals(0)){
 								// 其他服务进交委热线总中心人工服务
 								manualService(response, map, openId, menu.get(0).getDeptID());
 							}
 							// 删掉导航菜单
-							WeiXinConst.navAutoMenu.remove(openId);
+							WeiXinConst.navAutoMenu.remove(openId);*/
 						}
 						else if( n >= 1 &&  n<= menu.size()){
 							// 在菜单内

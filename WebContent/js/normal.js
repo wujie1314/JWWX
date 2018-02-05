@@ -451,7 +451,7 @@ function reConnUser(openid,typeName){
 					$(_temp[userData[xth].seat]).next().css("background",color);
 					//声音提示
 					playVoice();
-					playVoice();
+				
 					
 			    }else{
 			    	var _userData=getUserData(temp.openid);
@@ -466,7 +466,7 @@ function reConnUser(openid,typeName){
 			    		$(fff[i]).css("color","#000");
 			    	}
 					playVoice();
-					playVoice();
+			
 			    }
 			}else{
 				$.messager.alert("提示消息","此微信用户正与其他座席聊天，无法连接！","warning");
