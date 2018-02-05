@@ -1,11 +1,8 @@
  html,body,.container{
 	margin:0 !important;
 	padding:0 !important;
-	z-index: -10;
-	position:fixed;
 	overflow:hidden;
 	width:100% !important;
-	height:100%;
 	font-family: "Microsoft YaHei";
 }
 
@@ -13,18 +10,16 @@
 	width:100%;
 	margin:0 !important;
 	display:flex;
+	z-index:10;
 }
 
 .contentFoot .row{
 	width:100%;
-	height:15%;
+	min-height:14%;
 	margin:0 !important;
 	display:flex;
 }
 
-.showPosition{
-	height:17% !important;
-}
 .col-xs-12, .col-md-12, .col-lg-12{
 	width:100%;
 	padding:0 !important;
@@ -49,7 +44,7 @@
 	flex-direction:column;
 }
 
-#relocation,#showRepairFactory,#message {
+#relocation,#showRepairFactory {
 	width:60%;
 	height:26%;
 	background:#fff;
@@ -66,7 +61,7 @@
 	width: 100%;
 	height: 42%;
 	position:absolute !important;
-	z-index: 20;
+	z-index: 200;
 	bottom: 0px;
 	background:#fff;
 }
@@ -108,16 +103,10 @@
 	margin-top:1%;
 	background:#fff;
 	border:none;
-	width:90%;
+	width:80%;
 	height:90%;
 }
 
-#file{
-	font-size:36px;
-	margin-top:2%;
-	background:#fff;
-	height:80%;
-}
 #emergency1,#emergency2{
 	width:40px;
 	height:40px;
@@ -128,13 +117,16 @@
 
 .submitBut{
 	width:100%;
-	height:25%;
-	margin:0 !important;
+	height:30%;
+	margin:auto !important;
+	display:flex;
+	flex-direction:column;
+	text-align:center;
 }
 .submitBut .submit{
 	width:100%;
-	height:90%;
-	margin-top:3%;
+	height:42%;
+	margin:auto;
 	padding:0 !important;
 	display:flex;
 	justify-content:center;
@@ -157,42 +149,30 @@ hr{
 	border-top:1px solid #e5e5e5;
 	margin:0 !important;
 }
-/**
-.drivingDirection,.currentPosition{
-	height:18%;
-	width:100%;
-	display:flex;
-	align-items:center;
+
+#message{
+	position:absolute;
+	width:70px;
+	height:70px;
+	right:8%;
+	display:inline-block;
+	z-index:100;
+	border:none;
 }
 
-.repairReason,.phoneNumber{
-	height:18%;
-	width:80%;
-	display:flex;
-	align-items:center;
+#callPhone{
+	position:absolute;
+	width:80px;
+	height:80px;
+	right:7%;
+	display:inline-block;
+	margin-top:14%;
+	box-shadow:0 0 40px #696969;
+	border:none;
+	z-index:100;
 }
 
-
-
-.emergency{
-	margin-left:10px;
-	width:60%;
-	color:#333;
-	display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+#pastDue{
+	color:#f00;
+	display:none;
 }
-.emergency input{
-	width:40px;
-	height:40px;
-	margin:0 10px 0 0;
-	vertical-align:text-bottom;
-	margin-bottom:3px;
-}
-
-.emergency label{
-	margin-right:5%;
-}
-*/
-

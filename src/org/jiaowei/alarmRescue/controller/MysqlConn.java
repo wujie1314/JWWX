@@ -56,7 +56,7 @@ public class MysqlConn {
 	     pre.setString(5,map.get("content_desc").toString());
 	     pre.setString(6,map.get("contact_way").toString());
 	     pre.setString(7,map.get("currentLocation").toString());
-	     pre.setString(8,"101");
+	     pre.setString(8,"102");
 	     pre.setString(9,map.get("content_desc").toString());
 	     pre.setString(10,map.get("longitude").toString());
 	     pre.setString(11,map.get("latitude").toString());
@@ -78,7 +78,7 @@ public class MysqlConn {
 	  	     pre.setString(5,map.get("content_desc").toString());
 	  	     pre.setString(6,map.get("contact_way").toString());
 	  	     pre.setString(7,map.get("currentLocation").toString());
-	  	     pre.setString(8,"101");
+	  	     pre.setString(8,"102");
 	  	     pre.setString(9,map.get("content_desc").toString());
 	  	     pre.setString(10,map.get("longitude").toString());
 	  	     pre.setString(11,map.get("latitude").toString());
@@ -87,50 +87,6 @@ public class MysqlConn {
 	  	     System.out.println(pre.toString());
 		     int num = pre.executeUpdate();// 执行查询，注意括号中不需要再加参数
 	     }
-//			if (true) {
-//				sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,GETDATE,STATE,REMARK,DLJD,DLWD,UDID,MYID) "
-//						+ " values('"
-//						+ "SSJ"+map.get("create_time")
-//						+ "',"
-//						+ "to_date('"+map.get("create_time")+"','yyyy-mm-dd hh24:mi:ss')"
-//						+ ",'"
-//						+ "51123132"
-//						+ "','"
-//						+ map.get("type")
-//						+ "','"
-//						+ map.get("content_desc") //内容
-//						+ "','"
-//						+ map.get("contact_way") // fangs
-//						+ "','"
-//						+ "位置"
-//						+ "','"
-//						+ "153154687" // shouji
-//						+ "',"
-//						+ "to_date('"+map.get("create_time")+"','yyyy-mm-dd hh24:mi:ss')"
-//						+ ",'"
-//						+ " 1"
-//						+ "','"
-//						+ "备注"
-//						+ "','"
-//						+ map.get("longitude")
-//						+ "','"
-//						+ map.get("latitude") 
-//						+ "','"
-//						+ "123456444"
-//						+ "','"
-//						+ map.get("ID")
-//						+ "')";
-				//			} else {
-//				sql += "update HNII.HNII_ALARM_CREATE_TEST  SET CALLREASON='"
-//						+map.get("type") + "',CONTENT='"
-//						+ map.get("content_desc") + "', LXFS='" + map.get("contact_way")
-//						+ "',DLJD='" + map.get("longitude")
-//						+ "',DLWD='" + map.get("latitude")
-//						+ "'id=" + map.get("ID");
-//				System.out.println("=======" + sql);
-//			}
-//
-//			statement.execute(sql);
 
 	     conn.close();
 

@@ -22,7 +22,7 @@
 	href="alarmRescue/css/alarmRescue.css">
 <link rel="stylesheet" type="text/css"
 	href="alarmRescue/css/bootstrap.css">
-<script src="alarmRescue/js/jquery-2.1.1.min.js"></script>
+	<script src="alarmRescue/js/jquery-2.1.1.min.js"></script>
 <script src="alarmRescue/js/bootstrap.js"></script>
 
 </head>
@@ -33,9 +33,6 @@
 			<div class="col-xs-12 col-md-12 col-lg-12 column" id="dituContent"></div>
 		</div>
 		<div class="Relocation">
-			<div id="message">
-				<img src="alarmRescue/img/icon_message.png" />
-			</div>
 			<div id="showRepairFactory">
 				<img src="alarmRescue/img/icon_repair.png" />
 			</div>
@@ -46,71 +43,78 @@
 
 		<div class="row clearfix foot">
 			<div class="col-xs-12 col-md-12 col-lg-12 column contentFoot">
+				<div class="row clearfix ">
+					<div class="col-xs-2 col-md-2 col-lg-2 column">
+						<label class="labelInfo">当前位置:</label>
+					</div>
+					<div class="col-xs-10 col-md-10 col-lg-10 column">
+						<label id="currentLocation"></label>
+					</div>
+				</div>
+				<hr />
+				<div class="row clearfix">
+					<div class="col-xs-2 col-md-2 col-lg-2 column">
+						<label class="labelInfo">行驶方向:</label>
+					</div>
+					<div class="col-xs-10 col-md-10 col-lg-10 column location" style="display:flex;flex-direction:row;">
+						<input name="direction" type="text" placeholder="请输入起点"
+							id="startPosition" />
+						<hr
+							style="width:8%;border:none;margin:auto !important;display:flex;border-top:5px solid #333;" />
+						<input name="direction" type="text" placeholder="请输入终点"
+							id="endPosition" />
+					</div>
 
-		<div class="row clearfix showPosition">
-			<div class="col-xs-2 col-md-2 col-lg-2 column">
-				<label class="labelInfo">当前位置:</label>
-			</div>
-			<div class="col-xs-10 col-md-10 col-lg-10 column">
-				<label id="currentLocation"></label>
-			</div>
-		</div>
-		<hr/>
-		<div class="row clearfix">
-			<div class="col-xs-2 col-md-2 col-lg-2 column">
-				<label class="labelInfo">行驶方向:</label>
 				</div>
-				<div class="col-xs-10 col-md-10 col-lg-10 column location">
-				 <input name="direction"
-					type="text" placeholder="请输入起点" id="startPosition" />
-					<hr style="width:8%;border:none;margin:0 !important;display:inline-flex;border-top:5px solid #333;"/>
-				<input name="direction" type="text" placeholder="请输入终点"
-					id="endPosition" />
+				<hr />
+				<div class="row clearfix">
+					<div class="col-xs-2 col-md-2 col-lg-2 column">
+						<label class="labelInfo">联系电话:</label>
+					</div>
+					<div class="col-xs-10 col-md-10 col-lg-10 column tel">
+						<input name="phone" type="text" placeholder="请输入联系电话"
+							id="phoneNum"></input> 
+			
+							<img src="alarmRescue/img/icon_message.png" id="message" />
+							<img src="alarmRescue/img/icon_phone.png" id="callPhone" class="img-circle" />				
+			
+					</div>
 				</div>
-
-			</div>
-		<hr/>
-		<div class="row clearfix">
-			<div class="col-xs-2 col-md-2 col-lg-2 column">
-				<label class="labelInfo">联系电话:</label> 
+				<hr />
+				<div class="row clearfix">
+					<div class="col-xs-2 col-md-2 col-lg-2 column">
+						<label class="labelInfo">维修原因:</label>
+					</div>
+					<div class="col-xs-10 col-md-10 col-lg-10 column emergency">
+						<label> <input name="repairReason" type="radio"
+							id="emergency1" checked="checked" name="报警" value="报警" />报警
+						</label> <label style="margin-left:5% !important;"> <input
+							name="repairReason" type="radio" name="求助" value="求助"
+							id="emergency2">求助
+						</label>
+					</div>
 				</div>
-				<div class="col-xs-10 col-md-10 col-lg-10 column tel">
-				<input name="phone"
-					type="text" placeholder="请输入联系电话" id="phoneNum"></input>
-			</div>
-			</div>
-		<hr/>
-		<div class="row clearfix">
-			<div class="col-xs-2 col-md-2 col-lg-2 column">
-			<label class="labelInfo">维修原因:</label>
-			</div>
-			<div class="col-xs-10 col-md-10 col-lg-10 column emergency">
-				<label>
-					<input name="repairReason" type="radio" id="emergency1" checked="checked" name="报警" value="报警"/>报警</label>
-				<label style="margin-left:5% !important;">
-					<input name="repairReason" type="radio" name="求助" value="求助" id="emergency2" >求助</label>
+				<hr />
+		<!-- 		<div class="row clearfix">
+					<div class="col-xs-2 col-md-2 col-lg-2 column">
+						<label class="labelInfo">文件上传:</label>
+					</div>
+					<div class="col-xs-10 col-md-10 col-lg-10 column file">
+						<input type="file" id="file" name="file" multiple="multiple" accept="video/*,image/*" />
+					</div>
+				</div>     -->
+				<hr />
+				<div class="row clearfix submitBut">
+					<label id="pastDue">该工单已过期</label>
+					<div class="col-xs-12 col-md-12 col-lg-12 column submit">
+						<input type="button" value="提交" id="submitButton"
+							onclick="submit();">
+					</div>
 				</div>
 			</div>
-		<hr/>
-		<div class="row clearfix">
-			<div class="col-xs-2 col-md-2 col-lg-2 column">
-				<label class="labelInfo">文件上传:</label> 
-				</div>
-				<div class="col-xs-10 col-md-10 col-lg-10 column file">
-				<input type="file" id="file"></input>
-			</div>
-			</div>
-		<hr/>
-		<div class="row clearfix submitBut">
-			<div class="col-xs-12 col-md-12 col-lg-12 column submit">
-				<input type="button" value="提交" id="submitButton"
-					onclick="submit();">
-			</div>
-		</div>
-	</div>
 		</div>
 	</div>
 </body>
-<!-- 百度地图 -->
+
 <script src="alarmRescue/js/alarmRescue.js"></script>
 </html>
