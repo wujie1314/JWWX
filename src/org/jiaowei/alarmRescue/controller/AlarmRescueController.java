@@ -33,7 +33,7 @@ public class AlarmRescueController {
 				@RequestParam(value="latitude") String latitude,
 				@RequestParam(value="startPosition",required=false) String startPosition,
 				@RequestParam(value="endPosition",required=false) String endPosition,
-				@RequestParam(value="phoneNum",required=false) String phoneNum,
+				@RequestParam(value="contact_way",required=false) String phoneNum,
 				@RequestParam(value="repairReason",required=false) String repairReason) throws UnsupportedEncodingException{
 			
 		   if(phoneNum != null && !phoneNum.isEmpty())

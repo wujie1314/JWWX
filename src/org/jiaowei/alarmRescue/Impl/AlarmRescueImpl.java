@@ -17,14 +17,18 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String content_desc = "方向  起点:"+startPosition+" 终点:"+endPosition+"  维修原因:"+repairReason;
 		String contact_way = phoneNum;
-		String jwd = longitude + "," + latitude;
+		if (repairReason.equals("报警")){
+			map.put("type", "报警");
+		}
+		else if (repairReason.equals("求助")) {
+			map.put("type", 13);
+		}
 		map.put("ID", ID);
 		map.put("currentLocation", currentLocation);
 		map.put("content_desc", content_desc);
 		map.put("contact_way", contact_way);
 		map.put("longitude", longitude);
 		map.put("latitude", latitude);
-		map.put("type", repairReason);
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		String date = dateFormat.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳

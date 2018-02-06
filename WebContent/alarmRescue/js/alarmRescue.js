@@ -1,9 +1,11 @@
 var latitude = "";
 var longitude = "";
 var id = getUrlParam("ID");
-// var id = "wx1515418892633";
+// var id = "wx1517817168222";
 var phone = getUrlParam("phone");
-
+var timestamp = getUrlParam("timestamp");
+var isPass24Hours;
+var LXFS = getUrlParam("LXFS");
 var map;
 var marker2;
 var marker;
@@ -32,6 +34,20 @@ $(function() {
 							e.preventDefault();
 						}
 					})
+					
+	isPass24Hours = new Date().getTime() - timestamp;
+	
+	if(LXFS != "") {
+		$("#phoneNum").val(LXFS);
+	}
+	if(isPass24Hours > 86400000) {
+		$('#pastDue').css("display", "block");
+		$('#submitButton').css("background","#808080");
+		$('body').append("<div style='position:absolute;z-index:1000;width:100%;height:100%;'></div>");
+	}
+	else{
+		$('#pastDue').css("display", "none");
+	}
 });
 
 function createMap() {
@@ -90,7 +106,6 @@ function createMap() {
 					point = new AMap.LngLat(longitude, latitude);
 					marker.setPosition(point);
 					map.setZoomAndCenter(16, point);
-					alert(point);
 					geocoder.getAddress(point, function(status, result) {
 						if (status === 'complete' && result.info === 'OK') {
 							var address = result.regeocode.formattedAddress; // 返回地址描述
@@ -108,36 +123,36 @@ function createMap() {
 		AMap.event.addListener(geolocation, 'error', onError); // 返回定位出错信息
 	});
 
-	AMap.event.addListener(map, 'click', function(e) {
-		map.remove(markerArr);
-		longitude = e.lnglat.getLng();
-		latitude = e.lnglat.getLat();
-		point = new AMap.LngLat(longitude, latitude);
-
-		geocoder.getAddress(point, function(status, result) {
-			if (status === 'complete' && result.info === 'OK') {
-				$("#currentLocation").html(result.regeocode.formattedAddress);
-			}
-		});
-		marker2 = new AMap.Marker({
-			icon : "alarmRescue/img/icon_location.png",
-			position : point,
-			draggable : false,
-			cursor : 'move',
-			raiseOnDrag : true,
-			map : map
-		});
-
-		markerArr.push(marker2);
-		// marker2.setAnimation('AMAP_ANIMATION_BOUNCE');
-		marker2.setMap(map);
-
-		marker2.setTitle("用户可以自定义新的位置");
-		marker2.setLabel({
-			offset : new AMap.Pixel(45, -10),
-			content : "自定义的位置"
-		});
-	});
+//	AMap.event.addListener(map, 'click', function(e) {
+//		map.remove(markerArr);
+//		longitude = e.lnglat.getLng();
+//		latitude = e.lnglat.getLat();
+//		point = new AMap.LngLat(longitude, latitude);
+//
+//		geocoder.getAddress(point, function(status, result) {
+//			if (status === 'complete' && result.info === 'OK') {
+//				$("#currentLocation").html(result.regeocode.formattedAddress);
+//			}
+//		});
+//		marker2 = new AMap.Marker({
+//			icon : "alarmRescue/img/icon_location.png",
+//			position : point,
+//			draggable : false,
+//			cursor : 'move',
+//			raiseOnDrag : true,
+//			map : map
+//		});
+//
+//		markerArr.push(marker2);
+//		// marker2.setAnimation('AMAP_ANIMATION_BOUNCE');
+//		marker2.setMap(map);
+//
+//		marker2.setTitle("用户可以自定义新的位置");
+//		marker2.setLabel({
+//			offset : new AMap.Pixel(45, -10),
+//			content : "自定义的位置"
+//		});
+//	});
 }
 
 function onComplete(data) { // 解析定位结果
@@ -196,7 +211,7 @@ function submit() {
 		
 		parame.startPosition = encodeURI($('#startPosition').val());
 		parame.endPosition = encodeURI($('#endPosition').val());
-		parame.phoneNum = encodeURI($('#phoneNum').val());
+		parame.contact_way = encodeURI($('#phoneNum').val());
 		parame.repairReason = encodeURI(repairReason);
 		$.ajax({
 			url : 'alarmRescue/alarmRescue',
@@ -216,6 +231,10 @@ $("#showRepairFactory")
 					window.location = "http://ditu.amap.com/search?query=%E7%BB%B4%E4%BF%AE&query_type=RQBXY&longitude=106.322422&latitude=29.586976&city=500000&zoom=16";
 
 				});
+
+$("#callPhone").click(function(){
+	window.location.href = "tel:12122";
+});
 
 function getUrlParam(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
