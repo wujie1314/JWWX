@@ -16,4 +16,5 @@
 /target/
 /WebContent/WEB-INF/classes/*
 /web/
+/class/
 
