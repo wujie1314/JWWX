@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>小鹏商城管理平台</title>
+   <link rel="stylesheet" href="http://www.gbtags.com/gb/networks/uploads/44b0c6e7-0395-4825-bff4-5914e6153ee0/css/bootstrap.min.css">
+   <link rel="stylesheet" href="http://www.gbtags.com/gb/networks/uploads/44b0c6e7-0395-4825-bff4-5914e6153ee0/css/ladda-themeless.css">
+   <link rel="stylesheet" href="css/bootstrap-cerulean.min.css">
+   <style>
+   /*下面是bootstrap按钮定义*/
+.center-block{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+   </style>
+   <!-- 最后导入需要的javascript及其CSS相关文件 -->
+<script type="text/javascript" src="http://www.gbtags.com/gb/networks/uploads/44b0c6e7-0395-4825-bff4-5914e6153ee0/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://www.gbtags.com/gb/networks/uploads/44b0c6e7-0395-4825-bff4-5914e6153ee0/js/jquery.jribbble.min.js"></script>
+<script type="text/javascript" src="http://www.gbtags.com/gb/networks/uploads/44b0c6e7-0395-4825-bff4-5914e6153ee0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.gbtags.com/gb/networks/uploads/44b0c6e7-0395-4825-bff4-5914e6153ee0/js/spin.js"></script>
+<script type="text/javascript" src="http://www.gbtags.com/gb/networks/uploads/44b0c6e7-0395-4825-bff4-5914e6153ee0/js/ladda.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Bootstrap3按钮“加载中”UI效果</h1>
+  </div>
+  <div class="row" id="wallcontent">
+    
+  </div>
+  
+  <br/>
+  <!-- 注意这里要引入ladda-button的CSS定义-->
+  <button class="btn btn-primary btn-lg ladda-button center-block" id="showmore" data-style="contract-overlay"><!-- 如果你需要其它效果，请修改此data-style属性，这里我们使用contract-overlay -->
+    <span class="ladda-label">
+      更多设计
+    </span>
+  </button>
+</div>
+<script>
+/* 
+在今天的这个演示代码中，我们依然试用jdribbble来获取数据，具体使用请查看另外一个代码教程
+地址：http://www.gbtags.com/gb/rtreplayerpreview/7.htm
+*/
+
+$(function(){
+  var $wallcontent = $('#wallcontent'), pagenum=1, $showmore=$('#showmore');
+  
+  //定义一个加载数据内容的方法
+  function loadshots(){
+  //定义Ladda相关的方法，触发“加载中"效果
+  var l = Ladda.create(this);
+  l.start();
+  //设置进度
+  l.setProgress(0.3);
+  
+  $showmore.find('.ladda-label').text('loading...');
+  
+  //以下调用jdribbble相关的方法来获取远程数据，这里来自dribbble.com
+  $.jribbble.getShotsByList('popular', function(data){
+    var items=[];
+    $.each(data.shots, function(i,shot){
+      items.push('<article class="col-md-2 col-sm-3 col-xs-4">');
+      items.push('<a href="' + shot.url + '" target="_blank" class="linkc">');
+      items.push('<img class="img-responsive" src="' + shot.image_teaser_url + '" alt="' + shot.title + '">');
+      items.push('</a>');
+      items.push('</article>');
+    });
+    
+    $wallcontent.append(items.join(''));
+    
+    //最后设置完成加载并且停止
+    l.setProgress(1);
+    l.stop();
+    
+    $showmore.find('.ladda-label').text('更多设计');
+  }, {page:pagenum, per_page:24});
+  
+  pagenum++; //继续加载下一页数据
+  
+  }
+  
+  //绑定方法
+  $showmore.on('click', loadshots);
+  
+  //页面加载后立刻触发
+  $showmore.trigger('click');
+  
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.url">jdbc:oracle:thin:@localhost:1521:/jwwx</property>
+		<property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
+		<property name="hibernate.connection.isolation">4</property>
+		<mapping class="org.jiaowei.entity.WxStatusTmpTEntity" />
+		<mapping class="org.jiaowei.entity.WeixinPublicInfoEntity" />
+		<!-- DB schema will be updated if needed -->
+		<!-- <property name="hbm2ddl.auto">update</property> -->
+	</session-factory>
+</hibernate-configuration>

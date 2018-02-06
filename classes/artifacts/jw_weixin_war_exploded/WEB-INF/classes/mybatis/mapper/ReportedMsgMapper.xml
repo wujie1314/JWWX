@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jiaowei.mybatis.dao.ReportedMsgDao">
+	
+	<sql id="sql_column">
+		repoId,repoUserName,repoUserPhone,repoDetails,repoCreateTime
+		,repoType,repoImgUrl,repoState
+	</sql>
+	<sql id="sql_where">
+		where 1=1
+		<if test="beginDate != null">
+			AND repoCreateTime >= #{beginDate}
+		</if>
+		<if test="endDate != null">
+			AND repoCreateTime <![CDATA[ < ]]> #{endDate}
+		</if>
+		<if test="repoUserName != null and repoUserName != ''">
+			AND repoUserName =like '%'#{repoUserName}'%'
+		</if>
+		<if test="repoUserPhone != null and repoUserPhone != ''">
+			AND repoUserPhone like '%'#{repoUserPhone}'%'
+		</if>
+		<if test="searcKeyword != null and searcKeyword != ''">
+			AND (repoUserName like '%'||#{searcKeyword}||'%' or repoUserPhone like '%'||#{searcKeyword}||'%' )
+		</if>
+		<if test="repoType != null">
+			AND repoType = #{repoType}
+		</if>
+		<if test="repoState != null">
+			AND repoState = #{repoState}
+		</if>
+	</sql>
+
+	<select id="queryList" parameterType="Map" resultType ="reportedMsgVo">
+		select <include refid="sql_column"/>
+		from reported_msg 
+		<include refid="sql_where"/>
+	</select>
+	<select id="queryCount" parameterType="Map" resultType ="Int">
+		select count(1)
+		from reported_msg 
+		<include refid="sql_where"/>
+	</select>
+	<select id="queryPageList" parameterType="Map" resultType="reportedMsgVo">
+		SELECT * FROM (
+			SELECT tt.*, ROWNUM AS rowno FROM ( 
+				SELECT t1.* FROM (
+					SELECT * FROM reported_msg t 
+					<include refid="sql_where"/>
+					ORDER BY REPOCREATETIME desc
+				) t1
+			) tt where ROWNUM <![CDATA[ <= ]]> #{limitEnd} 
+		) table_alias WHERE table_alias.rowno > #{limitBegin}
+	</select>
+	<insert id="insert" parameterType="reportedMsgVo">
+		insert into reported_msg(<include refid="sql_column"/>) 
+		values(#{repoId},#{repoUserName},#{repoUserPhone},#{repoDetails},#{repoCreateTime},#{repoType},#{repoImgUrl},#{repoState})
+	</insert>
+	<update id="update" parameterType="reportedMsgVo">
+		update reported_msg set repoState = #{repoState} where repoId = #{repoId}
+	</update>
+	<delete id="delete" parameterType="Object">
+		delete from reported_msg where repoId = #{repoId}
+	</delete>
+</mapper>

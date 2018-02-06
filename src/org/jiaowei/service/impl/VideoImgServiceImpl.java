@@ -83,7 +83,7 @@ public class VideoImgServiceImpl extends CommonServiceImpl implements
 			int count=1;
 			for (int i=0;i<objList.size();i++) {
 				Object[] obj=objList.get(i);
-				String returnStr[]={"TEST","TEST"};
+				String returnStr[]={"TEST","TEST", "TEST"};
 				String type="";
 				if(isHot!=null&&isHot==1 || isCollect != null){
 					videType=new Integer(String.valueOf(obj[5]));
@@ -111,7 +111,18 @@ public class VideoImgServiceImpl extends CommonServiceImpl implements
 							map.put("videUrl1", obj[2]);
 						}
 						else{
-							map.put("videUrl1", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[1]);
+//							map.put("videUrl1", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[1]);
+							/**
+							 * 新增短视频
+							 * @author lgaoyi
+							 * @date 2018-02-05 16:34:57
+							 */
+							if (!"NO".equals(returnStr[1])) {
+								map.put("videUrl1", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[1]);
+							}
+							if (!"NO".equals(returnStr[2])) {
+								map.put("shortVideUrl1", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[2]);
+							}
 						}
 						map.put("videDiagramUrl1", obj[3]);
 						int collent = 0;
@@ -137,7 +148,18 @@ public class VideoImgServiceImpl extends CommonServiceImpl implements
 							map.put("videUrl", obj[2]);
 						}
 						else{
-							map.put("videUrl", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[1]);
+//							map.put("videUrl", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[1]);
+							/**
+							 * 新增短视频
+							 * @author lgaoyi
+							 * @date 2018-02-05 16:35:31
+							 */
+							if (!"NO".equals(returnStr[1])) {
+								map.put("videUrl", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[1]);
+							}
+							if (!"NO".equals(returnStr[2])) {
+								map.put("shortVideUrl", "/WS/"+type+"/"+returnStr[0]+"/"+returnStr[2]);
+							}
 						}
 						int collent = 0;
 						if(StringUtil.isNotEmpty(obj[6])){
@@ -258,7 +280,7 @@ public class VideoImgServiceImpl extends CommonServiceImpl implements
 	}
 	
 	public static String[] readAllFiles(String type,String url){
-		String resultStr[]={"NO","NO"};
+		String resultStr[]={"NO","NO", "NO"}; // [0]url，[1]图片名称，[2]视频名称
 		String path="";
 		String[] urls=url.split(",");
 		for(int j=0;j<urls.length;j++){
@@ -267,13 +289,30 @@ public class VideoImgServiceImpl extends CommonServiceImpl implements
 			File file = new File(filePath);
 			if(file.exists()){
 				File[] files = file.listFiles();
-				for(int i=0; i<files.length; i++){
-					String str = files[i].getName();
-					if(str.contains(".jpg")){
-						path=files[i].getName();
+//				for(int i=0; i<files.length; i++){
+//					String str = files[i].getName();
+//					if(str.contains(".jpg")){
+//						path=files[i].getName();
+//						resultStr[0]=url;
+//						resultStr[1]=path;
+//						return resultStr;
+//					}
+//				}
+				/**
+				 * 新增视频
+				 * @author lgaoyi
+				 * @date 2018-02-05 16:21:36
+				 */
+				for(File f : files){
+					String str = f.getName();
+					if(str.contains(".jpg")
+							&& "NO".equals(resultStr[1])){
 						resultStr[0]=url;
-						resultStr[1]=path;
-						return resultStr;
+						resultStr[1]=str;
+					} else if (str.contains(".mp4")
+							&& "NO".equals(resultStr[2])) {
+						resultStr[0]=url;
+						resultStr[2]=str;
 					}
 				}
 			}
