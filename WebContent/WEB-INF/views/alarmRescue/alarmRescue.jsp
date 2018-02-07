@@ -74,10 +74,10 @@
 					<div class="col-xs-10 col-md-10 col-lg-10 column tel">
 						<input name="phone" type="text" placeholder="请输入联系电话"
 							id="phoneNum"></input> 
-			
-							<img src="alarmRescue/img/icon_message.png" id="message" />
-							<img src="alarmRescue/img/icon_phone.png" id="callPhone" class="img-circle" />				
-			
+			<div id="frame">
+						<!--  <img src="alarmRescue/img/icon_message.png" id="message" />-->	
+							<img src="alarmRescue/img/icon_phone.png" id="callPhone"/>				
+			</div>
 					</div>
 				</div>
 				<hr />

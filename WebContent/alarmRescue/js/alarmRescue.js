@@ -34,13 +34,13 @@ $(function() {
 							e.preventDefault();
 						}
 					})
-					
-	isPass24Hours = new Date().getTime() - timestamp;
-	
+
+	isPass24Hours = new Date().getTime() / 1000 - timestamp;
+
 	if(LXFS != "") {
 		$("#phoneNum").val(LXFS);
 	}
-	if(isPass24Hours > 86400000) {
+	if(isPass24Hours > 86400) {
 		$('#pastDue').css("display", "block");
 		$('#submitButton').css("background","#808080");
 		$('body').append("<div style='position:absolute;z-index:1000;width:100%;height:100%;'></div>");
@@ -56,7 +56,7 @@ function createMap() {
 		resizeEnable : true,
 		viewMode : '3D',
 		rotateEnable : false,
-		zoom : 12,
+		zoom : 16,
 		center : point
 	});
 	map.setStatus({
@@ -100,19 +100,27 @@ function createMap() {
 		geolocation.getCurrentPosition(function(status, result) {
 			if (status === 'complete') {
 				point = result.position;
-				new AMap.convertFrom(point, 'gps', function(status, result) {
-					latitude = result.locations[0].lat;
-					longitude = result.locations[0].lng;
-					point = new AMap.LngLat(longitude, latitude);
-					marker.setPosition(point);
-					map.setZoomAndCenter(16, point);
-					geocoder.getAddress(point, function(status, result) {
-						if (status === 'complete' && result.info === 'OK') {
-							var address = result.regeocode.formattedAddress; // 返回地址描述
-							$("#currentLocation").html(address);
-						}
-					});
+				geocoder.getAddress(point, function(status, result) {
+					if (status === 'complete' && result.info === 'OK') {
+						marker.setPosition(point);
+						map.setZoomAndCenter(18, point);
+						var address = result.regeocode.formattedAddress; // 返回地址描述
+						$("#currentLocation").html(address);
+					}
 				});
+//				new AMap.convertFrom(point, 'gps', function(status, result) {
+//					latitude = result.locations[0].lat;
+//					longitude = result.locations[0].lng;
+//					point = new AMap.LngLat(longitude, latitude);
+//					marker.setPosition(point);
+//					map.setZoomAndCenter(18, point);
+//					geocoder.getAddress(point, function(status, result) {
+//						if (status === 'complete' && result.info === 'OK') {
+//							var address = result.regeocode.formattedAddress; // 返回地址描述
+//							$("#currentLocation").html(address);
+//						}
+//					});
+//				});
 			}
 
 		});
@@ -157,31 +165,41 @@ function createMap() {
 
 function onComplete(data) { // 解析定位结果
 	var point1 = [ data.position.getLng(), data.position.getLat() ];
-	new AMap.convertFrom(point1, 'gps', function(status, result) {
-		latitude = result.locations[0].lat;
-		longitude = result.locations[0].lng;
-		point = new AMap.LngLat(longitude, latitude);
-		marker.setPosition(point);
-		map.setZoomAndCenter(16, point);
-		map.remove(markerArr);
-		geocoder.getAddress(point, function(status, result) {
-			if (status === 'complete' && result.info === 'OK') {
-				$("#currentLocation").html(result.regeocode.formattedAddress);
-			}
-		});
+	
+	geocoder.getAddress(point, function(status, result) {
+		if (status === 'complete' && result.info === 'OK') {
+			marker.setPosition(point);
+			map.setZoomAndCenter(18, point);
+			$("#currentLocation").html(result.regeocode.formattedAddress);
+		}
 	});
+//	new AMap.convertFrom(point1, 'gps', function(status, result) {
+//		latitude = result.locations[0].lat;
+//		longitude = result.locations[0].lng;
+//		point = new AMap.LngLat(longitude, latitude);
+//		marker.setPosition(point);
+//		map.setZoomAndCenter(18, point);
+//		map.remove(markerArr);
+//	
+//		geocoder.getAddress(point, function(status, result) {
+//			if (status === 'complete' && result.info === 'OK') {
+//			
+//				$("#currentLocation").html(result.regeocode.formattedAddress);
+//			}
+//		});
+//	});
 };
 function onError(data) { // 解析定位错误信息
 	map.remove(markerArr);
 	switch (data.info) {
 	case 'PERMISSION_DENIED':
-		$("#currentLocation").html("浏览器阻止了定位操作,请确定GPS是否打开");
+		$("#currentLocation").html("浏览器阻止了定位操作");
 		break;
 	case 'POSITION_UNAVAILBLE':
 		$("#currentLocation").html("无法获得当前位置,请确定GPS是否打开");
 		break;
 	case 'TIMEOUT':
-		$("#currentLocation").html("定位超时,请确定GPS是否打开");
+		$("#currentLocation").html("定位超时");
 		break;
 	default:
 		$("#currentLocation").html("未知错误,请确定GPS是否打开");
