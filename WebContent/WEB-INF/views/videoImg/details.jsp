@@ -23,14 +23,30 @@ a:hover {
 			<a class="button_a" href="#" onclick="history.go(0)">刷新</a>
 		</div>
 	</div>
-	<div
-		style="margin-top: 5px; margin-bottom: 5px; width: 100%; height: 250px; position: relative; float: left;">
-		<img alt="" src="${ctx }${videoImg.videUrl}" height="250px;"
-			width="100%; " style="position: absolute">
-		<!-- <div style="margin:3px;color:#FFFFFF background:#000000;position:absolute;z-index:2; height:22px;bottom:20px;width:100%;text-align: right;right: 10px;">${videoImg.videShowName }</div> -->
-		<c:if test="${videoImg.isHintImg == 1}">
-			<img alt="" id="hintImg" src="${ctx }${videoImg.hintImgUrl}?v=1"
-				style="height: 250px;; width: 100%; position: absolute; z-index: 1; display: block;">
+
+	<c:set var="divHight" value="250px"/>
+	<c:if test="${not empty videoImg.videUrl && not empty videoImg.shortVideUrl}">
+		<c:set var="divHight" value="500px"/>
+	</c:if>
+	<div style="margin-top: 5px; margin-bottom: 5px; width: 100%; height: ${divHight}; position: relative; float: left;">
+		<c:if test="${not empty videoImg.videUrl}">
+			<img alt="" src="${ctx }${videoImg.videUrl}" height="250px;"
+				width="100%; " style="position: absolute">
+			<!-- <div style="margin:3px;color:#FFFFFF background:#000000;position:absolute;z-index:2; height:22px;bottom:20px;width:100%;text-align: right;right: 10px;">${videoImg.videShowName }</div> -->
+			<c:if test="${videoImg.isHintImg == 1}">
+				<img alt="" id="hintImg" src="${ctx }${videoImg.hintImgUrl}?v=1"
+					style="height: 250px;; width: 100%; position: absolute; z-index: 1; display: block;">
+			</c:if>
+		</c:if>
+		<c:if test="${not empty videoImg.shortVideUrl}">
+			<video style="height: 250px; width: 100%; position: absolute; top: 250px;" >
+				<source src="${ctx }${videoImg.shortVideUrl}}" type="video/mp4" />
+				Your browser does not support the video tag.
+			</video>
+		</c:if>
+		<c:if test="${empty videoImg.videUrl && empty videoImg.shortVideUrl}">
+			<img alt="" src="${ctx }/image/default_pic.jpg" height="250px;"
+				 width="100%; " style="position: absolute">
 		</c:if>
 	</div>
 	<div

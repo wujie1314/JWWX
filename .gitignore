@@ -1,12 +1,20 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
-
-# IntelliJ project files
+.mymetadata
+.checkstyle
+.classpath
+.project
+.class
+.war
+.zip
+.rar
 .idea
 *.iml
-out
-logs
-gen
-target
-*.class
+.settings/*
+/indexes/*
+/target/*
+/src/main/webapp/WEB-INF/classes/*
+/src/main/webapp/userfiles/*
+/target/
+/WebContent/WEB-INF/classes/*
+/web/
+/class/
+
