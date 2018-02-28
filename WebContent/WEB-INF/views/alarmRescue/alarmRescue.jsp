@@ -22,9 +22,12 @@
 	href="alarmRescue/css/alarmRescue.css">
 <link rel="stylesheet" type="text/css"
 	href="alarmRescue/css/bootstrap.css">
-	<script src="alarmRescue/js/jquery-2.1.1.min.js"></script>
+<script src="alarmRescue/js/jquery-2.1.1.min.js"></script>
 <script src="alarmRescue/js/bootstrap.js"></script>
-
+<link rel="stylesheet" type="text/css"
+	href="alarmRescue/css/fileinput.min.css">
+<script src="alarmRescue/js/fileinput.min.js"></script>
+<script src="alarmRescue/js/zh.js"></script>
 </head>
 
 <body>
@@ -95,14 +98,15 @@
 					</div>
 				</div>
 				<hr />
-		<!-- 		<div class="row clearfix">
+				
+		 	<div class="row clearfix">
 					<div class="col-xs-2 col-md-2 col-lg-2 column">
 						<label class="labelInfo">文件上传:</label>
 					</div>
 					<div class="col-xs-10 col-md-10 col-lg-10 column file">
-						<input type="file" id="file" name="file" multiple="multiple" accept="video/*,image/*" />
+						<input type="file" id="file" name="file" class="file" multiple="multiple" data-show-caption="false" accept="video/*,image/*" />
 					</div>
-				</div>     -->
+				</div>   
 				<hr />
 				<div class="row clearfix submitBut">
 					<label id="pastDue">该工单已过期</label>

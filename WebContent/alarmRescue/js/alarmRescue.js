@@ -1,7 +1,6 @@
 var latitude = "";
 var longitude = "";
 var id = getUrlParam("ID");
-// var id = "wx1517817168222";
 var phone = getUrlParam("phone");
 var timestamp = getUrlParam("timestamp");
 var isPass24Hours;
@@ -36,7 +35,6 @@ $(function() {
 					})
 
 	isPass24Hours = new Date().getTime() / 1000 - timestamp;
-
 	if(LXFS != "") {
 		$("#phoneNum").val(LXFS);
 	}
@@ -100,6 +98,8 @@ function createMap() {
 		geolocation.getCurrentPosition(function(status, result) {
 			if (status === 'complete') {
 				point = result.position;
+				latitude = result.position.getLat();
+				longitude =  result.position.getLng();
 				geocoder.getAddress(point, function(status, result) {
 					if (status === 'complete' && result.info === 'OK') {
 						marker.setPosition(point);
@@ -165,11 +165,12 @@ function createMap() {
 
 function onComplete(data) { // 解析定位结果
 	var point1 = [ data.position.getLng(), data.position.getLat() ];
-	
-	geocoder.getAddress(point, function(status, result) {
+	latitude = data.position.getLat();
+	longitude =  data.position.getLng();
+	geocoder.getAddress(point1, function(status, result) {
 		if (status === 'complete' && result.info === 'OK') {
-			marker.setPosition(point);
-			map.setZoomAndCenter(18, point);
+			marker.setPosition(point1);
+			map.setZoomAndCenter(18, point1);
 			$("#currentLocation").html(result.regeocode.formattedAddress);
 		}
 	});
@@ -189,8 +190,13 @@ function onComplete(data) { // 解析定位结果
 //		});
 //	});
 };
+var num = 0;
 function onError(data) { // 解析定位错误信息
 	map.remove(markerArr);
+	if(num < 3) {
+	createMap();
+	num = num + 1;
+	}
 	switch (data.info) {
 	case 'PERMISSION_DENIED':
 		$("#currentLocation").html("浏览器阻止了定位操作");
@@ -237,11 +243,66 @@ function submit() {
 			contentType : "application/json;charset=utf-8", // 中文乱码
 			data : parame,
 			success : function(o) {
+				if($("#file").val() != "") {
+				$('#file').fileinput('upload');
+				}
 				alert("提交成功");
+			},
+			error:function(o) {
+				alert("提交失败");
 			}
 		});
 	}
 }
+
+function deleteFile() {
+	if($('#file').fileinput("getFilesCount") <= 1){  //获取文件个数  
+		$('#dituContent').css("height", "58%");
+		$('.Relocation').css("top","28%");
+		$('.submitBut').css("height","30%");
+		$('.contentFoot').css("height", "42%"); 
+    } 
+}
+
+$("#file").fileinput({
+	language : 'zh', // 设置语言
+	uploadUrl : '/alarmRescue/upload',
+	enctype : 'multipart/form-data', // error
+	allowedFileExtensions : ['jpg', 'jpeg', 'svg', 'png', 'gif', 'bmp', 'mp4', 'avi', 'wmv', 'mpeg', 'mpg', 'rm', 'asf'],
+	maxFileSize : 30000,
+	maxFilesNum : 3,
+	maxFileCount : 3,
+	overwriteInitial: false, //不覆盖已存在的图片  
+	dropZoneEnabled: false,//是否显示拖拽区域
+    showPreview: true,              //展前预览  
+    showRemove: false,				//是否显示移除按钮
+    showUpload: false,              //是否显示上传按钮  
+    showCancel: false,				//是否显示取消按钮
+    showClose: false,				//是否显示关闭按钮
+    showBrowse:true,				//是否显示浏览按钮
+    showCaption: false,             //不显示文字表述  
+    uploadAsync:false,              //同步上传 
+    slugCallback : function(filename) {
+		return filename.replace('(', '_').replace(']', '_');
+	},
+	uploadExtraData : function(previewId, index) {
+		// 向后台传递id作为额外参数，是后台可以根据id修改对应的图片地址。
+		var obj = {};
+		obj.id = $('#file').val();
+		return obj;
+	}
+});
+
+$("#file").on('filebatchuploadsuccess', function(event, data) {
+	
+}).on('filebatchuploaderror', function(event, data, msg) {  //文件上传失败
+
+}).on("filebatchselected", function(event, files) {
+	$('#dituContent').css("height", "40%");
+	$('.Relocation').css("top","18%");
+	$('.submitBut').css("height","20%");
+	$('.contentFoot').css("height", "60%");
+}); 
 
 $("#showRepairFactory")
 		.click(

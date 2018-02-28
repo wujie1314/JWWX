@@ -1,10 +1,19 @@
 package org.jiaowei.alarmRescue.Impl;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.jiaowei.alarmRescue.controller.MysqlConn;
 import org.jiaowei.alarmRescue.service.IAlarmRescueService;
 import org.springframework.stereotype.Service;
@@ -37,11 +46,137 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		else
 			map.put("create_time", date);*/
 		map.put("create_time", date);
-		System.out.println(map);
-		System.out.println("==========="+date);
+
 //		DataManipulation.importData(map);
+		
+		//	 获取桩号
+		String getLXBHInfoUrl = "http://restapi.amap.com/v3/geocode/regeo?output=xml&location=%s&key=56548ad2ea98a8269c616522f1d49223&radius=1000&extensions=all";
+		String lxbhUrl = "http://203.93.109.50:8096/TGISServer_1/rest/base/stakeConvertService/getZHByXY?tableName=TR_ROAD_ROADINFO&qdzhField=start_stakeid&zdzhField=end_stakeid&idField=ROAD_CODE&lxbh=";
+		String reportLocation = longitude + "," + latitude;
+
+		String urlRequest = String.format(getLXBHInfoUrl, reportLocation);
+		String XmlResponse = getHttpResponse(urlRequest);
+		
+		String LXBH = GetLXBH(XmlResponse);
+		String[] LXBHS = LXBH.split(",");
+		// 如果有多个高速编号则取第一个
+		String param = LXBHS[0] + "&x=" + longitude + "&y=" + latitude;
+		String meileage = sendGet(lxbhUrl, param);
+		if (meileage.length() >= 15 || "0.000".equals(meileage))
+			meileage = "0";
+		System.out.println(("桩号 ===>" + meileage));
+		map.put("MILEAGE", meileage);
+		
+		System.out.println(map);
 		MysqlConn.dataManipulation(map);
 		return null;
 	}
 
+	public String getHttpResponse(String allConfigUrl) {
+		System.out.println(allConfigUrl);
+		BufferedReader in = null;
+		StringBuffer result = null;
+		try {
+			URI uri = new URI(allConfigUrl);
+			URL url = uri.toURL();
+			URLConnection connection = url.openConnection();
+			connection.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded");
+			connection.setRequestProperty("Charset", "utf-8");
+			connection.connect();
+			result = new StringBuffer();
+			// 读取URL的响应
+			in = new BufferedReader(new InputStreamReader(
+					connection.getInputStream(),"utf-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result.append(line);
+			}
+			return result.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	public String GetLXBH(String protocolXML) {
+		
+		String LXBHS = "";
+		try {
+			Document doc = (Document) DocumentHelper.parseText(protocolXML);
+			Element response = doc.getRootElement();
+			Element regeocode = response.element("regeocode");
+			if (regeocode == null) {
+				return null;
+			}
+			Element roads = regeocode.element("roads");
+			if (roads == null) {
+				return null;
+			}
+			List road = roads.elements("road");
+			String LXBH = "";
+			for (int i = 0; i < road.size(); i++) {
+				Element ele = (Element) road.get(i);
+				LXBH = ele.element("name").getText();
+				LXBH = LXBH.replaceAll("[^a-z^A-Z^0-9]", "");
+				if (LXBH == null || LXBH.isEmpty()) {
+					continue;
+				}
+				if (LXBHS.isEmpty()) {
+					LXBHS += LXBH;
+				} else {
+					LXBHS += "," + LXBH;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return LXBHS;
+	}
+
+	/**
+	 * 发送http的get请求
+	 */
+	public static String sendGet(String url, String param) {
+		String result = "";
+		BufferedReader in = null;
+		try {
+			String urlNameString = url + param;
+			System.out.println(urlNameString);
+			URL realUrl = new URL(urlNameString);
+			URLConnection connection = realUrl.openConnection();
+			connection.setRequestProperty("accept", "*/*");
+			connection.setRequestProperty("connection", "Keep-Alive");
+			connection.setRequestProperty("user-agent",
+					"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+			connection.connect();
+			in = new BufferedReader(new InputStreamReader(
+					connection.getInputStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+		} catch (Exception e) {
+			System.out.println("发送GET请求出现异常！" + e);
+			e.printStackTrace();
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
 }

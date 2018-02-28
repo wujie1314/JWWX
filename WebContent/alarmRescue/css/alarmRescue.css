@@ -15,8 +15,8 @@
 
 .contentFoot .row{
 	width:100%;
-	min-height:14%;
-	margin:0 !important;
+	max-height:40%;
+	margin:10px 0px !important;
 	display:flex;
 }
 
@@ -59,7 +59,7 @@
 }
 .contentFoot{
 	width: 100%;
-	height: 42%;
+	height: 43%;
 	position:absolute !important;
 	z-index: 200;
 	bottom: 0px;
@@ -117,7 +117,7 @@
 
 .submitBut{
 	width:100%;
-	height:40%;
+	height:30%;
 	margin:auto !important;
 	display:flex;
 	flex-direction:column;
@@ -125,9 +125,8 @@
 }
 .submitBut .submit{
 	width:100%;
-	height:35%;
+	height:40%;
 	margin:auto;
-	top:8%;
 	padding:0 !important;
 	display:flex;
 	justify-content:center;
