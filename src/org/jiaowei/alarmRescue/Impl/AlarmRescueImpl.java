@@ -52,8 +52,9 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		//	 获取桩号
 		String getLXBHInfoUrl = "http://restapi.amap.com/v3/geocode/regeo?output=xml&location=%s&key=56548ad2ea98a8269c616522f1d49223&radius=1000&extensions=all";
 		String lxbhUrl = "http://203.93.109.50:8096/TGISServer_1/rest/base/stakeConvertService/getZHByXY?tableName=TR_ROAD_ROADINFO&qdzhField=start_stakeid&zdzhField=end_stakeid&idField=ROAD_CODE&lxbh=";
-		String reportLocation = longitude + "," + latitude;
+	//	String lxbhUrl="http://10.224.5.162:8096/TGISServer_1/rest/base/stakeConvertService/getZHByXY?tableName=TR_ROAD_ROADINFO&qdzhField=start_stakeid&zdzhField=end_stakeid&idField=ROAD_CODE&lxbh=";
 
+		String reportLocation = longitude + "," + latitude;
 		String urlRequest = String.format(getLXBHInfoUrl, reportLocation);
 		String XmlResponse = getHttpResponse(urlRequest);
 		

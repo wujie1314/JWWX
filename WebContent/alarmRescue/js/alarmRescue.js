@@ -35,15 +35,17 @@ $(function() {
 					})
 
 	isPass24Hours = new Date().getTime() / 1000 - timestamp;
-	if(LXFS != "") {
+	isPass24Hours = 0;
+	if (LXFS != "") {
 		$("#phoneNum").val(LXFS);
 	}
-	if(isPass24Hours > 86400) {
+	if (isPass24Hours > 86400) {
 		$('#pastDue').css("display", "block");
-		$('#submitButton').css("background","#808080");
-		$('body').append("<div style='position:absolute;z-index:1000;width:100%;height:100%;'></div>");
-	}
-	else{
+		$('#submitButton').css("background", "#808080");
+		$('body')
+				.append(
+						"<div style='position:absolute;z-index:1000;width:100%;height:100%;'></div>");
+	} else {
 		$('#pastDue').css("display", "none");
 	}
 });
@@ -99,7 +101,7 @@ function createMap() {
 			if (status === 'complete') {
 				point = result.position;
 				latitude = result.position.getLat();
-				longitude =  result.position.getLng();
+				longitude = result.position.getLng();
 				geocoder.getAddress(point, function(status, result) {
 					if (status === 'complete' && result.info === 'OK') {
 						marker.setPosition(point);
@@ -108,19 +110,19 @@ function createMap() {
 						$("#currentLocation").html(address);
 					}
 				});
-//				new AMap.convertFrom(point, 'gps', function(status, result) {
-//					latitude = result.locations[0].lat;
-//					longitude = result.locations[0].lng;
-//					point = new AMap.LngLat(longitude, latitude);
-//					marker.setPosition(point);
-//					map.setZoomAndCenter(18, point);
-//					geocoder.getAddress(point, function(status, result) {
-//						if (status === 'complete' && result.info === 'OK') {
-//							var address = result.regeocode.formattedAddress; // 返回地址描述
-//							$("#currentLocation").html(address);
-//						}
-//					});
-//				});
+				// new AMap.convertFrom(point, 'gps', function(status, result) {
+				// latitude = result.locations[0].lat;
+				// longitude = result.locations[0].lng;
+				// point = new AMap.LngLat(longitude, latitude);
+				// marker.setPosition(point);
+				// map.setZoomAndCenter(18, point);
+				// geocoder.getAddress(point, function(status, result) {
+				// if (status === 'complete' && result.info === 'OK') {
+				// var address = result.regeocode.formattedAddress; // 返回地址描述
+				// $("#currentLocation").html(address);
+				// }
+				// });
+				// });
 			}
 
 		});
@@ -131,42 +133,42 @@ function createMap() {
 		AMap.event.addListener(geolocation, 'error', onError); // 返回定位出错信息
 	});
 
-//	AMap.event.addListener(map, 'click', function(e) {
-//		map.remove(markerArr);
-//		longitude = e.lnglat.getLng();
-//		latitude = e.lnglat.getLat();
-//		point = new AMap.LngLat(longitude, latitude);
-//
-//		geocoder.getAddress(point, function(status, result) {
-//			if (status === 'complete' && result.info === 'OK') {
-//				$("#currentLocation").html(result.regeocode.formattedAddress);
-//			}
-//		});
-//		marker2 = new AMap.Marker({
-//			icon : "alarmRescue/img/icon_location.png",
-//			position : point,
-//			draggable : false,
-//			cursor : 'move',
-//			raiseOnDrag : true,
-//			map : map
-//		});
-//
-//		markerArr.push(marker2);
-//		// marker2.setAnimation('AMAP_ANIMATION_BOUNCE');
-//		marker2.setMap(map);
-//
-//		marker2.setTitle("用户可以自定义新的位置");
-//		marker2.setLabel({
-//			offset : new AMap.Pixel(45, -10),
-//			content : "自定义的位置"
-//		});
-//	});
+	// AMap.event.addListener(map, 'click', function(e) {
+	// map.remove(markerArr);
+	// longitude = e.lnglat.getLng();
+	// latitude = e.lnglat.getLat();
+	// point = new AMap.LngLat(longitude, latitude);
+	//
+	// geocoder.getAddress(point, function(status, result) {
+	// if (status === 'complete' && result.info === 'OK') {
+	// $("#currentLocation").html(result.regeocode.formattedAddress);
+	// }
+	// });
+	// marker2 = new AMap.Marker({
+	// icon : "alarmRescue/img/icon_location.png",
+	// position : point,
+	// draggable : false,
+	// cursor : 'move',
+	// raiseOnDrag : true,
+	// map : map
+	// });
+	//
+	// markerArr.push(marker2);
+	// // marker2.setAnimation('AMAP_ANIMATION_BOUNCE');
+	// marker2.setMap(map);
+	//
+	// marker2.setTitle("用户可以自定义新的位置");
+	// marker2.setLabel({
+	// offset : new AMap.Pixel(45, -10),
+	// content : "自定义的位置"
+	// });
+	// });
 }
 
 function onComplete(data) { // 解析定位结果
 	var point1 = [ data.position.getLng(), data.position.getLat() ];
 	latitude = data.position.getLat();
-	longitude =  data.position.getLng();
+	longitude = data.position.getLng();
 	geocoder.getAddress(point1, function(status, result) {
 		if (status === 'complete' && result.info === 'OK') {
 			marker.setPosition(point1);
@@ -174,28 +176,28 @@ function onComplete(data) { // 解析定位结果
 			$("#currentLocation").html(result.regeocode.formattedAddress);
 		}
 	});
-//	new AMap.convertFrom(point1, 'gps', function(status, result) {
-//		latitude = result.locations[0].lat;
-//		longitude = result.locations[0].lng;
-//		point = new AMap.LngLat(longitude, latitude);
-//		marker.setPosition(point);
-//		map.setZoomAndCenter(18, point);
-//		map.remove(markerArr);
-//	
-//		geocoder.getAddress(point, function(status, result) {
-//			if (status === 'complete' && result.info === 'OK') {
-//			
-//				$("#currentLocation").html(result.regeocode.formattedAddress);
-//			}
-//		});
-//	});
+	// new AMap.convertFrom(point1, 'gps', function(status, result) {
+	// latitude = result.locations[0].lat;
+	// longitude = result.locations[0].lng;
+	// point = new AMap.LngLat(longitude, latitude);
+	// marker.setPosition(point);
+	// map.setZoomAndCenter(18, point);
+	// map.remove(markerArr);
+	//	
+	// geocoder.getAddress(point, function(status, result) {
+	// if (status === 'complete' && result.info === 'OK') {
+	//			
+	// $("#currentLocation").html(result.regeocode.formattedAddress);
+	// }
+	// });
+	// });
 };
 var num = 0;
 function onError(data) { // 解析定位错误信息
 	map.remove(markerArr);
-	if(num < 3) {
-	createMap();
-	num = num + 1;
+	if (num < 3) {
+		createMap();
+		num = num + 1;
 	}
 	switch (data.info) {
 	case 'PERMISSION_DENIED':
@@ -232,7 +234,7 @@ function submit() {
 		parame.currentLocation = encodeURI($('#currentLocation').html());
 		parame.longitude = longitude;
 		parame.latitude = latitude;
-		
+
 		parame.startPosition = encodeURI($('#startPosition').val());
 		parame.endPosition = encodeURI($('#endPosition').val());
 		parame.contact_way = encodeURI($('#phoneNum').val());
@@ -243,12 +245,12 @@ function submit() {
 			contentType : "application/json;charset=utf-8", // 中文乱码
 			data : parame,
 			success : function(o) {
-				if($("#file").val() != "") {
-				$('#file').fileinput('upload');
+				if ($("#file").val() != "") {
+					$('#file').fileinput('upload');
 				}
 				alert("提交成功");
 			},
-			error:function(o) {
+			error : function(o) {
 				alert("提交失败");
 			}
 		});
@@ -256,53 +258,103 @@ function submit() {
 }
 
 function deleteFile() {
-	if($('#file').fileinput("getFilesCount") <= 1){  //获取文件个数  
-		$('#dituContent').css("height", "58%");
-		$('.Relocation').css("top","28%");
-		$('.submitBut').css("height","30%");
-		$('.contentFoot').css("height", "42%"); 
-    } 
-}
-
-$("#file").fileinput({
-	language : 'zh', // 设置语言
-	uploadUrl : '/alarmRescue/upload',
-	enctype : 'multipart/form-data', // error
-	allowedFileExtensions : ['jpg', 'jpeg', 'svg', 'png', 'gif', 'bmp', 'mp4', 'avi', 'wmv', 'mpeg', 'mpg', 'rm', 'asf'],
-	maxFileSize : 30000,
-	maxFilesNum : 3,
-	maxFileCount : 3,
-	overwriteInitial: false, //不覆盖已存在的图片  
-	dropZoneEnabled: false,//是否显示拖拽区域
-    showPreview: true,              //展前预览  
-    showRemove: false,				//是否显示移除按钮
-    showUpload: false,              //是否显示上传按钮  
-    showCancel: false,				//是否显示取消按钮
-    showClose: false,				//是否显示关闭按钮
-    showBrowse:true,				//是否显示浏览按钮
-    showCaption: false,             //不显示文字表述  
-    uploadAsync:false,              //同步上传 
-    slugCallback : function(filename) {
-		return filename.replace('(', '_').replace(']', '_');
-	},
-	uploadExtraData : function(previewId, index) {
-		// 向后台传递id作为额外参数，是后台可以根据id修改对应的图片地址。
-		var obj = {};
-		obj.id = $('#file').val();
-		return obj;
+	if ($('#file').fileinput("getFilesCount") <= 1) {
+		$('#dituContent').css("height", "57%");
+		$('.Relocation').css("top", "28%");
+		$('.submitBut').css("height", "30%");
+		$('.contentFoot').css("height", "43%");
 	}
+}
+var interval;
+var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+$(window).on('resize', function () {
+    var nowClientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+    if (clientHeight > nowClientHeight) {
+    	 clearInterval(interval);
+    }
+    else {    	
+//    	alert($('#file').fileinput("getFilesCount"));
+//    	alert($(".progress-bar").html());
+//    	if ($(".progress-bar").html() != "" && ($('#file').fileinput("getFilesCount") < 1)) { // 获取文件个数
+//    		$('#dituContent').css("height", "50%");
+//    		$('.Relocation').css("top", "28%");
+//    		$('.submitBut').css("height", "30%");
+//    		$('.contentFoot').css("height", "50%");
+//    		alert("aa");
+//    	}
+    	interval = setInterval(function () {
+    		if ($('#file').fileinput("getFilesCount") >= 1) { // 获取文件个数
+    			$('#dituContent').css("height", "40%");
+    			$('.Relocation').css("top", "18%");
+    			$('.submitBut').css("height", "20%");
+    			$('.contentFoot').css("height", "60%");
+    		}
+    		if ($('#file').fileinput("getFilesCount") < 1) { // 获取文件个数
+    			$('#dituContent').css("height", "57%");
+    			$('.Relocation').css("top", "28%");
+    			$('.submitBut').css("height", "30%");
+    			$('.contentFoot').css("height", "43%");
+    		}
+    	}, 100);
+    }
 });
 
+//setInterval(function () {
+//	if ($(".progress-bar").html() = "上传成功") { // 获取文件个数
+//		$('#dituContent').css("height", "50%");
+//		$('.Relocation').css("top", "28%");
+//		$('.submitBut').css("height", "30%");
+//		$('.contentFoot').css("height", "50%");
+//	}
+//},100);
+
+$("#file").fileinput(
+		{
+			language : 'zh', // 设置语言
+			uploadUrl : '/alarmRescue/upload',
+			enctype : 'multipart/form-data', // error
+			allowedFileExtensions : [ 'jpg', 'jpeg', 'svg', 'png', 'gif',
+					'bmp', 'mp4', 'avi', 'wmv', 'mpeg', 'mpg', 'rm', 'asf' ],
+			maxFileSize : 30000,
+			maxFilesNum : 3,
+			maxFileCount : 3,
+			overwriteInitial : false, // 不覆盖已存在的图片
+			dropZoneEnabled : false,// 是否显示拖拽区域
+			showPreview : true, // 展前预览
+			showRemove : false, // 是否显示移除按钮
+			showUpload : false, // 是否显示上传按钮
+			showCancel : false, // 是否显示取消按钮
+			showClose : false, // 是否显示关闭按钮
+			showBrowse : true, // 是否显示浏览按钮
+			showCaption : false, // 不显示文字表述
+			uploadAsync : false, // 同步上传
+			slugCallback : function(filename) {
+				return filename.replace('(', '_').replace(']', '_');
+			},
+			uploadExtraData : function(previewId, index) {
+				// 向后台传递id作为额外参数，是后台可以根据id修改对应的图片地址。
+				var obj = {};
+				obj.id = $('#file').val();
+				return obj;
+			}
+		});
+
 $("#file").on('filebatchuploadsuccess', function(event, data) {
-	
-}).on('filebatchuploaderror', function(event, data, msg) {  //文件上传失败
+	$(".file-preview-frame").remove();
+	if ($('#file').fileinput("getFilesCount") > 0) { // 获取文件个数
+		$('#dituContent').css("height", "53%");
+		$('.Relocation').css("top", "28%");
+		$('.submitBut').css("height", "30%");
+		$('.contentFoot').css("height", "47%");
+	}
+}).on('filebatchuploaderror', function(event, data, msg) {
 
 }).on("filebatchselected", function(event, files) {
 	$('#dituContent').css("height", "40%");
-	$('.Relocation').css("top","18%");
-	$('.submitBut').css("height","20%");
+	$('.Relocation').css("top", "18%");
+	$('.submitBut').css("height", "20%");
 	$('.contentFoot').css("height", "60%");
-}); 
+});
 
 $("#showRepairFactory")
 		.click(
@@ -311,7 +363,7 @@ $("#showRepairFactory")
 
 				});
 
-$("#callPhone").click(function(){
+$("#callPhone").click(function() {
 	window.location.href = "tel:12122";
 });
 
