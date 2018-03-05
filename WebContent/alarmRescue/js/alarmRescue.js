@@ -51,13 +51,11 @@ $(function() {
 });
 
 function createMap() {
-	point = new AMap.LngLat(106.551201, 29.60957);
 	map = new AMap.Map('dituContent', {
 		resizeEnable : true,
 		viewMode : '3D',
 		rotateEnable : false,
-		zoom : 16,
-		center : point
+		zoom : 16
 	});
 	map.setStatus({
 		doubleClickZoom : true
@@ -67,10 +65,9 @@ function createMap() {
 	});
 	marker = new AMap.Marker({
 		icon : "alarmRescue/img/location.png",
-		position : point,
 		map : map
 	});
-	marker.setMap(map);
+
 	map.plugin([ "AMap.convertFrom", "AMap.Geocoder", "AMap.Scale",
 			"AMap.ToolBar", "AMap.Geolocation" ], function() {
 		geocoder = new AMap.Geocoder({
@@ -105,6 +102,7 @@ function createMap() {
 				geocoder.getAddress(point, function(status, result) {
 					if (status === 'complete' && result.info === 'OK') {
 						marker.setPosition(point);
+						marker.setMap(map);
 						map.setZoomAndCenter(18, point);
 						var address = result.regeocode.formattedAddress; // 返回地址描述
 						$("#currentLocation").html(address);
@@ -176,21 +174,6 @@ function onComplete(data) { // 解析定位结果
 			$("#currentLocation").html(result.regeocode.formattedAddress);
 		}
 	});
-	// new AMap.convertFrom(point1, 'gps', function(status, result) {
-	// latitude = result.locations[0].lat;
-	// longitude = result.locations[0].lng;
-	// point = new AMap.LngLat(longitude, latitude);
-	// marker.setPosition(point);
-	// map.setZoomAndCenter(18, point);
-	// map.remove(markerArr);
-	//	
-	// geocoder.getAddress(point, function(status, result) {
-	// if (status === 'complete' && result.info === 'OK') {
-	//			
-	// $("#currentLocation").html(result.regeocode.formattedAddress);
-	// }
-	// });
-	// });
 };
 var num = 0;
 function onError(data) { // 解析定位错误信息
@@ -204,13 +187,16 @@ function onError(data) { // 解析定位错误信息
 		$("#currentLocation").html("浏览器阻止了定位操作");
 		break;
 	case 'POSITION_UNAVAILBLE':
-		$("#currentLocation").html("无法获得当前位置,请确定GPS是否打开");
+		$("#currentLocation").html("无法获得当前位置,请确定GPS或定位权限是否打开");
 		break;
 	case 'TIMEOUT':
 		$("#currentLocation").html("定位超时");
 		break;
+	case 'FAILED':
+		$("#currentLocation").html("请确定GPS或定位权限是否打开");
+		break;
 	default:
-		$("#currentLocation").html("未知错误,请确定GPS是否打开");
+		$("#currentLocation").html("未知错误");
 		break;
 	}
 };
@@ -272,16 +258,7 @@ $(window).on('resize', function () {
     if (clientHeight > nowClientHeight) {
     	 clearInterval(interval);
     }
-    else {    	
-//    	alert($('#file').fileinput("getFilesCount"));
-//    	alert($(".progress-bar").html());
-//    	if ($(".progress-bar").html() != "" && ($('#file').fileinput("getFilesCount") < 1)) { // 获取文件个数
-//    		$('#dituContent').css("height", "50%");
-//    		$('.Relocation').css("top", "28%");
-//    		$('.submitBut').css("height", "30%");
-//    		$('.contentFoot').css("height", "50%");
-//    		alert("aa");
-//    	}
+    else {    
     	interval = setInterval(function () {
     		if ($('#file').fileinput("getFilesCount") >= 1) { // 获取文件个数
     			$('#dituContent').css("height", "40%");
@@ -298,15 +275,6 @@ $(window).on('resize', function () {
     	}, 100);
     }
 });
-
-//setInterval(function () {
-//	if ($(".progress-bar").html() = "上传成功") { // 获取文件个数
-//		$('#dituContent').css("height", "50%");
-//		$('.Relocation').css("top", "28%");
-//		$('.submitBut').css("height", "30%");
-//		$('.contentFoot').css("height", "50%");
-//	}
-//},100);
 
 $("#file").fileinput(
 		{
