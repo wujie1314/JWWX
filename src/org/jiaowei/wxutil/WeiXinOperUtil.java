@@ -1318,7 +1318,7 @@ public class WeiXinOperUtil {
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"高速违章查询\",\n" +
-                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5f87341a9a4c9a1a&redirect_uri=http://cqjtzf.cn/wx/ViolationQueries/Index?para=44*gh_8c194f2bc799&response_type=code&scope=snsapi_base&state=1&from=groupmessage&connect_redirect=1#wechat_redirect\"\n" +
+                "               \"url\":\"http://cq96096.cn/violationInfo.jsp\"\n" +
                 "            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
@@ -1333,7 +1333,7 @@ public class WeiXinOperUtil {
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"ETC 消费查询\",\n" +
-                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx698f18eaeb3c7a6e&redirect_uri=http://cqetcweixin.u-road.com/CQETCWechatAPIServer/index.php/cqetcserver/etcbind&response_type=code&scope=snsapi_base&state=123#wechat_redirect\"\n" +
+                "               \"url\":\"http://203.93.109.55:8082/VelocityPush/Deals.do?action=mainEtc\"\n" +
                 "            }]\n" +
                 "       },\n" +
                 

@@ -196,102 +196,7 @@ public class ConnWeixinController {
     /**
      * 创建菜单
      */
-    public void createMenu(String publicId) {
-
-    	String menuString = " {\n" +
-                "     \"button\":[\n" +
-                "      {\n" +
-                "           \"name\":\"出行服务\",\n" +
-                "           \"sub_button\":[\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"实时公交查询\",\n" +
-                "               \"url\":\"http://web.chelaile.net.cn/wwd/index?src=webapp_weixin_chongqing\"\n" +
-                "            },\n" +
-                "           {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"长途汽车购票\",\n" +
-                "               \"url\":\"http://wap.96096kp.com/wapsite/control/searchStation?from=singlemessage\"\n" +
-                "            },\n" +
-				"            {\t\n" +
-				"               \"type\":\"view\",\n" +
-				"               \"name\":\"旅游专车购票\",\n" +
-				"               \"url\":\"http://wx.iu73.com/wxWeb/rwyBusCollectsNew.aspx?winzoom=1\"\n" +
-				"            },\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"火车班次查询\",\n" +
-                "               \"url\":\"http://mobile.12306.cn/weixin/wxcore/init\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"航班动态信息\",\n" +
-                "               \"url\":\"http://m.veryzhun.com/flight/?token=5cf2036c3db9fe08a7ee0c9b2077d37d\"\n" +
-                "            }]\n" +
-                "       },\n" +
-                "      {\n" +
-                "           \"name\":\"违章缴费\",\n" +
-                "           \"sub_button\":[\n" +
-                			
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"高速违章查询\",\n" +
-                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5f87341a9a4c9a1a&redirect_uri=http://cqjtzf.cn/wx/ViolationQueries/Index?para=44*gh_8c194f2bc799&response_type=code&scope=snsapi_base&state=1&from=groupmessage&connect_redirect=1#wechat_redirect\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"市内违章查询\",\n" +
-                "               \"url\":\"http://www.weiwubao.com/traffic/800066/add_bind/?btype=3&client=h7pGTzBsa0PWb7aNeZ8UmXxs5ciaZ3LYpxeS790SNwC\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"市内违章缴费\",\n" +
-                "               \"url\":\"https://tts.yiji.com/tts/index.html?outOrderNo=201607111106110475&partner=CQJS&notifyUrl=800066.wap.weiwubao.com/site/index/callback\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"ETC 消费查询\",\n" +
-                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx698f18eaeb3c7a6e&redirect_uri=http://cqetcweixin.u-road.com/CQETCWechatAPIServer/index.php/cqetcserver/etcbind&response_type=code&scope=snsapi_base&state=123#wechat_redirect\"\n" +
-                "            }]\n" +
-                "       },\n" +
-                
-                "      {\n" +
-                "           \"name\":\"路况及活动\",\n" +
-                "           \"sub_button\":[\n" +
-//                "            {\n" +
-//                "               \"type\":\"view\",\n" +
-//                "               \"name\":\"曝光台\",\n" +
-//                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx915ad295909bf037&redirect_uri=http%3a%2f%2fwww.cq96096.cn%2fcsc%2fgetViolationReportInit&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect\"\n" +
-//                "            },\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"实时路况\",\n" +
-                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx915ad295909bf037&redirect_uri=http%3a%2f%2fwww.cq96096.cn%2fvideoImg%2flist&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect\"\n" +
-                "            },\n" +
-				"            {\t\n" +
-				"               \"type\":\"view\",\n" +
-				"               \"name\":\"重庆交通APP\",\n" +
-				"               \"url\":\"http://cx.cqjt.gov.cn/index/UnderConstructionP.html\"\n" +
-				"            },\n" +
-                "            {\n" +
-                "               \"type\":\"view\",\n" +
-                "               \"name\":\"奖品码兑换\",\n" +
-                "               \"url\":\"http://www.twzgo.com/mobile/Activity/jwcj\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "               \"type\":\"click\",\n" +
-                "               \"name\":\"96096人工服务\",\n" +
-                "               \"key\":\"MAN_SERVICE\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "               \"type\":\"click\",\n" +
-                "               \"name\":\"其他\",\n" +
-                "               \"key\":\"OTHERS_VIEW\"\n" +
-                "            }]\n" +
-                "       }]\n" +
-                " }";
-    	menuString = WeiXinOperUtil.menu1();
-    	System.err.println(menuString);
+    public void createMenu(String publicId,String menuString) {
 
         WeiXinOperUtil.createWxMenu(menuString, WeiXinOperUtil.getAccessToken(publicId)); // 菜单 这里不需要更改
 
@@ -479,9 +384,23 @@ public class ConnWeixinController {
 
         String publicId = map.get("ToUserName");
 //        createMenu(publicId);
-        if(publicId.equals("gh_f689874cef4f")){
-        	 createMenu(publicId);
-        }
+     
+        switch (publicId) {
+		case "gh_f689874cef4f":  //合川交委
+			createMenu(publicId,WeiXinOperUtil.menu1());
+			
+			break;
+		case "gh_efa6b831b90e"://lnh
+			createMenu(publicId,WeiXinOperUtil.menu1());
+			break;
+		case "gh_1ba95266f60c"://wj
+			createMenu(publicId,WeiXinOperUtil.menu1());
+			break;
+
+		default:
+			break;
+		}
+        
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
         if (null == list || 0 == list.size()) {
             String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(map.get("ToUserName")), openId);
