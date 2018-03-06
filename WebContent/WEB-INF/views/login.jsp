@@ -162,7 +162,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					case "-6":alert("密码不能为空"); //deptError
 						window.location.href = "/skip/dataError";
 						break; 
-					case "1":alert("登录成功"); //dataError
+					case "1": //dataError
 						window.location.href = "/login?userName="+parame.ACCOUNT;
 						break; 
 					case "-2":alert("用户登录失败"); //dataError
