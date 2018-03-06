@@ -5,12 +5,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
 <html>
   <head>
     <base href="<%=basePath%>">
     
     <title>用户登录</title>
     
+    <meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -53,26 +55,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     }
 
     .rightPart{
-        width: 50%;
+        width: 45%;
         height: 500px;
         float: left;
     }
     .inputForm{
-    	width: 75%;
-        height: 200px;
+    	width: 20%;
+        height: 300px;
         margin-top: 28%;
     }
     .btn-default{
         float: left;
     }
     .form-control {
-      margin-bottom: 8%;
+      margin-bottom: 20%;
 	  display: block;
 	  /*width: 100%;*/
 	  height: 40px;
-	  padding: 10px 130px;
+	  vertical-align: middle;
+	  line-height:40px;
+	  padding-left:20px;
+	  /* padding: 7px 130px;  */
+	  width:380px;
 	  font-size: 14px;
-	  line-height: 1.42857143;
+	  /* line-height: 1.42857143; */
 	  color: #555;
 	  background-color: #fff;
 	  background-image: none;
@@ -89,7 +95,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  background-color: #23527c;
 	  border-color: #ccc;
 	  display: inline-block;
-	  padding: 8px 204px;
+	  /* padding: 8px 194px; */
+	  height:40px;
+	  width:380px;
 	  margin-bottom: 0;
 	  font-size: 14px;
 	  font-weight: normal;
@@ -133,11 +141,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<div class="rightPart">
 	    <div class="inputForm">
-	    	<h3 style="margin-bottom: 6%;width:150px;float:left;">登录账号</h3>
+	    	<h3 style="margin-bottom: 10%;width:150px;float:left;">登录账号</h3>
 	    	<!-- <p class="toPhoneNum">切换到手机登录</p> -->
 	        <input type="text" class="form-control" id="ACCOUNT" placeholder="请输入账号">
 	        <input type="password" class="form-control" id="PASSWORD" placeholder="请输入密码">
-	        <button type="submit" class="btn btn-default" id="confirmLogin " onclick="enter()">登录</button>
+	        <button type="submit" style="width:150px;" class="btn btn-default" id="confirmLogin " onclick="enter()">登录</button>
 	    </div>
 	
 	</div>
