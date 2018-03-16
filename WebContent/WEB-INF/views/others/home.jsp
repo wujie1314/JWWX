@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>其他页面</title>
+    <title>更多功能</title>
 	
 <link rel="stylesheet" type="text/css" href="/css/others/style.css"> 
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>	

@@ -278,10 +278,10 @@
 									<div class="col-xs-9 col-md-9 col-lg-9 column">
 										<select class="btn-group" id="color">
 											<option value="" style="display:none;">请选择牌照颜色</option>
-											<option value="0">蓝色</option>
-											<option value="1">黑色</option>
+											<option value="1">蓝色</option>
 											<option value="2">白色</option>
-											<option value="3">黄色</option>
+											<option value="3">黑色</option>
+											<option value="4">黄色</option>
 										</select>
 									</div>
 								</div>

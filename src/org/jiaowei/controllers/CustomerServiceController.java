@@ -811,7 +811,6 @@ public class CustomerServiceController {
     @RequestMapping("/getAllUsers")
     @ResponseBody
     public String getAllUsers(int rows,int page,String openid,String nickname,String searchType){
-    	if(sql_inj.sql_inj(openid)){
     	List<Object> list = new ArrayList<Object>();
     	StringBuffer sql=new StringBuffer();
     	sql.append(" FROM (");
@@ -836,6 +835,7 @@ public class CustomerServiceController {
     	sql.append(" ) C ");
     	String countSql="SELECT COUNT(*) "+sql.toString();
     	String listSql="SELECT * "+sql.toString()+" WHERE RN BETWEEN "+((page-1)*rows+1)+" AND "+page*rows+" ORDER BY CREATE_TIME DESC";
+    	System.out.println(listSql+"************************");
     	List<Object> userList=msgFromCustomerService.findBySQL(listSql);
 //    	Set<String> keys = WeiXinConst.servicingMap.keySet();
     	Set<String> keys = NavMenuInitUtils.getInstance().getServiceMap(openid).keySet();
@@ -892,8 +892,6 @@ public class CustomerServiceController {
         jsonMap.put("rows", list);
         String result = JSON.toJSONString(jsonMap); 
     	return result;
-    	}else 
-    		return null;
     }
 
     /**
@@ -1893,9 +1891,6 @@ public class CustomerServiceController {
     @ResponseBody
     public List<String> reAllocateWxUser(HttpServletRequest request,int csId, String openId,String typeName) throws Exception{
         List<String> returnList = new ArrayList<String>();
-        if(openId.length()!=28){
-        	return null;
-        }
         openId=openId.replaceAll("\"","\'");
 //        WxStatusTmpTEntity entity =  WeiXinConst.servicingMap.get(openId);
         WxStatusTmpTEntity entity =  NavMenuInitUtils.getInstance().getServiceEntity(openId);

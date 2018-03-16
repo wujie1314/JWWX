@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSONObject;
 
 import sun.print.resources.serviceui;
 
@@ -167,14 +171,31 @@ public class PersonalDesignController {
     @RequestMapping(value = "/getViolationInformation")
     @ResponseBody
     public void getViolationInformation(String openId,String lookType,String DATE,String TIME,String license,String color,String delayTime){
-    	String message="-违章信息:";
+    	String message="-违章信息:车牌号："+license+"颜色："+color;
     	int delayTimeNUM=Integer.valueOf(delayTime);
-    	if(license.equals("123")){
-    		message+="你闯了红灯，罚款500";
-    	}else{
-    		message+="你的表现很好，无违章";
-    	}
-    	System.out.println("小朋友你违章"+openId);
+    	StringBuilder json = new StringBuilder();
+        try {
+    		System.out.println(license);
+    		license = URLDecoder.decode(license, "UTF-8"); 
+        	String url = "http://10.224.5.164/cqjt/getViolationInfo?plateNo="+license+"&colorNo="+color;
+    		System.out.println(license);
+            URL oracle = new URL(url);
+            URLConnection yc = oracle.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream(),"utf-8"));
+            String inputLine = null;
+            while ( (inputLine = in.readLine()) != null) {
+                json.append(inputLine);
+            }
+            in.close();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JSONObject jObject=JSONObject.parseObject(json.toString());
+        message+=jObject.toString();
+    	
+    	
     	if(delayTimeNUM>=0){
     	 Timer timer = new Timer();
          timer.schedule(new PersonalDesignController().new Task(openId,message),delayTimeNUM);
