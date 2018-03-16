@@ -28,17 +28,22 @@
 	href="alarmRescue/css/fileinput.min.css">
 <script src="alarmRescue/js/fileinput.min.js"></script>
 <script src="alarmRescue/js/zh.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="alarmRescue/css/toastr.css">
+<script src="alarmRescue/js/toastr.min.js"></script>
 </head>
 
 <body>
 	<div class="container">
+	<div id = "prompt">提示:如果定位偏差较大，请打开百度或者高德地图后，再重新加载页面获取准确定位</div>
 		<div class="row clearfix map">
 			<div class="col-xs-12 col-md-12 col-lg-12 column" id="dituContent"></div>
 		</div>
 		<div class="Relocation">
-			<div id="showRepairFactory">
+	<!-- 		<div id="showRepairFactory">
 				<img src="alarmRescue/img/icon_repair.png" />
 			</div>
+			 -->
 			<div id="relocation" onclick="createMap();">
 				<img src="alarmRescue/img/icon_site.png" />
 			</div>

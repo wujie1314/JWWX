@@ -108,19 +108,6 @@ function createMap() {
 						$("#currentLocation").html(address);
 					}
 				});
-				// new AMap.convertFrom(point, 'gps', function(status, result) {
-				// latitude = result.locations[0].lat;
-				// longitude = result.locations[0].lng;
-				// point = new AMap.LngLat(longitude, latitude);
-				// marker.setPosition(point);
-				// map.setZoomAndCenter(18, point);
-				// geocoder.getAddress(point, function(status, result) {
-				// if (status === 'complete' && result.info === 'OK') {
-				// var address = result.regeocode.formattedAddress; // 返回地址描述
-				// $("#currentLocation").html(address);
-				// }
-				// });
-				// });
 			}
 
 		});
@@ -130,37 +117,6 @@ function createMap() {
 		AMap.event.addListener(geolocation, 'complete', onComplete);// 返回定位成功信息
 		AMap.event.addListener(geolocation, 'error', onError); // 返回定位出错信息
 	});
-
-	// AMap.event.addListener(map, 'click', function(e) {
-	// map.remove(markerArr);
-	// longitude = e.lnglat.getLng();
-	// latitude = e.lnglat.getLat();
-	// point = new AMap.LngLat(longitude, latitude);
-	//
-	// geocoder.getAddress(point, function(status, result) {
-	// if (status === 'complete' && result.info === 'OK') {
-	// $("#currentLocation").html(result.regeocode.formattedAddress);
-	// }
-	// });
-	// marker2 = new AMap.Marker({
-	// icon : "alarmRescue/img/icon_location.png",
-	// position : point,
-	// draggable : false,
-	// cursor : 'move',
-	// raiseOnDrag : true,
-	// map : map
-	// });
-	//
-	// markerArr.push(marker2);
-	// // marker2.setAnimation('AMAP_ANIMATION_BOUNCE');
-	// marker2.setMap(map);
-	//
-	// marker2.setTitle("用户可以自定义新的位置");
-	// marker2.setLabel({
-	// offset : new AMap.Pixel(45, -10),
-	// content : "自定义的位置"
-	// });
-	// });
 }
 
 function onComplete(data) { // 解析定位结果
@@ -201,6 +157,26 @@ function onError(data) { // 解析定位错误信息
 	}
 };
 
+$(function() {  
+    //设置显示配置  
+    var messageOpts = {  
+        "closeButton" : false,//是否显示关闭按钮  
+        "debug" : false,//是否使用debug模式  
+        "positionClass" : "toast-top-center",//弹出窗的位置  
+        "onclick" : null,  
+       "showDuration" : "30",//显示的动画时间  
+       "hideDuration" : "1000",//消失的动画时间  
+       "timeOut" : "3000",//展现时间  
+       "extendedTimeOut" : "1000",//加长展示时间  
+       "showEasing" : "swing",//显示时的动画缓冲方式  
+       "hideEasing" : "linear",//消失时的动画缓冲方式  
+       "showMethod" : "fadeIn",//显示时的动画方式  
+       "hideMethod" : "fadeOut" //消失时的动画方式  
+   };  
+   toastr.options = messageOpts;  
+
+})  
+
 function submit() {
 	var repairReason = $('input:radio[name="repairReason"]:checked').val();
 
@@ -231,13 +207,22 @@ function submit() {
 			contentType : "application/json;charset=utf-8", // 中文乱码
 			data : parame,
 			success : function(o) {
+				if(o) {
+					toastr.success("提交成功!");
 				if ($("#file").val() != "") {
 					$('#file').fileinput('upload');
 				}
-				alert("提交成功");
+				$('#submitButton').css("background", "#808080");
+				$('body')
+						.append(
+								"<div style='position:absolute;z-index:1000;width:100%;height:100%;'></div>");
+				}
+				else {
+					toastr.error("提交失败!");   
+				}
 			},
 			error : function(o) {
-				alert("提交失败");
+				toastr.error("提交失败!");   
 			}
 		});
 	}
@@ -283,7 +268,7 @@ $("#file").fileinput(
 			enctype : 'multipart/form-data', // error
 			allowedFileExtensions : [ 'jpg', 'jpeg', 'svg', 'png', 'gif',
 					'bmp', 'mp4', 'avi', 'wmv', 'mpeg', 'mpg', 'rm', 'asf' ],
-			maxFileSize : 30000,
+			maxFileSize : 512000,
 			maxFilesNum : 3,
 			maxFileCount : 3,
 			overwriteInitial : false, // 不覆盖已存在的图片
@@ -302,7 +287,7 @@ $("#file").fileinput(
 			uploadExtraData : function(previewId, index) {
 				// 向后台传递id作为额外参数，是后台可以根据id修改对应的图片地址。
 				var obj = {};
-				obj.id = $('#file').val();
+				obj.id = id;
 				return obj;
 			}
 		});
@@ -316,7 +301,7 @@ $("#file").on('filebatchuploadsuccess', function(event, data) {
 		$('.contentFoot').css("height", "47%");
 	}
 }).on('filebatchuploaderror', function(event, data, msg) {
-
+	$(".file-error-message").remove();
 }).on("filebatchselected", function(event, files) {
 	$('#dituContent').css("height", "40%");
 	$('.Relocation').css("top", "18%");
