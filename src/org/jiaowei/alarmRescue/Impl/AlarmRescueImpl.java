@@ -49,9 +49,9 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 				return "false";
 			} else {
 				// 外网 经纬度查询高速公路编号
-			//	String getLXBHInfoUrl = "http://113.207.109.5:9080/CQJTGISAPI/coordinateToRoadCode.do?lat=";
+				String getLXBHInfoUrl = "http://113.207.109.5:9080/CQJTGISAPI/coordinateToRoadCode.do?lat=";
 				// 内网 经纬度查询高速公路编号
-				 String getLXBHInfoUrl = "http://10.224.5.48:8080/CQJTGISAPI/coordinateToRoadCode.do?lat=";
+			//	 String getLXBHInfoUrl = "http://10.224.5.48:8080/CQJTGISAPI/coordinateToRoadCode.do?lat=";
 
 			String jwd = latitude + "&lng=" + longitude;
 			String result = sendGet(getLXBHInfoUrl, jwd);
@@ -59,9 +59,9 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 			String roadBH = jsonRoadBH.getString("data");// 高速公路编号
 
 			// 外网 经纬度转桩号
-			//String lxbhUrl = "http://113.207.109.5:9080/CQJTGISAPI/getDistanceInPolyline1.do?fileName=";
+			String lxbhUrl = "http://113.207.109.5:9080/CQJTGISAPI/getDistanceInPolyline1.do?fileName=";
 			// 内网 经纬度转桩号
-			 String lxbhUrl = "http://10.224.5.48:8080/CQJTGISAPI/getDistanceInPolyline1.do?fileName=";
+		//	 String lxbhUrl = "http://10.224.5.48:8080/CQJTGISAPI/getDistanceInPolyline1.do?fileName=";
 			
 				String param = roadBH + "&lat=" + latitude + "&lng="
 						+ longitude + "&deviation=1000";
