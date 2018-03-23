@@ -8,23 +8,23 @@ import java.sql.SQLException;
 
 public class MysqlConn {
 	public static boolean dataManipulation(Map<String, Object> map) {
-		 String driver = "oracle.jdbc.driver.OracleDriver";
-		 // URL指向要访问的数据库名
-		 String url = "jdbc:oracle:thin:@10.224.2.180:1521:ORCL";
-		 // MySQL配置时的用户名
-		 String user = "wssj";
-		 // MySQL配置时的密码
-		 String password = "wssj";
-
-//		String driver = "oracle.jdbc.driver.OracleDriver";
-//		// URL指向要访问的数据库名
-//		String url = "jdbc:oracle:thin:@superc102.vicp.cc:1522:jwwx";
-//		// MySQL配置时的用户名
-//		String user = "jwwx";
-//		// MySQL配置时的密码
-//		String password = "All4Icode";
-
+		boolean flag = false;
 		try {
+			 String driver = "oracle.jdbc.driver.OracleDriver";
+			 // URL指向要访问的数据库名
+			 String url = "jdbc:oracle:thin:@10.224.2.180:1521:ORCL";
+			 // MySQL配置时的用户名
+			 String user = "wssj";
+			 // MySQL配置时的密码
+			 String password = "wssj";
+			
+//			String driver = "oracle.jdbc.driver.OracleDriver";
+//			// URL指向要访问的数据库名
+//			String url = "jdbc:oracle:thin:@superc102.vicp.cc:1522:jwwx";
+//			// MySQL配置时的用户名
+//			String user = "jwwx";
+//			// MySQL配置时的密码
+//			String password = "All4Icode";
 			// 加载驱动程序
 			Class.forName(driver);
 			// 连数据库
@@ -54,6 +54,7 @@ public class MysqlConn {
 				pre.setString(13, map.get("MILEAGE").toString());
 				System.out.println(pre.toString());
 				int result = pre.executeUpdate();// 执行查询，注意括号中不需要再加参数
+				flag = true;
 			} else {
 				sql = "insert into HNII.HNII_ALARM_CREATE_TEST(ID,CJSJ,CJHM,CALLREASON,CONTENT,LXFS,WZ,CREATEORG,REMARK,DLJD,DLWD,MYID,MILEAGE)"
 						+ "values(?,to_date(?,'yyyy-mm-dd hh24:mi:ss'),?,?,?,?,?,?,?,?,?,?,?)";
@@ -73,21 +74,22 @@ public class MysqlConn {
 				pre.setString(13, map.get("MILEAGE").toString());
 				System.out.println(pre.toString());
 				int num = pre.executeUpdate();// 执行查询，注意括号中不需要再加参数
+				flag = true;
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
 			System.out.println("连接失败!");
 			e.printStackTrace();
-			return false;
+			flag = false;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-
+			flag = false;
 		} catch (Exception e) {
 
 			e.printStackTrace();
-
+			flag = false;
 		}
-		return true;
+		return flag;
 	}
 }

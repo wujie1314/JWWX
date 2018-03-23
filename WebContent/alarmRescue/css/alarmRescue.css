@@ -1,190 +1,206 @@
- html,body,.container{
-	margin:0 !important;
-	padding:0 !important;
-	overflow:hidden;
-	width:100% !important;
+html,body,.container {
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden;
+	width: 100% !important;
 	font-family: "Microsoft YaHei";
 }
 
-#prompt{
-	border:none;
-	color:#f00;
-	font-size:23px;
-	text-align:center;
-	background: rgba(0, 0, 0, 0.5)
+#prompt {
+	border: none;
+	color: #f00;
+	font-size: 30px !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis; 
+	white-space : nowrap; 
+	text-align : center;
+	background: rgba(0, 0, 0, 0.3);
+	text-align: center;
+	white-space: nowrap;
 }
 
-.map,.foot{
-	width:100%;
-	margin:0 !important;
-	display:flex;
-	z-index:10;
+.map,.foot {
+	width: 100%;
+	margin: 0 !important;
+	display: flex;
+	z-index: 10;
 }
 
-.contentFoot .row{
-	width:100%;
-	max-height:40%;
-	margin:3px 0px !important;
-	display:flex;
+.contentFoot .row {
+	width: 100%;
+	max-height: 40%;
+	margin: 3px 0px !important;
+	display: flex;
 }
 
-.col-xs-12, .col-md-12, .col-lg-12{
-	width:100%;
-	padding:0 !important;
-	margin:auto;
+.col-xs-12,.col-md-12,.col-lg-12 {
+	width: 100%;
+	padding: 0 !important;
+	margin: auto;
 }
 
-#dituContent{
+#dituContent {
 	position: absolute;
 	z-index: -10;
-	width:100%;
-	height:58%;
-	border:#ccc solid 1px;
-	top:0;	
+	width: 100%;
+	height: 58%;
+	border: #ccc solid 1px;
+	top: 0;
 }
 
-.Relocation{
-	position:absolute;
-	width:15%;
-	height:23%;
-	display:flex;
-	right:2%;
-	top:28%;
-	flex-direction:column;
+.Relocation {
+	position: absolute;
+	width: 15%;
+	height: 23%;
+	display: flex;
+	right: 2%;
+	top: 28%;
+	flex-direction: column;
 }
 
 #relocation,#showRepairFactory {
-	width:60%;
-	height:26%;
-	background:#fff;
-	display:flex;
-	margin:auto;
+	width: 60%;
+	height: 26%;
+	background: #fff;
+	display: flex;
+	margin: auto;
 }
 
-.Relocation img{
-	width:65%;
-	height:60%;
-	margin:auto;
+.Relocation img {
+	width: 65%;
+	height: 60%;
+	margin: auto;
 }
-.contentFoot{
+
+.contentFoot {
 	width: 100%;
 	height: 43%;
-	position:absolute !important;
+	position: absolute !important;
 	z-index: 200;
 	bottom: 0px;
-	background:#fff;
+	background: #fff;
 }
 
-.col-xs-2, .col-md-2, .col-lg-2{
-	width:20% !important;
-	padding:0 !important;
-	margin:auto;
-	margin-left:2% !important;
+.col-xs-2,.col-md-2,.col-lg-2 {
+	width: 20% !important;
+	padding: 0 !important;
+	margin: auto;
+	margin-left: 2% !important;
 }
-.col-xs-10, .col-md-10, .col-lg-10{
-	width:80% !important;
-	padding:0 !important;
-	margin:auto;
+
+.col-xs-10,.col-md-10,.col-lg-10 {
+	width: 80% !important;
+	padding: 0 !important;
+	margin: auto;
 }
-#currentLocation{
-	color:#333;
+
+#currentLocation {
+	color: #333;
 	display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-.location, .tel, .file{
-	height:100% !important;
-}
-#startPosition, #endPosition {
-	color:#333;
-	font-size:38px;
-	margin-top:1%;
-	background:#fff;
-	border:none;
-	width:40%;
-	height:90%;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
-#phoneNum{
-	color:#333;
-	font-size:38px;
-	margin-top:1%;
-	background:#fff;
-	border:none;
-	width:80%;
-	height:90%;
+.location,.tel,.file {
+	height: 100% !important;
 }
 
-#emergency1,#emergency2{
-	width:40px;
-	height:40px;
-	margin-right:3px !important;
-	margin-bottom:5px !important;
-	vertical-align:middle;
+#startPosition,#endPosition {
+	color: #333;
+	font-size: 38px;
+	margin-top: 1%;
+	background: #fff;
+	border: none;
+	width: 40%;
+	height: 90%;
 }
 
-.submitBut{
-	width:100%;
-	height:30%;
-	margin:auto !important;
-	display:flex;
-	flex-direction:column;
-	text-align:center;
+#phoneNum {
+	color: #333;
+	font-size: 38px;
+	margin-top: 1%;
+	background: #fff;
+	border: none;
+	width: 80%;
+	height: 90%;
 }
-.submitBut .submit{
-	width:100%;
-	height:45%;
-	margin:auto;
-	padding:0 !important;
-	display:flex;
-	justify-content:center;
+
+#emergency1,#emergency2 {
+	width: 40px;
+	height: 40px;
+	margin-right: 3px !important;
+	margin-bottom: 5px !important;
+	vertical-align: middle;
 }
-#submitButton{
+
+.submitBut {
+	width: 100%;
+	height: 30%;
+	margin: auto !important;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.submitBut .submit {
+	width: 100%;
+	height: 45%;
+	margin: auto;
+	padding: 0 !important;
+	display: flex;
+	justify-content: center;
+}
+
+#submitButton {
 	width: 90%;
 	height: 100%;
 	font-size: 38px;
 	color: #fff;
-	background-color:#2a70d2;
-	border-radius:15px;
-}
-label{
-	font-size:38px !important;
-	font-weight:normal !important;
-	margin:0 !important;
-}
-hr{
-	border:none;
-	border-top:1px solid #e5e5e5;
-	margin:0 !important;
+	background-color: #2a70d2;
+	border-radius: 15px;
 }
 
-#frame{
-	width:90px;
-	height:200px;
-	position:absolute;
-	right:5%;
-	top:1%;
-	display:flex;
-	flex-direction:column;
-	justify-content:space-between;
-}
-#message{
-	width:75%;
-	height:30%;
-	margin:auto;
-	z-index:100;
-	border:none;
+label {
+	font-size: 38px !important;
+	font-weight: normal !important;
+	margin: 0 !important;
 }
 
-#callPhone{
-	width:100%;
-	height:45%;
-	border:none;
-	z-index:100;
+hr {
+	border: none;
+	border-top: 1px solid #e5e5e5;
+	margin: 0 !important;
 }
 
-#pastDue{
-	color:#f00;
-	display:none;
+#frame {
+	width: 90px;
+	height: 200px;
+	position: absolute;
+	right: 5%;
+	top: 1%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+#message {
+	width: 75%;
+	height: 30%;
+	margin: auto;
+	z-index: 100;
+	border: none;
+}
+
+#callPhone {
+	width: 100%;
+	height: 45%;
+	border: none;
+	z-index: 100;
+}
+
+#pastDue {
+	color: #f00;
+	display: none;
 }

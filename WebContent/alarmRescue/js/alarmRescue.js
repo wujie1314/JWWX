@@ -11,6 +11,7 @@ var marker;
 var point;
 var markerArr = [];
 var geocoder;
+var geolocation;
 $(function() {
 	createMap();// 创建地图
 	var HEIGHT = $('.contentFoot').height();
@@ -48,9 +49,10 @@ $(function() {
 	} else {
 		$('#pastDue').css("display", "none");
 	}
+	
 });
 
-function createMap() {
+function createMap(){
 	map = new AMap.Map('dituContent', {
 		resizeEnable : true,
 		viewMode : '3D',
@@ -71,7 +73,7 @@ function createMap() {
 	map.plugin([ "AMap.convertFrom", "AMap.Geocoder", "AMap.Scale",
 			"AMap.ToolBar", "AMap.Geolocation" ], function() {
 		geocoder = new AMap.Geocoder({
-			city : "全国",// 城市，默认：“全国”
+			city : "重庆",// 城市，默认：“全国”
 			extensions : "all"
 		});
 		var toolbar = new AMap.ToolBar({
@@ -79,7 +81,7 @@ function createMap() {
 			autoPosition : false,// 是否自动定位，即地图初始化加载完成后，是否自动定位的用户所在地，在支持HTML5的浏览器中有效，默认为false
 			locationMarker : marker
 		});
-		var geolocation = new AMap.Geolocation({
+		geolocation = new AMap.Geolocation({
 			enableHighAccuracy : true,// 是否使用高精度定位，默认:true
 			showButton : true, // 显示定位按钮，默认：true
 			buttonPosition : 'LB', // 定位按钮停靠位置，默认：'LB'，左下角
@@ -88,12 +90,15 @@ function createMap() {
 			showCircle : false, // 定位成功后用圆圈表示定位精度范围，默认：true
 			panToLocation : true, // 定位成功后将定位到的位置作为地图中心点，默认：true
 			zoomToAccuracy : true, // 定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-			convert : true
-		// 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+			useNative:true,//是否使用安卓定位sdk用来进行定位，默认：false
+			convert : true // 自动偏移坐标，偏移后的坐标为高德坐标，默认：true
 		});
 		map.addControl(new AMap.Scale());
 		map.addControl(toolbar);
 		map.addControl(geolocation);
+		
+		self.setInterval("againReload()",10000); //10秒钟重新获取当前位置
+		
 		geolocation.getCurrentPosition(function(status, result) {
 			if (status === 'complete') {
 				point = result.position;
@@ -114,30 +119,33 @@ function createMap() {
 
 		toolbar.hide();
 		map.remove(markerArr);
-		AMap.event.addListener(geolocation, 'complete', onComplete);// 返回定位成功信息
 		AMap.event.addListener(geolocation, 'error', onError); // 返回定位出错信息
 	});
+};
+
+function againReload(){
+	geolocation.getCurrentPosition(function(status, result) {
+		if (status === 'complete') {
+			point = result.position;
+			latitude = result.position.getLat();
+			longitude = result.position.getLng();
+			geocoder.getAddress(point, function(status, result) {
+				if (status === 'complete' && result.info === 'OK') {
+					marker.setPosition(point);
+					marker.setMap(map);
+					map.setZoomAndCenter(18, point);
+					var address = result.regeocode.formattedAddress; // 返回地址描述
+					$("#currentLocation").html(address);
+				}
+			});
+		}
+
+	});
+	AMap.event.addListener(geolocation, 'error', onError); // 返回定位出错信息
 }
 
-function onComplete(data) { // 解析定位结果
-	var point1 = [ data.position.getLng(), data.position.getLat() ];
-	latitude = data.position.getLat();
-	longitude = data.position.getLng();
-	geocoder.getAddress(point1, function(status, result) {
-		if (status === 'complete' && result.info === 'OK') {
-			marker.setPosition(point1);
-			map.setZoomAndCenter(18, point1);
-			$("#currentLocation").html(result.regeocode.formattedAddress);
-		}
-	});
-};
-var num = 0;
 function onError(data) { // 解析定位错误信息
 	map.remove(markerArr);
-	if (num < 3) {
-		createMap();
-		num = num + 1;
-	}
 	switch (data.info) {
 	case 'PERMISSION_DENIED':
 		$("#currentLocation").html("浏览器阻止了定位操作");
@@ -179,7 +187,7 @@ $(function() {
 
 function submit() {
 	var repairReason = $('input:radio[name="repairReason"]:checked').val();
-
+console.log("123");
 	$("#phoneNum").click(function() {
 		if ($('#phoneNum').val() == "手机号码有误或为空,请重填") {
 			$('#phoneNum').val("");
@@ -206,6 +214,18 @@ function submit() {
 			method : 'get',
 			contentType : "application/json;charset=utf-8", // 中文乱码
 			data : parame,
+			 beforeSend: function () {
+				 $('body').append(
+							"<div id='loader' style='position:absolute;margin:50%;width:100px; height:100px;z-index:500;'></div>");
+				 $('#loader').shCircleLoader({
+						 keyframes:
+						       '0%   { background:#2a70d2}\
+						        40%  { background:transparent}\
+						        60%  { background:transparent}\
+						        100% { background:#2a70d2}'
+						 });
+				 $("#submitButton").attr('disabled',true);
+			    },
 			success : function(o) {
 				if(o) {
 					toastr.success("提交成功!");
@@ -218,11 +238,16 @@ function submit() {
 								"<div style='position:absolute;z-index:1000;width:100%;height:100%;'></div>");
 				}
 				else {
-					toastr.error("提交失败!");   
+					toastr.error("提交失败!"); 
+					$("#submitButton").attr('disabled',false);
 				}
 			},
+			complete: function () {
+				 $('#loader').shCircleLoader('destroy');
+		    },
 			error : function(o) {
-				toastr.error("提交失败!");   
+				toastr.error("提交失败!");  
+				 $("#submitButton").attr('disabled',false);
 			}
 		});
 	}
