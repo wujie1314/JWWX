@@ -385,7 +385,7 @@ public class ConnWeixinController {
         String publicId = map.get("ToUserName");
 //        createMenu(publicId);
      
-        switch (publicId) {
+       /* switch (publicId) {
 		case "gh_f689874cef4f":  //合川交委
 			createMenu(publicId,WeiXinOperUtil.menu1());
 			
@@ -399,7 +399,7 @@ public class ConnWeixinController {
 
 		default:
 			break;
-		}
+		}*/
         
         List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
         if (null == list || 0 == list.size()) {

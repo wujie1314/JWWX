@@ -835,7 +835,6 @@ public class CustomerServiceController {
     	sql.append(" ) C ");
     	String countSql="SELECT COUNT(*) "+sql.toString();
     	String listSql="SELECT * "+sql.toString()+" WHERE RN BETWEEN "+((page-1)*rows+1)+" AND "+page*rows+" ORDER BY CREATE_TIME DESC";
-    	System.out.println(listSql+"************************");
     	List<Object> userList=msgFromCustomerService.findBySQL(listSql);
 //    	Set<String> keys = WeiXinConst.servicingMap.keySet();
     	Set<String> keys = NavMenuInitUtils.getInstance().getServiceMap(openid).keySet();
