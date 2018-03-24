@@ -40,7 +40,7 @@ a:hover {
 		</c:if>
 		<c:if test="${not empty videoImg.shortVideUrl}">
 			<video style="height: 250px; width: 100%; position: absolute; top: 250px;" >
-				<source src="${ctx }${videoImg.shortVideUrl}}" type="video/mp4" />
+				<source src="${ctx }${videoImg.shortVideUrl}" type="video/mp4" />
 				Your browser does not support the video tag.
 			</video>
 		</c:if>

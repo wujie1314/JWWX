@@ -6,7 +6,7 @@
 			+ path + "/";
 %>
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html>
 <head>
 <base href="<%=basePath%>">
@@ -14,10 +14,10 @@
 <meta charset="UTF-8">
 <title>报警救援</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-
+<meta name="viewport" content="width=device-width, initial-scale=0.35, minimum-scale=0.35, maximum-scale=0.35, user-scalable=no" >  
 <!--引用高德地图API-->
 <script type="text/javascript"
-	src="http://webapi.amap.com/maps?v=1.4.0&key=d34f6dedd69d3b336dd569ea989a6234"></script>
+	src="https://webapi.amap.com/maps?v=1.4.0&key=d34f6dedd69d3b336dd569ea989a6234"></script>
 <link rel="stylesheet" type="text/css"
 	href="alarmRescue/css/alarmRescue.css">
 <link rel="stylesheet" type="text/css"
@@ -28,18 +28,26 @@
 	href="alarmRescue/css/fileinput.min.css">
 <script src="alarmRescue/js/fileinput.min.js"></script>
 <script src="alarmRescue/js/zh.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="alarmRescue/css/toastr.css">
+<script src="alarmRescue/js/toastr.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="alarmRescue/css/jquery.shCircleLoader.css">
+<script src="alarmRescue/js/jquery.shCircleLoader.js"></script>
 </head>
 
 <body>
 	<div class="container">
+	<div id = "prompt">提示:若定位偏差较大,请打开百度或高德地图后再重新加载页面获取准确定位</div>
 		<div class="row clearfix map">
 			<div class="col-xs-12 col-md-12 col-lg-12 column" id="dituContent"></div>
 		</div>
 		<div class="Relocation">
-			<div id="showRepairFactory">
+	<!-- 		<div id="showRepairFactory">
 				<img src="alarmRescue/img/icon_repair.png" />
 			</div>
-			<div id="relocation" onclick="createMap();">
+			 -->
+			<div id="relocation" onclick="againReload();">
 				<img src="alarmRescue/img/icon_site.png" />
 			</div>
 		</div>
