@@ -1329,11 +1329,11 @@ public class WeiXinOperUtil {
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"市内违章缴费\",\n" +
                 "               \"url\":\"https://tts.yiji.com/tts/index.html?outOrderNo=201607111106110475&partner=CQJS&notifyUrl=800066.wap.weiwubao.com/site/index/callback\"\n" +
-                "            },\n" +
+        /*        "            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"ETC 消费查询\",\n" +
-                "               \"url\":\"http://203.93.109.55:8082/VelocityPush/Deals.do?action=mainEtc\"\n" +
+                "               \"url\":\"http://203.93.109.55:8082/VelocityPush/Deals.do?action=mainEtc\"\n" +*/
                 "            }]\n" +
                 "       },\n" +
                 
@@ -1345,7 +1345,12 @@ public class WeiXinOperUtil {
                 "               \"name\":\"实时路况\",\n" +
                 "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx915ad295909bf037&redirect_uri=http%3a%2f%2fwww.cq96096.cn%2fvideoImg%2flist&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect\"\n" +
                 "            },\n" +
-				"            {\t\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"APP下载\",\n" +
+                "               \"url\":\"http://cx.cqjt.gov.cn/index/UnderConstructionP.html\"\n" +
+                "            },\n" +
+			/*	"            {\t\n" +
 				"               \"type\":\"view\",\n" +
 				"               \"name\":\"失物招领\",\n" +
 				"               \"url\":\"http://203.93.109.52/jwwx2/weixin/jsp/goodsList.jsp\"\n" +
@@ -1354,17 +1359,17 @@ public class WeiXinOperUtil {
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"报警救援\",\n" +
                 "               \"url\":\"http://203.93.109.52/alarmRescue/alarmRescueJSP\"\n" +
-                "            },\n" +
+                "            },\n" +*/
                 "            {\n" +
                 "               \"type\":\"click\",\n" +
                 "               \"name\":\"96096人工服务\",\n" +
                 "               \"key\":\"MAN_SERVICE\"\n" +
                 "            },\n" +
-                "            {\n" +
+             /*   "            {\n" +
                 "               \"type\":\"click\",\n" +
                 "               \"name\":\"其他\",\n" +
                 "               \"key\":\"OTHERS_VIEW\"\n" +
-                "            }]\n" +
+                "            }]\n" +*/
                 "       }]\n" +
                 " }";
     	System.err.println(menuString);

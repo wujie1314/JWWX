@@ -559,8 +559,8 @@ public class NavMenuServiceImpl implements NavMenuService {
 	/**
 	 * 自动回复消息
 	 * 
-	 * @author zkl
-	 * @data 2017年11月4日 下午3:14:31
+	 * @author wujie
+	 * @data 2018年4月20日 下午10:14:31
 	 */
 	@Override
 	public void sendMsgOneWxHintOverride(Map<String, String> map,
@@ -610,12 +610,15 @@ public class NavMenuServiceImpl implements NavMenuService {
 								+ result.get(i).getContent() + "\n";
 					}
 					}
+					if (result.get(0).getJuniorID() == null
+							|| !result.get(0).getJuniorID().equals("ManualService"+"_"+publicId)){
 					returnString += "【0】人工服务 \n";
+					}
 					// returnMenu.put(openId, result);
 				}
 
 			} else if (Character.isDigit(content.charAt(0))) {// 已有菜单信息
-				int n = Integer.parseInt(content);// 判断内容是否按菜单里来
+				int n = Integer.parseInt(String.valueOf(content.charAt(0)));// 判断内容是否按菜单里来
 
 				if (n == 0) {
 					// 进入人工服务
@@ -632,12 +635,12 @@ public class NavMenuServiceImpl implements NavMenuService {
 						return;
 						
 					}else{
-					if (menu.get(4).getDeptID() != null
+					/*if (menu.get(4).getDeptID() != null
 							&& menu.get(0).equals(0)) {
 						// 其他服务进交委热线总中心人工服务
 						manualService(response, map, openId, menu.get(0)
 								.getDeptID());
-					}
+					}*/
 					// 删掉导航菜单
 					WeiXinConst.navAutoMenu.remove(openId);
 					}
@@ -695,7 +698,10 @@ public class NavMenuServiceImpl implements NavMenuService {
 					returnString += "【" + (i + 1) + "】"
 							+ result.get(i).getContent() + "\n";
 				}
+				if (result.get(0).getJuniorID() == null
+						|| !result.get(0).getJuniorID().equals("ManualService"+"_"+publicId)){
 				returnString += "【0】人工服务 \n";
+				}
 				if (result.size() != reMenu.get(openId).get(0).size())
 					returnString += "【#】返回上层菜单";
 				time -= 2;
@@ -710,7 +716,11 @@ public class NavMenuServiceImpl implements NavMenuService {
 					returnString += "【" + (i + 1) + "】"
 							+ result.get(i).getContent() + "\n";
 				}
+				if (result.get(0).getJuniorID() == null
+						|| !result.get(0).getJuniorID().equals("ManualService"+"_"+publicId)){
 				returnString += "【0】人工服务 \n";
+				}
+				returnString += "【#】返回上层菜单";
 				// returnMenu.put(openId, result);
 			}
 		}

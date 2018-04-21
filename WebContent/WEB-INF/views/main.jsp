@@ -1879,6 +1879,61 @@ function pushWorkContent(obj,type){
 		$.messager.alert("推送信息","请选择工单后推送信息！",'warning');
 	}
 }
+//推送消息吴杰
+function pushWorkContent1(obj,type){
+	var msg=$(obj).text();
+	//改变背景
+	//获取当前选中的tab
+	var tab = $('#tabs').tabs('getSelected');  
+	var title=tab.panel('options').title;
+	var index=getUserDataIndex()+1;
+	if(title=="工单记录"+index){
+	    var ifr = $("iframe",tab);
+	    var targetOrigin = 'http://10.224.2.177:7001';
+	    //var targetOrigin = 'http://localhost:8088';
+	    if(msg.indexOf("(") > 0 && msg.indexOf(")")> 0 && msg.indexOf(",")>0 && msg.indexOf(".")>0 && str.substr(str.length-1,1)==")"){
+	    	msg1 = msg.substring(0,msg.indexOf("("));
+	    	var message="wzms|"+msg1;
+	    	ifr[0].contentWindow.postMessage(message,targetOrigin);
+	    	msg=revert(msg);
+	    	var msg2=msg.substring(1,msg.indexOf(")"));
+	    	msg2=revert(msg2);
+	    	var msg3=msg2.substring(0,msg2.indexOf(","));
+	    	var message1="dljd|"+msg3;
+	    	ifr[0].contentWindow.postMessage(message1,targetOrigin);
+	    	
+	    	msg4=msg2.substring(msg2.indexOf(","),msg2.lengh);
+	    	var message2="dlwd|"+msg4;
+	    	ifr[0].contentWindow.postMessage(message2,targetOrigin);
+	    	
+	    	
+			
+		}else{
+			var message="gdlr|"+msg;
+			 ifr[0].contentWindow.postMessage(message,targetOrigin);
+		}
+	}else{
+		$.messager.alert("推送信息","请选择工单后推送信息！",'warning');
+	}
+}
+function revert(str){
+
+  var arr=str.split('');
+
+  var  len=arr.length;
+
+  for(var i=0;i<=len/2;i++){
+
+    	var temp=arr[i];
+		arr[i]=arr[len-1-i];
+		arr[len-1-i]=temp;
+
+	}
+
+return arr.join('');
+
+}
+
 /*保存或变更附件*/
 function saveOrUpdateAttachment(obj,msgId,type,csOrWx){
 	//获取当前选中的tab
@@ -2706,8 +2761,8 @@ function choseQQFace(id){
 		return flag;
 	}
 	function editUsersPhone(openid,phone){
-		$.messager.confirm('电话号码同步提示', '你确定更新电话号码吗?', function(r){
-			if (r){
+		/* $.messager.confirm('电话号码同步提示', '你确定更新电话号码吗?', function(r){
+			if (r){ */
 				$.ajax({
 					type : "post",
 					url : "/csc/editUsersInfo",
@@ -2723,8 +2778,8 @@ function choseQQFace(id){
 						closeWindow('users-edit-window');
 					}
 				});
-			}
-		});
+		/* 	}
+		}); */
 	}
 	var _type="";
 	//window.addEventListener('message', function(event){
