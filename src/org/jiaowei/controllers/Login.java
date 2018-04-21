@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigInteger;
 import java.net.InetAddress;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -55,11 +58,31 @@ public class Login {
         return "login";
     }
     
+    //对比工号MD5加密是否吻合并登录
+    @RequestMapping(value="/login1")
+    @ResponseBody
+    public String login1(String ACCOUNT,String sign,HttpServletRequest request) throws NoSuchAlgorithmException{
+    	Map<String,String> userMap=getUserInfor(ACCOUNT);
+    	if(userMap==null){//查看工号是否在数据库里
+    		return "-1";
+    	}
+    	
+    	
+    	
+    	String md5password = getMD5(userMap.get("PASSWORD"));//得到MD5加密的密码
+    	sign=sign.toUpperCase();
+    	if(md5password.equals(sign)){//对比传入的sign值
+    		request.getSession().setAttribute(ACCOUNT,ACCOUNT);
+    		return "1";   		
+    	}
+    	return "-1";
+    }
    
     @RequestMapping("/login")
     public  String login(String userName, /*String password,*/Map<String,Object> map,HttpServletRequest request) throws Exception {
     	//更新华南用户名称
         SysUserEntity sysEntity=getHNIIUserInfo(userName);
+    	//Map<String,String> userMap=getUserInfor(userName);
         InetAddress addr = InetAddress.getLocalHost();
         String ip = request.getHeader("x-forwarded-for");
         if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
@@ -80,35 +103,37 @@ public class Login {
 //             map.put("erorrInfo","IP限制.");
 //             return "error";
 //        }
-    	if(sysEntity==null /*|| StringUtil.isEmpty(password)*/){
+    	if(sysEntity==null ){
+    	//if(userMap==null){
             logger.info("用户名不能为空");
             map.put("erorrInfo","用户名不能为空");
             return "userError";
         }else if(sysEntity.getUserName()==null){
+        //else if(userMap.get("USERNAME") == null){
         	 logger.info("用户登录失败");
              map.put("erorrInfo","用户登录失败");
              return "dataError";
         }else{
-            List<SysUserEntity> list =sysUserService.findByProperty(SysUserEntity.class,"userId",userName);
+            List<SysUserEntity> list = sysUserService.findByProperty(SysUserEntity.class,"userId",userName);
             SysUserEntity entity=new SysUserEntity();
             if(null == list || list.size()<1){//新用户
             	entity.setDeptId(new Integer(-1));
-            	List<DepartEntity> deList=sysUserService.findByProperty(DepartEntity.class, "jgdm", sysEntity.getDeptId());
+            	List<DepartEntity> deList=sysUserService.findByProperty(DepartEntity.class, "jgdm", sysEntity.getDeptId()/*userMap.get("DEPT")*/);
             	if(deList!=null&&deList.size()>0){
             		DepartEntity de=deList.get(0);
             		entity.setDeptId(de.getId());
             	}
-            	entity.setUserName(sysEntity.getUserName());
+            	entity.setUserName(sysEntity.getUserName()/*userMap.get("USERNAME")*/);
             	entity.setUserId(userName);
             	entity.setChangeNum(5);
             	entity.setCustomerNum(5);
-            	entity.setDeptIdHn(sysEntity.getDeptId().toString());
+            	entity.setDeptIdHn(sysEntity.getDeptId().toString()/*userMap.get("DEPT").toString()*/);
             	sysUserService.save(entity);
             }else{//老用户
                 entity  = list.get(0);
                 //更新用户名称
-                if(!"".equals(sysEntity.getUserName())&&!sysEntity.getUserName().equals(entity.getUserName())){
-                	entity.setUserName(sysEntity.getUserName());
+                if(!"".equals(sysEntity.getUserName()/*userMap.get("USERNAME")*/)&&!sysEntity.getUserName()/*userMap.get("USERNAME")*/.equals(entity.getUserName())){
+                	entity.setUserName(sysEntity.getUserName()/*userMap.get("USERNAME")*/);
                 	sysUserService.saveOrUpdate(entity);
                 }
             }
@@ -199,6 +224,7 @@ public class Login {
             conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
 //            String sql = " select t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT from  HNII_S_USER1@ORCL180.REGRESS.RDBMS.DEV.US.ORACLE.COM  t1 where t1.USERID = ? ";
             String sql = " SELECT t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT FROM HNII_S_USER1 t1 WHERE t1.USERID = ?  ";
+            
             pre = conn.prepareStatement(sql);
             pre.setString(1, userId);
             resultSet = pre.executeQuery();
@@ -214,6 +240,14 @@ public class Login {
     	return map;
     }
     
+    //MD5转化
+    public String getMD5(String passWord) throws NoSuchAlgorithmException{
+    	MessageDigest md5 = MessageDigest.getInstance("MD5");
+    	md5.update(passWord.getBytes());
+    	String s = new BigInteger(1,md5.digest()).toString(16);
+    	s=s.toUpperCase();
+    	return s;
+    }
     
 
     public SysUserEntity getHNIIUserInfo(String userId) throws Exception {
@@ -222,13 +256,20 @@ public class Login {
         PreparedStatement pre = null;
         ResultSet resultSet = null;
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+        	Class.forName("oracle.jdbc.driver.OracleDriver");
+            String jdbcUrl = "jdbc:oracle:thin:@superc102.vicp.cc:1522:jwwx";
+            String jdbcUsername = "hnii";
+            String jdbcPassword ="wssj";
+            conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
+            
+            /*Class.forName("oracle.jdbc.driver.OracleDriver");
             String jdbcUrl = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.url");
             String jdbcUsername = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.username");
             String jdbcPassword = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.password");
-            conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
-//          String sql = " select t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT from  HNII_S_USER1@ORCL180.REGRESS.RDBMS.DEV.US.ORACLE.COM  t1 where t1.USERID = ? ";
-            String sql = " SELECT t1.USER_NAME USERNAME, t1.DEPT_ID DEPT FROM SYS_USER_T t1 WHERE t1.USER_ID = ? ";
+            conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);*/
+            //String sql = " select t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT from  HNII_S_USER1@ORCL180.REGRESS.RDBMS.DEV.US.ORACLE.COM  t1 where t1.USERID = ? ";
+            /*String sql = " SELECT t1.USER_NAME USERNAME, t1.DEPT_ID DEPT FROM SYS_USER_T t1 WHERE t1.USER_ID = ? ";*/
+            String sql = " SELECT t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT FROM HNII_S_USER1 t1 WHERE t1.USERID = ?  ";
             pre = conn.prepareStatement(sql);
             pre.setString(1, userId);
             resultSet = pre.executeQuery();
