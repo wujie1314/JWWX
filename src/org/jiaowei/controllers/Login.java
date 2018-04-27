@@ -66,9 +66,7 @@ public class Login {
     	if(userMap==null){//查看工号是否在数据库里
     		return "-1";
     	}
-    	
-    	
-    	
+    	 	
     	String md5password = getMD5(userMap.get("PASSWORD"));//得到MD5加密的密码
     	sign=sign.toUpperCase();
     	if(md5password.equals(sign)){//对比传入的sign值
@@ -117,12 +115,13 @@ public class Login {
             List<SysUserEntity> list = sysUserService.findByProperty(SysUserEntity.class,"userId",userName);
             SysUserEntity entity=new SysUserEntity();
             if(null == list || list.size()<1){//新用户
-            	entity.setDeptId(new Integer(-1));
-            	List<DepartEntity> deList=sysUserService.findByProperty(DepartEntity.class, "jgdm", sysEntity.getDeptId()/*userMap.get("DEPT")*/);
+            	//entity.setDeptId(new Integer(-1));
+            	List<DepartEntity> deList=sysUserService.findByProperty(DepartEntity.class, "jgdm", sysEntity.getDeptId().toString()/*userMap.get("DEPT")*/);
             	if(deList!=null&&deList.size()>0){
             		DepartEntity de=deList.get(0);
             		entity.setDeptId(de.getId());
             	}
+            	
             	entity.setUserName(sysEntity.getUserName()/*userMap.get("USERNAME")*/);
             	entity.setUserId(userName);
             	entity.setChangeNum(5);
@@ -268,7 +267,7 @@ public class Login {
             String jdbcPassword = PropertiesUtil.getProperty("dbconfig.properties", "jdbc.password");
             conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);*/
             //String sql = " select t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT from  HNII_S_USER1@ORCL180.REGRESS.RDBMS.DEV.US.ORACLE.COM  t1 where t1.USERID = ? ";
-            /*String sql = " SELECT t1.USER_NAME USERNAME, t1.DEPT_ID DEPT FROM SYS_USER_T t1 WHERE t1.USER_ID = ? ";*/
+            //String sql = " SELECT t1.USER_NAME USERNAME, t1.DEPT_ID DEPT FROM SYS_USER_T t1 WHERE t1.USER_ID = ? ";
             String sql = " SELECT t1.USERNAME USERNAME, t1.PASSWORD PASSWORD,t1.DEPT DEPT FROM HNII_S_USER1 t1 WHERE t1.USERID = ?  ";
             pre = conn.prepareStatement(sql);
             pre.setString(1, userId);
