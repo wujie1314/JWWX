@@ -110,17 +110,15 @@ html,body,.container {
 #startPosition,#endPosition {
 	color: #333;
 	font-size: 38px;
-	margin-top: 1%;
+	margin:auto;
 	background: #fff;
 	border: none;
-	width: 40%;
-	height: 90%;
+	max-width:42%;
 }
 
 #phoneNum {
 	color: #333;
 	font-size: 38px;
-	margin-top: 1%;
 	background: #fff;
 	border: none;
 	width: 80%;
@@ -166,6 +164,10 @@ label {
 	font-size: 38px !important;
 	font-weight: normal !important;
 	margin: 0 !important;
+}
+
+.labelInfo{
+	word-break:keep-all;
 }
 
 hr {
