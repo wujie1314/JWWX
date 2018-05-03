@@ -142,7 +142,7 @@ public class Login {
             NavMenuInitUtils.getInstance().userDeptMap.put(""+entity.getId(), entity.getDeptId());
             SysUserEntity entity2=NavMenuInitUtils.getInstance().getSysUserCsEntity(entity.getId()+"");
             String nowIp=WeiXinConst.ipAndAddressMap.get(String.valueOf(entity.getId()));
-            String deptAll=",3,4,5,6,12,";
+            String deptAll=",3,4,5,6,12,18,";
             if(entity2!=null&&nowIp!=null&&!nowIp.toString().equals(ip)){//已登录
             	map.put("erorrInfo","此用户已登录");
                 return "error";

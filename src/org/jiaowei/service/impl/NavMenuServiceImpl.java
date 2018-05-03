@@ -582,10 +582,17 @@ public class NavMenuServiceImpl implements NavMenuService {
 		}
 		String returnString = "";
 		List<WeixinAutoRespondEntity> result = null;
+		if(content.trim().equals("观摩会")){
+			returnString = XmlUtil.gen1ArticlesResponseMsg(map,"观摩会", "重庆市交通委员会运行监测与应急调度系统综合演练观摩", "http://cq96096.cn/meeting/verify".replaceAll("openIdReplaceAll", openId));
+			WeiXinOperUtil.sendMsgToWX(response, returnString);
+			//wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
+			WeiXinConst.navAutoMenu.remove(openId); // 清空该次自动回复信息
+			return;
+		}
+		
 		// mainMenu=autoRespondService.getRespondMes(content,deptId);
 		if ("text".equals(msgType)) { // 正常的文本信息
 			// 判断是否第一次自动返回菜单信息
-
 			if (menu == null) {
 
 				result = autoRespondService.getRespondMes(content, deptId);
@@ -609,6 +616,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 						returnString += "【" + (i + 1) + "】"
 								+ result.get(i).getContent() + "\n";
 					}
+					returnString += "【#】返回上层菜单";
 					}
 					if (result.get(0).getJuniorID() == null
 							|| !result.get(0).getJuniorID().equals("ManualService"+"_"+publicId)){
@@ -693,6 +701,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 			} else if ("#".equals(content)) {// 是否返回上一级
 
 				result = reMenu.get(openId).get(time - 2);
+				if(result==null){
+					result = autoRespondService.getRespondMes("", deptId);
+				}
 				returnString += "请输入序列号获取服务 \n";
 				for (int i = 0; i < result.size(); i++) {
 					returnString += "【" + (i + 1) + "】"
