@@ -71,7 +71,7 @@
 						<input name="direction" type="text" placeholder="请输入起点"
 							id="startPosition" />
 						<hr
-							style="width:8%;border:none;margin:auto !important;display:flex;border-top:5px solid #333;" />
+							style="width:8% !important;border:none;margin:auto !important;display:flex;border-top:5px solid #333;" />
 						<input name="direction" type="text" placeholder="请输入终点"
 							id="endPosition" />
 					</div>
