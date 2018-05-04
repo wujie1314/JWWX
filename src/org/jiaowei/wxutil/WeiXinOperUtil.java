@@ -1376,6 +1376,108 @@ public class WeiXinOperUtil {
     			
     	return menuString;
     }
+    public static String menu4(){
+    	String menuString = " {\n" +
+                "     \"button\":[\n" +
+                "      {\n" +
+                "           \"name\":\"微官网\",\n" +
+                "           \"sub_button\":[\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"机构简介\",\n" +
+                "               \"url\":\"http://jtj.dazu.gov.cn/\"\n" +
+                "            },\n" +
+                "           {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"交通咨讯\",\n" +
+                "               \"url\":\"http://jtj.dazu.gov.cn/\"\n" +
+                "            },\n" +
+				/*"            {\t\n" +
+				"               \"type\":\"view\",\n" +
+				"               \"name\":\"旅游专车购票\",\n" +
+				"               \"url\":\"http://wx.iu73.com/wxWeb/rwyBusCollectsNew.aspx?winzoom=1\"\n" +
+				"            },\n" +*/
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"交通风采\",\n" +
+                "               \"url\":\"http://jtj.dazu.gov.cn/\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"办事指南\",\n" +
+                "               \"url\":\"http://jtj.dazu.gov.cn/\"\n" +
+                "            }]\n" +
+                "       },\n" +
+                "      {\n" +
+                "           \"name\":\"便民服务\",\n" +
+                "           \"sub_button\":[\n" +
+                			
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"交通服务\",\n" +
+                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b064d6b5267e279&redirect_uri=http%3A%2F%2Fwww.vbee.com.cn%2Findex.php%3Fg%3DWap%26m%3DIndex%26a%3Dtel%26tel%3D96096%26token%3Dbudfhr1502351282&response_type=code&scope=snsapi_base&state=#wechat_redirect\"\n" +
+                "            },\n" +
+               /* "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"市内违章查询\",\n" +
+                "               \"url\":\"http://www.weiwubao.com/traffic/800066/add_bind/?btype=3&client=h7pGTzBsa0PWb7aNeZ8UmXxs5ciaZ3LYpxeS790SNwC\"\n" +
+                "            },\n" +*/
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"高速ETC\",\n" +
+                "               \"url\":\"https://weixin.gs12122.com/CQETCWechatAPIServer/html/secondversion/index.html?version=20170907\"\n" +
+               "            },\n" +
+                "            {\n" +
+                "               \"type\":\"click\",\n" +
+                "               \"name\":\"96096人工服务\",\n" +
+                "               \"key\":\"MAN_SERVICE\"\n" +
+                "            }]\n" +
+                "       },\n" +
+                
+                "      {\n" +
+                "           \"name\":\"出行服务\",\n" +
+                "           \"sub_button\":[\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"实时路况\",\n" +
+                "               \"url\":\"http://222.180.149.190/cqga-pub/accept/lk_info\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"公交查询\",\n" +
+                "               \"url\":\"http://web.chelaile.net.cn/wwd/index?src=webapp_weixin_chongqing\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"火车查询\",\n" +
+                "               \"url\":\"http://mobile.12306.cn/weixin/wxcore/init\"\n" +
+                "            },\n" +
+				"            {\t\n" +
+				"               \"type\":\"view\",\n" +
+				"               \"name\":\"客运班车\",\n" +
+				"               \"url\":\"http://wap.96096kp.com/wapsite/control/searchStation\"\n" +
+				"            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"航班信息\",\n" +
+                "               \"url\":\"http://m.veryzhun.com/flight/\"\n" +
+                "            },\n" +
+               /* "            {\n" +
+                "               \"type\":\"click\",\n" +
+                "               \"name\":\"96096人工服务\",\n" +
+                "               \"key\":\"MAN_SERVICE\"\n" +
+                "            },\n" +*/
+             /*   "            {\n" +
+                "               \"type\":\"click\",\n" +
+                "               \"name\":\"其他\",\n" +
+                "               \"key\":\"OTHERS_VIEW\"\n" +
+                "            }]\n" +*/
+                "       }]\n" +
+                " }";
+    	System.err.println(menuString);
+    			
+    	return menuString;
+    }
     
     public static String menu2(){
     	String menuString = " {\n" +

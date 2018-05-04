@@ -583,7 +583,7 @@ public class NavMenuServiceImpl implements NavMenuService {
 		String returnString = "";
 		List<WeixinAutoRespondEntity> result = null;
 		if(content.trim().equals("观摩会")){
-			returnString = XmlUtil.gen1ArticlesResponseMsg(map,"观摩会", "重庆市交通委员会运行监测与应急调度系统综合演练观摩", "http://cq96096.cn/meeting/verify".replaceAll("openIdReplaceAll", openId));
+			returnString = XmlUtil.gen1ArticlesResponseMsg1(map,"观摩会", "重庆市交通委员会运行监测与应急调度系统综合演练观摩", "http://cq96096.cn/meeting/verify".replaceAll("openIdReplaceAll", openId));
 			WeiXinOperUtil.sendMsgToWX(response, returnString);
 			//wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
 			WeiXinConst.navAutoMenu.remove(openId); // 清空该次自动回复信息

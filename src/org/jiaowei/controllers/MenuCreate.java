@@ -15,7 +15,7 @@ public class MenuCreate {
 		
 		
 		//createMenu("gh_1ba95266f60c", WeiXinOperUtil.menu1());
-		createMenu("gh_2ed2a7b99aa4", WeiXinOperUtil.menu1());
+		createMenu("gh_abc6894295a3", WeiXinOperUtil.menu4());
 		
 
 //		for (int i = 0; i < args.length; i++) {

@@ -267,6 +267,35 @@ public class XmlUtil {
                 Integer.valueOf(map.get("CreateTime")),title,desc,url);
         return temp;
     }
+    /**
+     * 生成图文消息wujie
+     * @param map
+     * @return
+     */
+    public static String gen1ArticlesResponseMsg1(Map<String, String> map,String title,String desc,String url) {
+        if (5 > map.size()) {
+            logger.info("收到的微信发来的数据异常：" + FastJsonUtil.toJson(map));
+            return "";
+        }
+        String picurl="http://cq96096.cn/image/meeting/banner_head.jpg";
+        String temp = String.format("<xml>\n" +
+                "<ToUserName><![CDATA[%s]]></ToUserName>\n" +
+                "<FromUserName><![CDATA[%s]]></FromUserName>\n" +
+                "<CreateTime>%s</CreateTime>\n" +
+                "<MsgType><![CDATA[news]]></MsgType>\n" +
+                "<ArticleCount>1</ArticleCount>\n" +
+                "<Articles>\n" +
+                "<item>\n" +
+                "<Title><![CDATA[%s]]></Title> \n" +
+                "<Description><![CDATA[%s]]></Description>\n" +
+                "<PicUrl><![CDATA[%s]]></PicUrl>\n" +
+                "<Url><![CDATA[%s]]></Url>\n" +
+                "</item>\n" +
+                "</Articles>\n" +
+                "</xml>",map.get("FromUserName"), map.get("ToUserName"),
+                Integer.valueOf(map.get("CreateTime")),title,desc,picurl,url);
+        return temp;
+    }
 
     /**
      *将map中key的首字线转换为小写，方便将map转化为bean
