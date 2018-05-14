@@ -18,14 +18,8 @@
 </style>
 <body>
 
-<%-- <div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=201805031353"/></div> --%>
-
 <div class="content">
 	<img id="imgId" width="100%" src="${ctx}/image/meeting/tuijie/tuijie1.jpg?timestamp=201805130251"/>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie2.jpg?timestamp=20180512340"/> --%>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie3.jpg?timestamp=20180512340"/> --%>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie4.jpg?timestamp=20180512340"/> --%>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie5.jpg?timestamp=20180512340"/> --%>
 </div>
 <div style="text-align: center;">
 	<span id="lastPage" style="border: 1px solid #D0CFCF;margin: 20px;" onclick="lastPage();" >上一页</span>

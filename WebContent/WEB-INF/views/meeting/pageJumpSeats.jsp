@@ -12,7 +12,7 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.11.3.min.js"></script>
 </head>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180503"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180514001"/></div>
 <div width="100%" heigh="50" style="text-align: center;margin: 10px;font-weight:bold;font-size: 150%">参会名单</div>
 <div class="content">
 	<table>

@@ -19,7 +19,7 @@
 </style>
 </head>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180503"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180514001"/></div>
 
 <div class="content">
 	<div width="100%" heigh="50" style="text-align: center;margin: 20px;font-weight:bold;font-size: 200%">服务中心</div>
