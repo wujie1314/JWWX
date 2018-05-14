@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.security.MessageDigest;
@@ -67,7 +66,7 @@ public class Login {
     		return "-1";
     	}
     	 	
-    	String md5password = getMD5(userMap.get("PASSWORD"));//得到MD5加密的密码
+    	String md5password = getMD5(userMap.get("USERNAME")+userMap.get("PASSWORD"));//得到MD5加密的密码
     	sign=sign.toUpperCase();
     	if(md5password.equals(sign)){//对比传入的sign值
     		request.getSession().setAttribute(ACCOUNT,ACCOUNT);

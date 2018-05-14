@@ -1862,7 +1862,7 @@ function colseSjlxWindow(type,value){
 	}
 }
 //推送信息
-function pushWorkContent(obj,type){
+function pushWorkContent1(obj,type){
 	var msg=$(obj).text();
 	var message="gdlr|"+msg;
 	//改变背景
@@ -1880,7 +1880,7 @@ function pushWorkContent(obj,type){
 	}
 }
 //推送消息吴杰
-function pushWorkContent1(obj,type){
+function pushWorkContent(obj,type){
 	var msg=$(obj).text();
 	//改变背景
 	//获取当前选中的tab
@@ -1891,18 +1891,19 @@ function pushWorkContent1(obj,type){
 	    var ifr = $("iframe",tab);
 	    var targetOrigin = 'http://10.224.2.177:7001';
 	    //var targetOrigin = 'http://localhost:8088';
-	    if(msg.indexOf("(") > 0 && msg.indexOf(")")> 0 && msg.indexOf(",")>0 && msg.indexOf(".")>0 && str.substr(str.length-1,1)==")"){
+	    if(msg.indexOf("(") > 0 && msg.indexOf(")")> 0 && msg.indexOf(",")>0 && msg.indexOf(".")>0 && msg.substr(msg.length-1,1)==")"){
 	    	msg1 = msg.substring(0,msg.indexOf("("));
 	    	var message="wzms|"+msg1;
 	    	ifr[0].contentWindow.postMessage(message,targetOrigin);
-	    	msg=revert(msg);
-	    	var msg2=msg.substring(1,msg.indexOf(")"));
-	    	msg2=revert(msg2);
-	    	var msg3=msg2.substring(0,msg2.indexOf(","));
+	    
+	    	var pa = /.*\((.*)\)/;
+	    	msg=msg.match(pa)[1];
+	    	msg=msg.split(",");
+	    	var msg3=msg[0];
 	    	var message1="dljd|"+msg3;
 	    	ifr[0].contentWindow.postMessage(message1,targetOrigin);
 	    	
-	    	msg4=msg2.substring(msg2.indexOf(","),msg2.lengh);
+	    	msg4=msg[1];
 	    	var message2="dlwd|"+msg4;
 	    	ifr[0].contentWindow.postMessage(message2,targetOrigin);
 	    	
@@ -1915,23 +1916,6 @@ function pushWorkContent1(obj,type){
 	}else{
 		$.messager.alert("推送信息","请选择工单后推送信息！",'warning');
 	}
-}
-function revert(str){
-
-  var arr=str.split('');
-
-  var  len=arr.length;
-
-  for(var i=0;i<=len/2;i++){
-
-    	var temp=arr[i];
-		arr[i]=arr[len-1-i];
-		arr[len-1-i]=temp;
-
-	}
-
-return arr.join('');
-
 }
 
 /*保存或变更附件*/
