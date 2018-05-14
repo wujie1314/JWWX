@@ -24,7 +24,11 @@ public class MeetingServiceImpl  extends CommonServiceImpl implements MeetingSer
 				sql.append(" and meetPhone = :meetPhone ");
 				params.put("meetPhone", param.get("meetPhone"));
 			}
-			
+		      if (param.get("meetingType") != null)
+		      {
+		        sql.append(" and meetType = :meetType ");
+		        params.put("meetType", param.get("meetingType"));
+		      }			
 			objList = findBySQL(sql.toString(), params);
 		} catch (Exception e) {
 			e.printStackTrace();

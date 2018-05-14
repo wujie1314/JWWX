@@ -7,18 +7,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta content="telephone=no" name="format-detection">
-<title>2016年重庆“互联网+”便捷交通</title>
+<title>2018年重庆市交通委员会运行监测与应急调度系统综合演练观摩</title>
 <link rel="stylesheet" href="${ctx}/css/meeting/pcs.css">
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.11.3.min.js"></script>
 </head>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head.jpg"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head.jpg?timeStamp=20180503"/></div>
 <div class="content">	
 	<ul>
-    	<li onclick="hrefIntroduce()"><div class="li_cont bac1"><img src="${ctx}/image/meeting/icon2.png"/><p>会议介绍</p></div></li>
-       	<li onclick="hrefAgenda()" class="bac"><div class="li_cont bac2"> <img src="${ctx}/image/meeting/icon1.png"/><p>会议仪程</p></div></li>
-        <li onclick="hrefSeats()"><div class="li_cont bac3"><img src="${ctx}/image/meeting/icon4.png"/><p>座次表</p></div></li>
-      	<li onclick="hrefUser()" class="bac"><div class="li_cont bac4"><img src="${ctx}/image/meeting/icon3.png"/><p>参会名册</p></div></li>
+       	<li onclick="hrefAgenda()"><div class="li_cont bac2"> <img src="${ctx}/image/meeting/icon1.png"/><p>会议议程</p></div></li>
+      	<li onclick="hrefUser()" class="bac"><div class="li_cont bac3"><img src="${ctx}/image/meeting/icon3.png"/><p>参会名册</p></div></li>
+      	<li onclick="hrefIntroduce()"><div class="li_cont bac1"><img src="${ctx}/image/meeting/icon2.png"/><p>参会公司</p></div></li>
+      	<li onclick="hrefSeats()" class="bac"><div class="li_cont bac4"><img src="${ctx}/image/meeting/icon4.png"/><p>现场导视</p></div></li>
         <li onclick="hrefDatum()"><div class="li_cont bac5"><img src="${ctx}/image/meeting/icon5.png"/><p>资料下载</p></div></li>
       	<li onclick="hrefServiceCenter()" class="bac"><div class="li_cont bac6"><img src="${ctx}/image/meeting/icon6.png"/><p>服务中心</p></div></li>
     </ul>

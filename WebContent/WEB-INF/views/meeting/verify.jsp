@@ -6,15 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>2018年重庆市交通委员会运行监测与应急调度系统综合演练观摩</title>
 <meta content="telephone=no" name="format-detection">
-<title>2016年重庆“互联网+”便捷交通</title>
 <link rel="stylesheet" href="${ctx}/css/meeting/pcs.css">
 <link rel="stylesheet" href="${ctx}/css/weui-master/dist/style/weui.min.css" />
 <link rel="stylesheet" href="${ctx}/css/weui-master/dist/example/example.css" />
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.11.3.min.js"></script>
 </head>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head.jpg"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head.jpg?timeStamp=20180503"/></div>
 <div class="content">
 	<div style="width: 58%;height: 284px; margin:28px auto;text-align: center;">
 
