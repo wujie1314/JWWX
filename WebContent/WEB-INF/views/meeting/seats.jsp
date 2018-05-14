@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta content="telephone=no" name="format-detection">
-<title>2016年重庆“互联网+”便捷交通</title>
+<title>2018年重庆市交通委员会运行监测与应急调度系统综合演练观摩</title>
 <link rel="stylesheet" href="${ctx}/css/meeting/pcs.css">
 <link rel="stylesheet" href="${ctx}/css/weui-master/dist/style/weui.min.css" />
 <link rel="stylesheet" href="${ctx}/css/weui-master/dist/example/example.css" />
@@ -15,11 +15,12 @@
 </head>
 <body>
 
-<div class="banner"><img src="${ctx}/image/meeting/banner_head.jpg"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head.jpg?timeStamp=201805031352"/></div>
 
 <div class="content">
-	<div width="100%" heigh="50" style="text-align: center;margin: 20px;font-weight:bold;font-size: 100%">请点击座次图表查看大图</div>
-	<img width="100%" id="seats" src="${ctx}/image/meeting/seats.png"/>
+	<div width="100%" heigh="50" style="text-align: center;margin: 20px;font-weight:bold;font-size: 100%">请点击图片查看大图</div>
+	<img width="100%" id="huodongtu" src="${ctx}/image/meeting/huodongtu.png"/>
+	<img width="100%" id="daoshitu" src="${ctx}/image/meeting/daoshitu.png"/>
 </div>
 
 </body>
@@ -67,15 +68,20 @@ function arrayToJson(o) {
 	var i=0;
 	var src=[];
 	var json=null;
-	aa=$('#seats');
+	aa = [$('#huodongtu'), $('#daoshitu')];
 	for (i=0;i<aa.length;i++){
-		src[i]=aa[i].src;    //把所有的src存到数组里
+		src[i]=aa[i][0].src;    //把所有的src存到数组里
 	}
 	var srcList=arrayToJson(src); //转换成json并赋值给srcList
 	//下面是点击图片的时候获取当前第几个图片并且启用咱们做的调用微信图片浏览器的函数
-	$('#seats').click(function(){
-		var index = $('#seats').index(this);
-		imagePreview(srcList[index],srcList);
+	$('#huodongtu').click(function(){
+		var index = $('#huodongtu').index(this);
+		imagePreview(src[index],src);
+	});
+	
+	$('#daoshitu').click(function(){
+		var index = $('#daoshitu').index(this);
+		imagePreview(src[index],src);
 	});
 				 
 })(jQuery);

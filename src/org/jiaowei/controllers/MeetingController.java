@@ -72,12 +72,17 @@ public class MeetingController {
     public String query(HttpServletRequest request, Map<String,Object> map) {
     	String openId = request.getParameter("openId");
 		String code = request.getParameter("code");
+		String meetingType = request.getParameter("meetingType");
+	    if (meetingType == null) {
+	      meetingType = "";
+	    }
 		if(StringUtil.isNotEmpty(code)){
 			//获取openId
 			openId = getOAuthOpenId(WeiXinConst.appId, WeiXinConst.appSecret, code); // appId 修改？？？？// openid
 		}
 		map.put("openId", openId);
-		return "meeting/verify";
+		map.put("meetingType", meetingType);
+	    return "meeting/verify" + meetingType;
     }
 	
    
@@ -89,8 +94,10 @@ public class MeetingController {
     @ResponseBody
     public String delCollent(HttpServletRequest request) {
     	String mobile = request.getParameter("mobile");//0收藏、1热点、2高速、3站台、4意见
+        String meetingType = request.getParameter("meetingType");
     	Map<String,Object> params = new HashMap<String, Object>();
     	params.put("meetPhone", mobile);
+    	params.put("meetingType", meetingType);
     	int code = 0;
     	String msg = "成功！";
     	try {
@@ -162,6 +169,13 @@ public class MeetingController {
     @RequestMapping("/meeting/serviceCenter")
     public String serviceCenter(HttpServletRequest request, Map<String,Object> map) {
     	return "meeting/serviceCenter";
+    }
+    
+    @RequestMapping({"/meeting/toPage"})
+    public String pageJump(HttpServletRequest request, Map<String, Object> map)
+    {
+      String page = request.getParameter("page");
+      return "meeting/pageJump" + page;
     }
 
 }
