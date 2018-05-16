@@ -19,17 +19,20 @@ ul li img{
 .content ul li{
 	width: 46%;
 }
+.content{
+	margin-top: 20%;
+}
 </style>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180514001"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180516001"/></div>
 <div class="content">	
 	<ul>
        	<li onclick="hrefAgenda()"><img src="${ctx}/image/meeting/icon_yicheng.png?timeStamp=20180514001"/></li>
-      	<li onclick="hrefSeats()" class="bac"><img src="${ctx}/image/meeting/icon_mingdan.png?timeStamp=20180514001"/></li>
-      	<li onclick="hrefIntroduce()"><img src="${ctx}/image/meeting/icon_tuijie.png?timeStamp=20180514001"/></li>
-      	<li onclick="hrefVideo()" class="bac"><img src="${ctx}/image/meeting/icon_video.png?timeStamp=20180514001"/></li>
-        <li onclick="hrefDatum()"><img src="${ctx}/image/meeting/icon_daoshi.png?timeStamp=20180514001"/></li>
-      	<li onclick="hrefServiceCenter()" class="bac"><img src="${ctx}/image/meeting/icon_server.png?timeStamp=20180514001"/></li>
+<%--       	<li onclick="hrefSeats()" class="bac"><img src="${ctx}/image/meeting/icon_mingdan.png?timeStamp=20180514001"/></li> --%>
+      	<li onclick="hrefIntroduce()" class="bac"><img src="${ctx}/image/meeting/icon_tuijie.png?timeStamp=20180514001"/></li>
+      	<li onclick="hrefVideo()"><img src="${ctx}/image/meeting/icon_video.png?timeStamp=20180514001"/></li>
+        <li onclick="hrefDatum()" class="bac"><img src="${ctx}/image/meeting/icon_daoshi.png?timeStamp=20180514001"/></li>
+<%--       	<li onclick="hrefServiceCenter()" class="bac"><img src="${ctx}/image/meeting/icon_server.png?timeStamp=20180514001"/></li> --%>
     </ul>
 	
 </div>

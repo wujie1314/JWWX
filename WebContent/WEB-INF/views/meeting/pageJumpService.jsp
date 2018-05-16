@@ -19,18 +19,18 @@
 </style>
 </head>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180514001"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180516001"/></div>
 
 <div class="content">
-	<div width="100%" heigh="50" style="text-align: center;margin: 20px;font-weight:bold;font-size: 200%">服务中心</div>
-	<div style="margin-left: 10%">
-		<p>秘书组：</p>
+	<div width="100%" heigh="50" style="text-align: center;margin: 20px;font-size: 150%">服务中心</div>
+	<div style="margin: 10%">
+		<p style="font-size: 18px;font-weight: bold;">秘书组：</p>
 		<p style="margin-left: 20px;">委相关处室、相关单位工作人员</p>
-		<p>会务组：</p>
+		<p style="font-size: 18px;font-weight: bold;">会务组：</p>
 		<p style="margin-left: 20px;">委相关处室、相关单位工作人员</p>
-		<p>宣传组：</p>
+		<p style="font-size: 18px;font-weight: bold;">宣传组：</p>
 		<p style="margin-left: 20px;">委相关处室、相关单位工作人员</p>
-		<p>后勤医疗保卫组：</p>
+		<p style="font-size: 18px;font-weight: bold;">后勤医疗保卫组：</p>
 		<p style="margin-left: 20px;">交投司工作人员</p>
 	</div>
 </div>
