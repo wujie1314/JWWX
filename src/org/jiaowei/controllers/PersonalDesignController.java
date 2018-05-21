@@ -30,6 +30,7 @@ import org.jiaowei.entity.RoadSubscribeEntity;
 import org.jiaowei.service.SysUserService;
 import org.jiaowei.util.CommonConstantUtils;
 import org.jiaowei.util.StringUtil;
+import org.jiaowei.websoket.AppWebSocketHandler;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.jiaowei.wxutil.WeixinUtils;
@@ -298,7 +299,9 @@ public class PersonalDesignController {
   		// 这里有点问题 获取不到对应的公众号accessToken
 	  		if(!openId.subSequence(0, 3).equals("app")){
 				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
-			}   
+			}else{
+				AppWebSocketHandler.sendMsgToApp(openId, userJsonContent);
+			}      
         }
  
     }

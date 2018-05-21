@@ -31,6 +31,7 @@ import org.jiaowei.service.impl.WeixinPublicInfoServiceImpl;
 import org.jiaowei.util.FastJsonUtil;
 import org.jiaowei.util.PropertiesUtil;
 import org.jiaowei.util.StringUtil;
+import org.jiaowei.websoket.AppWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -152,6 +153,8 @@ public class WeiXinOperUtil {
 //        Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(wxOpenId); // 加入的
     	if(!wxOpenId.subSequence(0, 3).equals("app")){
 			WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+		}else{
+			AppWebSocketHandler.sendMsgToApp(wxOpenId, userJsonContent);
 		}
 	}
     
@@ -622,7 +625,7 @@ public class WeiXinOperUtil {
         if (StringUtil.isEmpty(openId) || StringUtil.isEmpty(accessToken))
             return null;
         if(openId != null && openId.length() > 3 && openId.subSequence(0, 3).equals("app")){
-		    String userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"app用户\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ic_app.png.jpg\"}";
+		    String userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + openId + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
 		    return userInfo;
 		}
         CloseableHttpClient httpclient = HttpClients.createDefault();

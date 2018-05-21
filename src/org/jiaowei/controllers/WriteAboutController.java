@@ -25,6 +25,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.jiaowei.service.ExpertService;
 import org.jiaowei.service.WriteAboutService;
+import org.jiaowei.websoket.AppWebSocketHandler;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinOperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,6 +193,8 @@ public class WriteAboutController {
 	        if(!json.get("errcode").toString().equals("0")){//发送失败
 	        	System.out.println("发送失败");
 	        }
+		}else{
+			AppWebSocketHandler.sendMsgToApp(openId, jsonContent);
 		}
 		//发短信给专家
         String message = baseUrl +"%26openID="+ expertId;

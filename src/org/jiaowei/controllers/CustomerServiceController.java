@@ -73,6 +73,7 @@ import org.jiaowei.util.ListUtils;
 import org.jiaowei.util.PropertiesUtil;
 import org.jiaowei.util.StringUtil;
 import org.jiaowei.vo.WeixinUserInfoVO;
+import org.jiaowei.websoket.AppWebSocketHandler;
 import org.jiaowei.wxutil.ApiHttpUtils;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.PastUtil;
@@ -1584,6 +1585,8 @@ public class CustomerServiceController {
                  String returnStr = "";
                  if(!wxOpenId.subSequence(0, 3).equals("app")){
                 	  returnStr = WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publiicID), jsonContent);// 获取对应accessToken  已改
+                 }else{
+                	 AppWebSocketHandler.sendMsgToApp(wxOpenId, jsonContent);
                  }
                  wxStatusTmpService.saveMsgDatebase(entity, "感谢您对重庆交通的支持，刚才为您服务的是"+userEntity.getUserId()+"号座席，请您为她的服务评分。\n" +
                          "【1】非常满意 \n" +

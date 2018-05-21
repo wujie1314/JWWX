@@ -69,6 +69,15 @@ public class OthersController {
 		return "others/websocket";
 	}
     
+
+    @RequestMapping("/others/appOnline")
+	public String appOnline(String openId,String userName, HttpServletRequest request,
+			HttpServletResponse response){
+		request.getSession().setAttribute("openId", openId);
+		request.getSession().setAttribute("userName", userName);
+		return "others/online";
+	}
+    
 	@RequestMapping("/others/home")
 	public String othersList(String openId,HttpServletRequest request,  HttpServletResponse response){
 		System.out.println(openId);
@@ -83,9 +92,7 @@ public class OthersController {
      */
     @RequestMapping(value="others/appmes",method=RequestMethod.POST)
     @ResponseBody
-    public String receiveAppMessage(@RequestBody Map<String, String> map, HttpServletResponse response, HttpServletRequest request) {
-    	 if (null == map || map.size() < 1)
-            return "传入错误"; 
+    public void receiveAppMessage(@RequestBody Map<String, String> map, HttpServletResponse response, HttpServletRequest request) {
     	 String msgType = map.get("MsgType"), content = map.get("Content");
     	 System.out.println(map);
          String openId = map.get("FromUserName");
@@ -97,10 +104,10 @@ public class OthersController {
 //             WeixinUserInfoEntity weixinUserInfoEntity = JSON.parseObject(userInfo, WeixinUserInfoEntity.class);
         	 WeixinUserInfoEntity weixinUserInfoEntity = new WeixinUserInfoEntity();
              weixinUserInfoEntity.setSubscribeTime(new Timestamp(System.currentTimeMillis()));
-             weixinUserInfoEntity.setNickname("app用户");
+             weixinUserInfoEntity.setNickname(openId);
              weixinUserInfoEntity.setSex("1");
 //             weixinUserInfoEntity.setHeadImgUrl(headImgUrl);
-             weixinUserInfoEntity.setHeadImg("/image/users/ic_app.png.jpg");
+             weixinUserInfoEntity.setHeadImg("/image/users/ico_app.png");
              weixinUserInfoEntity.setSubscribleTimes(1);
              weixinUserInfoEntity.setUserStatus(1);
              weixinUserInfoEntity.setWxOpenId(openId);
@@ -115,7 +122,6 @@ public class OthersController {
            
          }
 		navMenuService.sendCustomerService(map, response, request);
-		return "-1";
     }
 	
 	
