@@ -624,10 +624,6 @@ public class WeiXinOperUtil {
     public static String getUserInfo(String accessToken, String openId) {
         if (StringUtil.isEmpty(openId) || StringUtil.isEmpty(accessToken))
             return null;
-        if(openId != null && openId.length() > 3 && openId.subSequence(0, 3).equals("app")){
-		    String userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + openId + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
-		    return userInfo;
-		}
         CloseableHttpClient httpclient = HttpClients.createDefault();
         String host = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
         System.out.println(host);

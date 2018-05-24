@@ -93,6 +93,7 @@
             CreateTime: "",
             ToUserName: "gh_2ed2a7b99aa4",
             FromUserName: openId,
+            Nickname: userName,
             MsgType: "text",
             MsgId: "",
         };

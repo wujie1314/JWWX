@@ -104,7 +104,7 @@ public class OthersController {
 //             WeixinUserInfoEntity weixinUserInfoEntity = JSON.parseObject(userInfo, WeixinUserInfoEntity.class);
         	 WeixinUserInfoEntity weixinUserInfoEntity = new WeixinUserInfoEntity();
              weixinUserInfoEntity.setSubscribeTime(new Timestamp(System.currentTimeMillis()));
-             weixinUserInfoEntity.setNickname(openId);
+             weixinUserInfoEntity.setNickname("app用户:" + Nickname);
              weixinUserInfoEntity.setSex("1");
 //             weixinUserInfoEntity.setHeadImgUrl(headImgUrl);
              weixinUserInfoEntity.setHeadImg("/image/users/ico_app.png");

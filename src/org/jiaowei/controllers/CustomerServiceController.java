@@ -1966,7 +1966,17 @@ public class CustomerServiceController {
 			if(temp != null && (""+csId).equals(temp.getCsId()) && temp.getServiceStatus() == 1){
 				String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
 //				Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); //加入的
-				String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), temp.getWxOpenid());// 需要获取对应的AccessToken 已改
+				String userInfo="";
+				if(temp.getWxOpenid() != null && temp.getWxOpenid().length() > 3 && temp.getWxOpenid().subSequence(0, 3).equals("app")){
+					List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
+					String nickname = "app用户";
+					if (null != list || list.size() > 0) {
+						nickname = list.get(0).getNickname();
+					}
+				    userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + nickname + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
+				}else{
+					userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), temp.getWxOpenid());// 需要获取对应的AccessToken 已改
+				}
 				if(temp.getBeginTimestamp() == null ){
 					userInfo = userInfo.replace("}", ",\"begin\":"+0+"}");
 				}
