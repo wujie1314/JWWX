@@ -134,6 +134,8 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 //                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
                     	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
 							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+						}else {
+							AppWebSocketHandler.sendMsgToApp(this.wxOpenId, jsonContent);
 						}
                         //发送座席
                        //通知前端已经关閉
@@ -170,6 +172,8 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 //                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
                     	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
 							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+						}else {
+							AppWebSocketHandler.sendMsgToApp(this.wxOpenId, jsonContent);
 						}
                     	 //发送座席
                          try {
