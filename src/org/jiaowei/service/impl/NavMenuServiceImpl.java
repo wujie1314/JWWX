@@ -314,7 +314,9 @@ public class NavMenuServiceImpl implements NavMenuService {
 		if(openId != null && openId.length() >3 && !openId.subSequence(0, 3).equals("app")){
 			WeiXinOperUtil.sendMsgWx(returnStr, openId);
 		}else{
-			AppWebSocketHandler.sendMsgToApp(openId, returnStr);
+			String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+					openId, String.format(returnStr));
+			AppWebSocketHandler.sendMsgToApp(openId, userJsonContent);
 		}
 		return result;
 	}

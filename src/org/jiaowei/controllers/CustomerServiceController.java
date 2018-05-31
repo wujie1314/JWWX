@@ -1729,6 +1729,14 @@ public class CustomerServiceController {
     	WeiXinConst.transferUserMap.put(csId, openId);
     	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
     	String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), openId);
+    	if(openId != null && openId.length() > 3 && openId.subSequence(0, 3).equals("app")){
+			List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
+			String nickname = "app用户";
+			if (null != list || list.size() > 0) {
+				nickname = list.get(0).getNickname();
+			}
+		    userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + nickname + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
+		}
     	WeixinUserInfoEntity weixinUserInfoEntity = JSON.parseObject(userInfo, WeixinUserInfoEntity.class);
 		map.put("nickName", weixinUserInfoEntity.getNickname());
 		map.put("csId", csId);
@@ -1902,6 +1910,14 @@ public class CustomerServiceController {
         if(entity ==null||"Transfer".equals(typeName)||"Invite".equals(typeName)){
         	//在服务队列中，返回空
         	String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), openId);// 需要获取对应的AccessToken　已改
+        	if(openId != null && openId.length() > 3 && openId.subSequence(0, 3).equals("app")){
+    			List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
+    			String nickname = "app用户";
+    			if (null != list || list.size() > 0) {
+    				nickname = list.get(0).getNickname();
+    			}
+    		    userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + nickname + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
+    		}
         	if(StringUtil.isNotEmpty(userInfo) && !userInfo.contains("errcode")){
         		entity = new WxStatusTmpTEntity();
             	entity.setWxOpenid(openId);
