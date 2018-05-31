@@ -30,6 +30,9 @@ public class AlarmRescueImpl implements IAlarmRescueService {
 		} else if (repairReason.equals("求助")) {
 			map.put("type", 13);
 		}
+		else {
+			map.put("type", " ");
+		}
 		map.put("ID", ID);
 		map.put("currentLocation", currentLocation);
 		map.put("content_desc", content_desc);

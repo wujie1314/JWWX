@@ -42,15 +42,15 @@
 		<div class="row clearfix map">
 			<div class="col-xs-12 col-md-12 col-lg-12 column" id="dituContent"></div>
 		</div>
-		<div class="Relocation">
-	<!-- 		<div id="showRepairFactory">
+	<!-- 	<div class="Relocation">
+			<div id="showRepairFactory">
 				<img src="alarmRescue/img/icon_repair.png" />
 			</div>
-			 -->
+			 
 			<div id="relocation" onclick="againReload();">
 				<img src="alarmRescue/img/icon_site.png" />
 			</div>
-		</div>
+		</div>-->
 
 		<div class="row clearfix foot">
 			<div class="col-xs-12 col-md-12 col-lg-12 column contentFoot">
@@ -67,12 +67,12 @@
 					<div class="col-xs-2 col-md-2 col-lg-2 column">
 						<label class="labelInfo">行驶方向:</label>
 					</div>
-					<div class="col-xs-10 col-md-10 col-lg-10 column location" style="display:flex;flex-direction:row;">
-						<input name="direction" type="text" placeholder="请输入起点"
+					<div class="col-xs-10 col-md-10 col-lg-10 column location" style="display:flex;flex-direction:row;padding-left:10px !important;">
+						<input name="direction" type="text" placeholder="请输入起点(选填)"
 							id="startPosition" />
 						<hr
 							style="width:8% !important;border:none;margin:auto !important;display:flex;border-top:5px solid #333;" />
-						<input name="direction" type="text" placeholder="请输入终点"
+						<input name="direction" type="text" placeholder="请输入终点(选填)"
 							id="endPosition" />
 					</div>
 
@@ -83,7 +83,7 @@
 						<label class="labelInfo">联系电话:</label>
 					</div>
 					<div class="col-xs-10 col-md-10 col-lg-10 column tel">
-						<input name="phone" type="text" placeholder="请输入联系电话"
+						<input name="phone" type="text" placeholder="请输入联系电话(必填)"
 							id="phoneNum"></input> 
 			<div id="frame">
 						<!--  <img src="alarmRescue/img/icon_message.png" id="message" />-->	
@@ -92,7 +92,7 @@
 					</div>
 				</div>
 				<hr />
-				<div class="row clearfix">
+			<!-- 	<div class="row clearfix">
 					<div class="col-xs-2 col-md-2 col-lg-2 column">
 						<label class="labelInfo">维修原因:</label>
 					</div>
@@ -106,7 +106,7 @@
 					</div>
 				</div>
 				<hr />
-				
+				 -->
 		 	<div class="row clearfix">
 					<div class="col-xs-2 col-md-2 col-lg-2 column">
 						<label class="labelInfo">文件上传:</label>
