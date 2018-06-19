@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			window.location.href = "/psDesign/getRoadName?openID=" + openID;    
   		}
   		function lost_good(){
-  			window.location.href = "http://203.93.109.52:10844/jwwx2/weixin/jsp/goodsList.jsp"; //接入   
+  			window.location.href = "http://cq96096.cn/jwwx2/weixin/jsp/goodsList.jsp"; //接入   
   		}
   		function alertRescue(){
   			window.location.href = "/alarmRescue/alarmRescueJSP";

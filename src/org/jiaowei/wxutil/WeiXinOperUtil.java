@@ -1365,11 +1365,11 @@ public class WeiXinOperUtil {
                 "               \"name\":\"96096人工服务\",\n" +
                 "               \"key\":\"MAN_SERVICE\"\n" +
                 "            },\n" +
-             /*   "            {\n" +
+                "            {\n" +
                 "               \"type\":\"click\",\n" +
                 "               \"name\":\"其他\",\n" +
                 "               \"key\":\"OTHERS_VIEW\"\n" +
-                "            }]\n" +*/
+                "            }]\n" +
                 "       }]\n" +
                 " }";
     	System.err.println(menuString);
@@ -1414,19 +1414,29 @@ public class WeiXinOperUtil {
                 			
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
-                "               \"name\":\"交通服务\",\n" +
-                "               \"url\":\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b064d6b5267e279&redirect_uri=http%3A%2F%2Fwww.vbee.com.cn%2Findex.php%3Fg%3DWap%26m%3DIndex%26a%3Dtel%26tel%3D96096%26token%3Dbudfhr1502351282&response_type=code&scope=snsapi_base&state=#wechat_redirect\"\n" +
+                "               \"name\":\"公交免费IC卡\",\n" +
+                "               \"url\":\"http://117.78.46.37/ickfw.aspx\"\n" +
                 "            },\n" +
-               /* "            {\n" +
+                "            {\n" +
                 "               \"type\":\"view\",\n" +
-                "               \"name\":\"市内违章查询\",\n" +
-                "               \"url\":\"http://www.weiwubao.com/traffic/800066/add_bind/?btype=3&client=h7pGTzBsa0PWb7aNeZ8UmXxs5ciaZ3LYpxeS790SNwC\"\n" +
-                "            },\n" +*/
+                "               \"name\":\"驾校汽修厂(驾校)\",\n" +
+                "               \"url\":\"http://117.78.46.37/bmfw_jx_List.aspx\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"驾校汽修厂(汽修厂)\",\n" +
+                "               \"url\":\"http://117.78.46.37/bmfw_qx_List.aspx\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"type\":\"view\",\n" +
+                "               \"name\":\"旅游交通\",\n" +
+                "               \"url\":\"http://117.78.46.37/dzly.aspx\"\n" +
+                "            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"高速ETC\",\n" +
                 "               \"url\":\"https://weixin.gs12122.com/CQETCWechatAPIServer/html/secondversion/index.html?version=20170907\"\n" +
-               "            },\n" +
+                "            },\n" +
                 "            {\n" +
                 "               \"type\":\"click\",\n" +
                 "               \"name\":\"96096人工服务\",\n" +
@@ -1440,12 +1450,12 @@ public class WeiXinOperUtil {
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"实时路况\",\n" +
-                "               \"url\":\"http://222.180.149.190/cqga-pub/accept/lk_info\"\n" +
+                "               \"url\":\"http://117.78.46.37/dzlkmap.aspx\"\n" +
                 "            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +
                 "               \"name\":\"公交查询\",\n" +
-                "               \"url\":\"http://web.chelaile.net.cn/wwd/index?src=webapp_weixin_chongqing\"\n" +
+                "               \"url\":\"http://117.78.46.37/gongjiaoList.aspx\"\n" +
                 "            },\n" +
                 "            {\n" +
                 "               \"type\":\"view\",\n" +

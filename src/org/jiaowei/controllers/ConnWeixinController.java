@@ -172,8 +172,8 @@ public class ConnWeixinController {
                 		System.out.println("其他页面调用");
                 		// 返回一个链接到other/home 页面
                 		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
-                		String returnStr = XmlUtil.gen1ArticlesResponseMsg(map, "其他页面标题",
-        						"这里是描述信息", basePath +"/others/home?openId="+openId);
+                		String returnStr = XmlUtil.gen1ArticlesResponseMsg(map, "更多功能",
+        						"这里是描述信息","http://cq96096.cn/others/home?openId="+openId);
         				WeiXinOperUtil.sendMsgToWX(response, returnStr);
         				wxStatusTmpService.saveMsgDatebase(null, returnStr, openId);
                 	}
