@@ -14,30 +14,30 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.11.3.min.js"></script>
 </head>
 <style>
-
+span{
+	border: 1px solid #333333;
+	margin: 20px;
+	padding: 2px;
+	border-radius: 5px;
+}
 </style>
 <body>
 
-<%-- <div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=201805031353"/></div> --%>
-
 <div class="content">
-	<img id="imgId" width="100%" src="${ctx}/image/meeting/tuijie/tuijie1.jpg?timestamp=201805130251"/>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie2.jpg?timestamp=20180512340"/> --%>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie3.jpg?timestamp=20180512340"/> --%>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie4.jpg?timestamp=20180512340"/> --%>
-<%-- 	<img width="100%" src="${ctx}/image/meeting/tuijie/tuijie5.jpg?timestamp=20180512340"/> --%>
+	<img id="imgId" width="100%" src="${ctx}/image/meeting/tuijie/tuijie0.jpg?timestamp=20180516001"/>
 </div>
 <div style="text-align: center;">
-	<span id="lastPage" style="border: 1px solid #D0CFCF;margin: 20px;" onclick="lastPage();" >上一页</span>
-	<input id ="pageIndex" value="1" style="width: 40px;font-size: 16px;text-align: right;" type="number">/8&nbsp;页 
-	<span onclick="jumpPage()" style="border: 1px solid #D0CFCF;margin: 20px;">跳转</span>
-	<span id="nextPage" onclick="nextPage()" style="border: 1px solid #D0CFCF;margin: 20px;">下一页</span></div>
+	<span id="lastPage" onclick="lastPage();" >上一页</span>
+	<input id ="pageIndex" value="1" style="width: 40px;font-size: 16px;text-align: right;" type="number">/94&nbsp;页 
+	<span onclick="jumpPage()" >跳转</span>
+	<span id="nextPage" onclick="nextPage()">下一页</span>
+</div>
 </body>
 </html>
 
 <script type="text/javascript">
 //这个是调用微信图片浏览器的函数 
-var page = 1;
+var page = 0;
 var url = window.location.protocol+"//"+ window.location.host;
 function imagePreview(curSrc,srcList) {
 	//这个检测是否参数为空
@@ -53,39 +53,40 @@ function imagePreview(curSrc,srcList) {
 
 function nextPage(){
 	page++;
-	if(page > 8){
+	if(page > 93){
 		page--;
 		return;
 	}
-	$("#pageIndex").val(page);
+	$("#pageIndex").val(page + 1);
 	$("#imgId").attr('src',""); 
-	$("#imgId").attr('src',url + "/image/meeting/tuijie/tuijie" + page + ".jpg?timestamp=201805120259"); 
+	$("#imgId").attr('src',url + "/image/meeting/tuijie/tuijie" + page + ".jpg?timestamp=20180515003"); 
 }
 
 function lastPage(){
 	page--;
-	if(page < 1){
+	if(page < 0){
 		page++;
 		return;
 	}
-	$("#pageIndex").val(page);
+	$("#pageIndex").val(page + 1);
 	$("#imgId").attr('src',""); 
-	$("#imgId").attr('src',url + "/image/meeting/tuijie/tuijie" + page + ".jpg?timestamp=201805120259"); 
+	$("#imgId").attr('src',url + "/image/meeting/tuijie/tuijie" + page + ".jpg?timestamp=20180515003"); 
 }
 function jumpPage(){
 	page = $("#pageIndex").val();
 	if(isNaN(page)){
-		page = 1;
+		page = 0;
 	}else{
-		if(page < 1){
-			page = 1;
+		page--;
+		if(page < 0){
+			page = 0;
 		}
-		if(page > 8){
-			page = 8;
+		if(page > 93){
+			page = 93;
 		}
 	}
-	$("#pageIndex").val(page);
-	$("#imgId").attr('src',url + "/image/meeting/tuijie/tuijie" + page + ".jpg?timestamp=201805120259"); 
+	$("#pageIndex").val(page + 1);
+	$("#imgId").attr('src',url + "/image/meeting/tuijie/tuijie" + page + ".jpg?timestamp=20180515003"); 
 }
 
 $(function(){

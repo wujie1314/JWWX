@@ -27,6 +27,7 @@ import org.jiaowei.util.CommonConstantUtils;
 import org.jiaowei.util.FastJsonUtil;
 import org.jiaowei.util.MyBeanUtils;
 import org.jiaowei.util.StringUtil;
+import org.jiaowei.websoket.AppWebSocketHandler;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinConst;
 import org.jiaowei.wxutil.WeiXinOperUtil;
@@ -309,7 +310,14 @@ public class NavMenuServiceImpl implements NavMenuService {
 			returnStr = defaultContent;
 			result = false;
 		}
-		WeiXinOperUtil.sendMsgWx(returnStr, openId);
+		
+		if(openId != null && openId.length() >3 && !openId.subSequence(0, 3).equals("app")){
+			WeiXinOperUtil.sendMsgWx(returnStr, openId);
+		}else{
+			String userJsonContent = String.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+					openId, String.format(returnStr));
+			AppWebSocketHandler.sendMsgToApp(openId, userJsonContent);
+		}
 		return result;
 	}
 
@@ -752,11 +760,18 @@ public class NavMenuServiceImpl implements NavMenuService {
 		// 判断是否是最后一级，是返回一个链接图文信息
 		if (result.size() == 1 && result.get(0).getUrl() != null) {
 			// 是的直接覆盖前面写的String;
-			returnString = XmlUtil.gen1ArticlesResponseMsg(map, result.get(0)
-					.getContent(), result.get(0).getContent(), result.get(0)
-					.getUrl().replaceAll("openIdReplaceAll", openId));
-			WeiXinOperUtil.sendMsgToWX(response, returnString);
-			wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
+			if(!openId.subSequence(0, 3).equals("app")){
+				returnString = XmlUtil.gen1ArticlesResponseMsg(map, result.get(0)
+						.getContent(), result.get(0).getContent(), result.get(0)
+						.getUrl().replaceAll("openIdReplaceAll", openId));
+				WeiXinOperUtil.sendMsgToWX(response, returnString);
+				wxStatusTmpService.saveMsgDatebase(null, returnString, openId);
+			}else{
+				returnString = String.format("{\"touser\":\"%s\",\"msgtype\":\"url\",\"text\":{\"content\":\"%s\"},\"url\":\"%s\"}",
+						openId, result.get(0).getContent(),result.get(0)
+						.getUrl().replaceAll("openIdReplaceAll", openId));
+				AppWebSocketHandler.sendMsgToApp(openId, returnString);
+			}
 			WeiXinConst.navAutoMenu.remove(openId); // 清空该次自动回复信息
 			return;
 		}

@@ -28,6 +28,7 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements
         fpServer=new FlashPolicyServer(10844);
         fpServer.start();
         registry.addHandler(systemWebSocketHandler(), "/chatSocket").addInterceptors(new HandshakeInterceptor());
+        registry.addHandler(appWebSocketHandler(), "/appChatSocket").addInterceptors(new HandshakeInterceptor());
         logger.info("registed!");
     }
 
@@ -37,4 +38,10 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements
         return new SystemWebSocketHandler();
     }
 
+    @Bean
+    public WebSocketHandler appWebSocketHandler() {
+    	//return new InfoSocketEndPoint();
+    	return new AppWebSocketHandler();
+    }
+    
 }

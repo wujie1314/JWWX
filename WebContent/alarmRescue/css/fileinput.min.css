@@ -128,7 +128,7 @@
 
 .btn-file {
 	overflow: hidden;
-	width:150px;
+/*	width:260px;*/
 }
 
 .btn-file input[type=file] {
@@ -192,11 +192,12 @@
 }
 
 .file-preview {
-	border-radius: 5px;
+	/*border-radius: 5px;
 	border: 1px solid #ddd;
 	padding: 8px;
+	margin-bottom: 5px;
 	width: 100%;
-	margin-bottom: 5px
+	border: 1px solid #ddd;*/
 }
 
 .file-preview .btn-xs {
@@ -568,4 +569,13 @@
 .kv-file-zoom{
 	width:200px;
 	height:165px;
+}
+
+.file-input, .has-error, .file-input-new{
+	display:inline-flex;
+	flex-wrap:wrap;
+}
+.btn, .btn-primary, .btn-file{
+	display:flex;
+	align-items:center;
 }

@@ -34,6 +34,7 @@ import org.jiaowei.service.WxStatusTmpService;
 import org.jiaowei.util.CommonConstantUtils;
 import org.jiaowei.util.DateUtils;
 import org.jiaowei.util.StringUtil;
+import org.jiaowei.websoket.AppWebSocketHandler;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.WeiXinConst;
 import org.jiaowei.wxutil.WeiXinOperUtil;
@@ -104,6 +105,8 @@ public class AutoSchedule {
 						//发送給用户
 						if(!temp.getWxOpenid().subSequence(0, 3).equals("app")){
 							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+						}else{
+							AppWebSocketHandler.sendMsgToApp(temp.getWxOpenid(), userJsonContent);
 						}
 						wxStatusTmpService.saveMsgDatebase(temp, CommonConstantUtils.allotSysHint(),  temp.getWxOpenid());
 					}
@@ -429,6 +432,8 @@ public class AutoSchedule {
 					//发送給用户
 					if(!tmp.getWxOpenid().subSequence(0, 3).equals("app")){
 						WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+					}else{
+						AppWebSocketHandler.sendMsgToApp(tmp.getWxOpenid(), userJsonContent);
 					}
 					wxStatusTmpService.saveMsgDatebase(tmp, "留言已结束，我们会尽快为你解答",  tmp.getWxOpenid());
 				
@@ -456,6 +461,8 @@ public class AutoSchedule {
 							// 这里有点问题 获取不到对应的公众号accessToken
 							if(!tmp.getWxOpenid().subSequence(0, 3).equals("app")){
 								WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+							}else{
+								AppWebSocketHandler.sendMsgToApp(tmp.getWxOpenid(), userJsonContent);
 							}
 							wxStatusTmpService.saveMsgDatebase(tmp, CommonConstantUtils.allotSysHint(),  tmp.getWxOpenid());
 							NavMenuInitUtils.getInstance().messageMap.remove(openId);
@@ -941,6 +948,8 @@ public class AutoSchedule {
 //		Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(wxOpenId); // 加入的
 		if(!wxOpenId.subSequence(0, 3).equals("app")){
 			WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), userJsonContent);
+		}else{
+			AppWebSocketHandler.sendMsgToApp(wxOpenId, userJsonContent);
 		}
 		
 	}

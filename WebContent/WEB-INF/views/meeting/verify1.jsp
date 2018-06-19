@@ -11,16 +11,28 @@
 <link rel="stylesheet" href="${ctx}/css/meeting/pcs.css">
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-1.11.3.min.js"></script>
 </head>
+<style>
+ul li img{
+	width: 100%;
+}
+
+.content ul li{
+	width: 46%;
+}
+.content{
+	margin-top: 20%;
+}
+</style>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=201805122228"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180516001"/></div>
 <div class="content">	
 	<ul>
-       	<li onclick="hrefAgenda()"><div class="li_cont bac2"> <img src="${ctx}/image/meeting/icon1.png"/><p>会议议程</p></div></li>
-      	<li onclick="hrefSeats()" class="bac"><div class="li_cont bac4"><img src="${ctx}/image/meeting/icon3.png"/><p>参会名单</p></div></li>
-      	<li onclick="hrefIntroduce()"><div class="li_cont bac1"><img src="${ctx}/image/meeting/icon2.png"/><p>项目推介</p></div></li>
-      	<li onclick="hrefVideo()" class="bac"><div class="li_cont bac3"><img src="${ctx}/image/meeting/icon5.png"/><p>视频影片</p></div></li>
-        <li onclick="hrefDatum()"><div class="li_cont bac5"><img src="${ctx}/image/meeting/icon4.png"/><p>现场导图</p></div></li>
-      	<li onclick="hrefServiceCenter()" class="bac"><div class="li_cont bac6"><img src="${ctx}/image/meeting/icon6.png"/><p>服务中心</p></div></li>
+       	<li onclick="hrefAgenda()"><img src="${ctx}/image/meeting/icon_yicheng.png?timeStamp=20180514001"/></li>
+<%--       	<li onclick="hrefSeats()" class="bac"><img src="${ctx}/image/meeting/icon_mingdan.png?timeStamp=20180514001"/></li> --%>
+      	<li onclick="hrefIntroduce()" class="bac"><img src="${ctx}/image/meeting/icon_tuijie.png?timeStamp=20180514001"/></li>
+      	<li onclick="hrefVideo()"><img src="${ctx}/image/meeting/icon_video.png?timeStamp=20180514001"/></li>
+        <li onclick="hrefDatum()" class="bac"><img src="${ctx}/image/meeting/icon_daoshi.png?timeStamp=20180514001"/></li>
+<%--       	<li onclick="hrefServiceCenter()" class="bac"><img src="${ctx}/image/meeting/icon_server.png?timeStamp=20180514001"/></li> --%>
     </ul>
 	
 </div>

@@ -73,6 +73,7 @@ import org.jiaowei.util.ListUtils;
 import org.jiaowei.util.PropertiesUtil;
 import org.jiaowei.util.StringUtil;
 import org.jiaowei.vo.WeixinUserInfoVO;
+import org.jiaowei.websoket.AppWebSocketHandler;
 import org.jiaowei.wxutil.ApiHttpUtils;
 import org.jiaowei.wxutil.NavMenuInitUtils;
 import org.jiaowei.wxutil.PastUtil;
@@ -1584,6 +1585,8 @@ public class CustomerServiceController {
                  String returnStr = "";
                  if(!wxOpenId.subSequence(0, 3).equals("app")){
                 	  returnStr = WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publiicID), jsonContent);// 获取对应accessToken  已改
+                 }else{
+                	 AppWebSocketHandler.sendMsgToApp(wxOpenId, jsonContent);
                  }
                  wxStatusTmpService.saveMsgDatebase(entity, "感谢您对重庆交通的支持，刚才为您服务的是"+userEntity.getUserId()+"号座席，请您为她的服务评分。\n" +
                          "【1】非常满意 \n" +
@@ -1726,6 +1729,14 @@ public class CustomerServiceController {
     	WeiXinConst.transferUserMap.put(csId, openId);
     	String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId); //通过微信openid获取对应的公众号
     	String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), openId);
+    	if(openId != null && openId.length() > 3 && openId.subSequence(0, 3).equals("app")){
+			List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
+			String nickname = "app用户";
+			if (null != list || list.size() > 0) {
+				nickname = list.get(0).getNickname();
+			}
+		    userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + nickname + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
+		}
     	WeixinUserInfoEntity weixinUserInfoEntity = JSON.parseObject(userInfo, WeixinUserInfoEntity.class);
 		map.put("nickName", weixinUserInfoEntity.getNickname());
 		map.put("csId", csId);
@@ -1899,6 +1910,14 @@ public class CustomerServiceController {
         if(entity ==null||"Transfer".equals(typeName)||"Invite".equals(typeName)){
         	//在服务队列中，返回空
         	String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), openId);// 需要获取对应的AccessToken　已改
+        	if(openId != null && openId.length() > 3 && openId.subSequence(0, 3).equals("app")){
+    			List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
+    			String nickname = "app用户";
+    			if (null != list || list.size() > 0) {
+    				nickname = list.get(0).getNickname();
+    			}
+    		    userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + nickname + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
+    		}
         	if(StringUtil.isNotEmpty(userInfo) && !userInfo.contains("errcode")){
         		entity = new WxStatusTmpTEntity();
             	entity.setWxOpenid(openId);
@@ -1963,7 +1982,17 @@ public class CustomerServiceController {
 			if(temp != null && (""+csId).equals(temp.getCsId()) && temp.getServiceStatus() == 1){
 				String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(openId);
 //				Integer deptID = NavMenuInitUtils.getInstance().userDeptMap.get(openId); //加入的
-				String userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), temp.getWxOpenid());// 需要获取对应的AccessToken 已改
+				String userInfo="";
+				if(temp.getWxOpenid() != null && temp.getWxOpenid().length() > 3 && temp.getWxOpenid().subSequence(0, 3).equals("app")){
+					List<WeixinUserInfoEntity> list = weixinUserInfoService.findByProperty(WeixinUserInfoEntity.class, "wxOpenId", openId);
+					String nickname = "app用户";
+					if (null != list || list.size() > 0) {
+						nickname = list.get(0).getNickname();
+					}
+				    userInfo ="{\"subscribe\":1,\"openid\":\""+openId+"\",\"nickname\":\"" + nickname + "\",\"sex\":1,\"language\":\"zh_CN\",\"headImg\":\"/image/users/ico_app.png\"}";
+				}else{
+					userInfo = WeiXinOperUtil.getUserInfo(WeiXinOperUtil.getAccessToken(publicID), temp.getWxOpenid());// 需要获取对应的AccessToken 已改
+				}
 				if(temp.getBeginTimestamp() == null ){
 					userInfo = userInfo.replace("}", ",\"begin\":"+0+"}");
 				}

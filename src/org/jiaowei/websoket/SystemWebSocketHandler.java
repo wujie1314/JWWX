@@ -134,6 +134,8 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 //                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
                     	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
 							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+						}else {
+							AppWebSocketHandler.sendMsgToApp(this.wxOpenId, jsonContent);
 						}
                         //发送座席
                        //通知前端已经关閉
@@ -170,6 +172,8 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 //                        Integer deptOD =  NavMenuInitUtils.getInstance().userDeptMap.get(this.wxOpenId);// 加入的
                     	if(!this.wxOpenId.subSequence(0, 3).equals("app")){
 							WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
+						}else {
+							AppWebSocketHandler.sendMsgToApp(this.wxOpenId, jsonContent);
 						}
                     	 //发送座席
                          try {
@@ -269,7 +273,9 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                     session.sendMessage(new TextMessage(msg));
                  }
                  logger.info(String.format("座席发送信息到微信用户返回：%s", returnStr));
-            }
+            }else {
+				AppWebSocketHandler.sendMsgToApp(toUser, jsonContent);
+			}
         }
     }
 
@@ -320,6 +326,11 @@ public class SystemWebSocketHandler implements WebSocketHandler {
         			String publicID = NavMenuInitUtils.getInstance().userPublicIdMap.get(this.wxOpenId);
     				WeiXinOperUtil.sendMsgToWx(WeiXinOperUtil.getAccessToken(publicID), jsonContent);
         		}
+			}else {
+				String jsonContent = String
+						.format("{\"touser\":\"%s\",\"msgtype\":\"text\",\"text\":{\"content\":\"%s\"}}",
+								this.wxOpenId, "您已经断开与96096座席的连接.");
+				AppWebSocketHandler.sendMsgToApp(this.wxOpenId, jsonContent);
 			}
 
 //            WxStatusTmpTEntity entity = WeiXinConst.servicingMap.get(wxOpenId);

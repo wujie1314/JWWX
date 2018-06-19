@@ -62,7 +62,14 @@ public class WeiXinConst {
 
     //用来保存与用户会话的webSocketSession
     public static Map<String, WebSocketSession> webSocketSessionMap = new HashMap<String, WebSocketSession>();
-
+ 
+    //坐席id对应的sessionId
+    public static Map<String, WebSocketSession> userSessionMap = new HashMap<String, WebSocketSession>();
+    
+    //session对应的openIdLists
+    public static Map<String, List<String>> sessionOpenId = new HashMap<String, List<String>>();
+    
+    
     //保存刚来的等待服务的微信用户
 //    public static ConcurrentMap<String, WxStatusTmpTEntity> waitingMap = new ConcurrentHashMap<String, WxStatusTmpTEntity>();
 

@@ -13,7 +13,7 @@
 <script type="text/javascript" src="${ctx}/js/jquery/video.js"></script>
 </head>
 <body>
-<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=201805122228"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180516001"/></div>
 <div class="content">
 	<img id="movieImg" style="width: 90%;margin: 5% 5%;" src="${ctx}/image/meeting/movie.jpg?timeStamp=201805122227"/>
 	<video id="movieVideo" style="width: 90%;margin: 5% 5%;object-fit:fill;display: none;" 

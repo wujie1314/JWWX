@@ -15,74 +15,26 @@
 </head>
 <body>
 
-<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=201805031352"/></div>
+<div class="banner"><img src="${ctx}/image/meeting/banner_head1.jpg?timeStamp=20180516001"/></div>
 
 <div class="content">
-	<div width="100%" heigh="50" style="text-align: center;margin: 20px;font-weight:bold;font-size: 100%">酒店5月14日（星期一）提供</div>
-<%-- 	<img width="100%" id="huodongtu" src="${ctx}/image/meeting/huodongtu.png"/> --%>
-<%-- 	<img width="100%" id="daoshitu" src="${ctx}/image/meeting/daoshitu.png"/> --%>
+	<div width="100%" heigh="50" style="text-align: center;margin: 20px;font-size: 150%">雾都宾馆三楼总平面图</div>
+	<img style="width: 90%;margin: 5%;" id="huodongtu" src="${ctx}/image/meeting/tuijie/daotu.jpg?timeStamp=20180516001"/>
 </div>
 
 </body>
 </html>
 
 <script type="text/javascript">
-//这个是调用微信图片浏览器的函数 
-function imagePreview(curSrc,srcList) {
-	//这个检测是否参数为空
-	if(!curSrc || !srcList || srcList.length == 0) {
-		return;
-	}
-	//这个使用了微信浏览器提供的JsAPI 调用微信图片浏览器
-	WeixinJSBridge.invoke('imagePreview', { 
-		'current' : curSrc,
-		'urls' : srcList
-	});
-};
- 
-//下面这个函数用来转换数组到json格式
-function arrayToJson(o) { 
-	var r = []; 
-	if (typeof o == "string") return "\"" + o.replace(/([\'\"\\])/g, "\\$1").replace(/(\n)/g, "\\n").replace(/(\r)/g, "\\r").replace(/(\t)/g, "\\t") + "\""; 
-	if (typeof o == "object") { 
-	if (!o.sort) { 
-	for (var i in o) 
-	r.push(i + ":" + arrayToJson(o[i])); 
-	if (!!document.all && !/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/.test(o.toString)) { 
-	r.push("toString:" + o.toString.toString()); 
-	} 
-	r = "{" + r.join() + "}"; 
-	} else { 
-	for (var i = 0; i < o.length; i++) { 
-	r.push(arrayToJson(o[i])); 
-	} 
-	r = "[" + r.join() + "]"; 
-	} 
-	return r; 
-	} 
-	return o.toString(); 
-}
 (function($){
-	//下面是获取当前页面所有的img的src 转成数组 并且 转换成json格式
-	var aa=[];
-	var i=0;
-	var src=[];
-	var json=null;
-	aa = [$('#huodongtu'), $('#daoshitu')];
-	for (i=0;i<aa.length;i++){
-		src[i]=aa[i][0].src;    //把所有的src存到数组里
-	}
-	var srcList=arrayToJson(src); //转换成json并赋值给srcList
-	//下面是点击图片的时候获取当前第几个图片并且启用咱们做的调用微信图片浏览器的函数
-	$('#huodongtu').click(function(){
-		var index = $('#huodongtu').index(this);
-		imagePreview(src[index],src);
-	});
-	
-	$('#daoshitu').click(function(){
-		var index = $('#daoshitu').index(this);
-		imagePreview(src[index],src);
-	});
+	$("#huodongtu").on("click", function(){
+	  	   var nowImgurl = this.src;
+	  	   var imgs = [nowImgurl];
+	     	WeixinJSBridge.invoke("imagePreview",{
+	       "urls":imgs,
+	       "current":nowImgurl
+	       })
+	    });
 				 
 })(jQuery);
 </script>

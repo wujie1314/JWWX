@@ -3,6 +3,7 @@ html,body,.container {
 	padding: 0 !important;
 	overflow: hidden;
 	width: 100% !important;
+	overflow-y:auto;
 	font-family: "Microsoft YaHei";
 }
 
@@ -29,8 +30,8 @@ html,body,.container {
 
 .contentFoot .row {
 	width: 100%;
-	max-height: 40%;
-	margin: 3px 0px !important;
+	max-height: 50%;
+	margin: 5px 0px !important;
 	display: flex;
 }
 
@@ -105,15 +106,17 @@ html,body,.container {
 
 .location,.tel,.file {
 	height: 100% !important;
+	display:flex;
 }
 
 #startPosition,#endPosition {
 	color: #333;
 	font-size: 38px;
-	margin:auto;
+	min-width:40%;
 	background: #fff;
 	border: none;
-	max-width:42%;
+/*	margin:auto;
+	max-width:42%;*/
 }
 
 #phoneNum {
