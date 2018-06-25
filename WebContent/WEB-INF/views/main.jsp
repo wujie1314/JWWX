@@ -236,8 +236,8 @@ a:hover.l-btn-plain{
 						iconCls="icon-record" title="开始录音" plain="true">录音</a>
 						<a href="#" onclick="newbbs();" class="easyui-linkbutton"
 						iconCls="icon-help" title="专家服务" plain="true">专家</a>
-						<a href="#" onclick="openCallPolice();" class="easyui-linkbutton"
-						iconCls="icon-help" title="报警救援" plain="true">报警救援短信</a>
+<!-- 						<a href="#" onclick="openCallPolice();" class="easyui-linkbutton" -->
+<!-- 						iconCls="icon-help" title="报警救援" plain="true">报警救援短信</a> -->
 					</span>
 					<span style="float: right;"> <a href="#"
 						onclick='showHisMsgOneMore();' class="easyui-linkbutton"
